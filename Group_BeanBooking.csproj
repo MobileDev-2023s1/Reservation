@@ -17,18 +17,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administration\Controllers\" />
-    <Folder Include="Areas\Administration\Data\" />
-    <Folder Include="Areas\Administration\Models\" />
-    <Folder Include="Areas\Administration\Views\" />
-    <Folder Include="Areas\Custormers\Controllers\" />
-    <Folder Include="Areas\Custormers\Data\" />
-    <Folder Include="Areas\Custormers\Models\" />
-    <Folder Include="Areas\Custormers\Views\" />
-    <Folder Include="Areas\Staff\Controllers\" />
-    <Folder Include="Areas\Staff\Data\" />
-    <Folder Include="Areas\Staff\Models\" />
-    <Folder Include="Areas\Staff\Views\" />
+    <Folder Include="Areas\Administration %28Taka%29\Controllers\" />
+    <Folder Include="Areas\Administration %28Taka%29\Data\" />
+    <Folder Include="Areas\Administration %28Taka%29\Models\" />
+    <Folder Include="Areas\Administration %28Taka%29\Views\" />
+    <Folder Include="Areas\Custormers %28Diego%29\Controllers\" />
+    <Folder Include="Areas\Custormers %28Diego%29\Data\" />
+    <Folder Include="Areas\Custormers %28Diego%29\Models\" />
+    <Folder Include="Areas\Custormers %28Diego%29\Views\" />
+    <Folder Include="Areas\Staff %28yenny%29\Controllers\" />
+    <Folder Include="Areas\Staff %28yenny%29\Data\" />
+    <Folder Include="Areas\Staff %28yenny%29\Models\" />
+    <Folder Include="Areas\Staff %28yenny%29\Views\" />
   </ItemGroup>
 
 </Project>
