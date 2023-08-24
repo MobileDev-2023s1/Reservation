@@ -1,0 +1,24 @@
+.idea/
+.vscode/
+*.iml
+.DS_Store
+node_modules/
+vendor/
+/bin/
+/obj/
+/dist/
+/build/
+*.log
+*.tmp
+.env        # Environment variables
+.env.local  # Local environment overrides
+.env.*      # Environment-specific configuration
+config/*.conf
+*.sqlite
+*.db
+/generated/
+/uploads/
+/cache/
+/temp/
+*~
+*.swp
