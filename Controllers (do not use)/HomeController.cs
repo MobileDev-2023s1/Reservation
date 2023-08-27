@@ -1,4 +1,5 @@
-﻿using Group_BeanBooking.Models;
+﻿using Group_BeanBooking.Data;
+using Group_BeanBooking.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,14 +8,19 @@ namespace Group_BeanBooking.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SeedData _seedData;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
+            _seedData = new SeedData(context);
         }
 
         public IActionResult Index()
         {
+            _seedData.SeedDataMain();
             return View();
         }
 
