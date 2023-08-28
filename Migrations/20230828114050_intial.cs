@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Group_BeanBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class intial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

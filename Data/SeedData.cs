@@ -139,12 +139,14 @@ namespace Group_BeanBooking.Data
         {
             List<string> roles = new()
             {
-                "Administrator", "Staff", "Customer", "Supplier"
+                "Administrator", "Staff", "Customer", "Supplier", "Owner"
             };
 
             foreach (var role in roles)
             {
-                if(_rolesManager.FindByNameAsync(role) == null)
+                var result = _rolesManager.FindByNameAsync(role).Result;
+
+                if (_rolesManager.FindByNameAsync(role).Result == null)
                 {
                     _rolesManager.CreateAsync(new IdentityRole { Name = role });
                 }
