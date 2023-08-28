@@ -14,7 +14,8 @@
 
         public int SittingID { get; set; }
         public Sitting Sitting { get; set; }
-        
+
+        //Tie the reservation data to the user -- https://learn.microsoft.com/en-us/aspnet/core/security/authorization/secure-data?view=aspnetcore-7.0
         public int PersonId { get; set; }
         public Person  Person { get; set; }
       

@@ -1,4 +1,7 @@
-﻿using ReservationSystem.Data;
+﻿using Group_BeanBooking.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using ReservationSystem.Data;
 
 namespace Group_BeanBooking.Data
 {
@@ -10,10 +13,16 @@ namespace Group_BeanBooking.Data
         private readonly List<SittingType> _sittingTypes;
         private readonly List<Sitting> _sittings;
         private readonly List<RestaurantTable> _tables;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _rolesManager;
+        
 
-        public SeedData(ApplicationDbContext context)
+        public SeedData(ApplicationDbContext context , UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> rolesManager)
         {
             _context = context;
+            _userManager = userManager;
+            _rolesManager = rolesManager;
             _restaurants = _context.Restaurants.ToList();
             _restaurantArea = _context.ResturantAreas.ToList();
             _sittingTypes = _context.SittingTypes.ToList();
@@ -28,6 +37,8 @@ namespace Group_BeanBooking.Data
             SeedSittingTypes();
             SeedSittings();
             SeedRestaurantArea();
+            SeedRoles();
+            SeedUsers();
         }
 
         public void SeedRestaurant()
@@ -122,6 +133,45 @@ namespace Group_BeanBooking.Data
             }
 
 
+        }
+
+        public void SeedRoles()
+        {
+            List<string> roles = new()
+            {
+                "Administrator", "Staff", "Customer", "Supplier"
+            };
+
+            foreach (var role in roles)
+            {
+                if(_rolesManager.FindByNameAsync(role) == null)
+                {
+                    _rolesManager.CreateAsync(new IdentityRole { Name = role });
+                }
+            }
+            _context.SaveChanges();
+            
+        }
+        public void SeedUsers()
+        {
+            List<ApplicationUser> list = new()
+            {
+                new ApplicationUser {FirstName = "Admin" , LastName = "Admin" , PhoneNumber="0212345678", Email ="admin@beancafe.com" , PasswordHash = "Admin123." },
+                new ApplicationUser {FirstName = "Staff" , LastName = "Staff" , PhoneNumber="0212345679", Email ="staff@beancafe.com" , PasswordHash = "Staff123."},
+                new ApplicationUser {FirstName = "Customer" , LastName = "Customer" , PhoneNumber="0212345680", Email ="Customer@beancafe.com" , PasswordHash = "Customer123." },
+                new ApplicationUser {FirstName = "Supplier" , LastName = "Supplier" , PhoneNumber="0212345681", Email ="Supplier@beancafe.com" , PasswordHash = "Supplier123."},
+
+            };
+
+            foreach(var item in list)
+            {
+                if(_userManager.FindByEmailAsync(item.Email).Result == null)
+                {
+                   item.UserName = item.Email;
+                   item.EmailConfirmed = true;
+                   _userManager.CreateAsync(item, item.PasswordHash);
+                }
+            }
         }
 
         public void SeedTables()

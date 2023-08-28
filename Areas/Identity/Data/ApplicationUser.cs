@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Group_BeanBooking.Areas.Identity.Data;
 
 // Add profile data for application users by adding properties to the User class
-public class User : IdentityUser
+public class ApplicationUser : IdentityUser
 {
     [PersonalData]
     public string FirstName { get; set; }

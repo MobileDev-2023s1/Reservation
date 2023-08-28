@@ -2,6 +2,8 @@ using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Group_BeanBooking.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,17 +19,29 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<Group_BeanBooking.Areas.Identity.Data.User>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>() //https://learn.microsoft.com/en-us/aspnet/core/security/authorization/secure-data?view=aspnetcore-7.0
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
-
-
-
-
-
+ 
 builder.Services.AddControllersWithViews();
 
+//builder.Services.AddControllers(config =>
+//{
+//    var policy = new AuthorizationPolicyBuilder()
+//                     .RequireAuthenticatedUser()
+//                     .Build();
+//    config.Filters.Add(new AuthorizeFilter(policy));
+//});
+
+
+
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+
+var services = scope.ServiceProvider;
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
