@@ -24,14 +24,14 @@ namespace Group_BeanBooking.Data
         public DbSet<Sitting> Sittings { get; set; }
         public DbSet<SittingType> SittingTypes { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<Sitting>()
-                .HasMany(s => s.Reservations)
-                .WithOne(r => r.Sitting)
-                .OnDelete(DeleteBehavior.Restrict);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder
+        //        .Entity<Sitting>()
+        //        .HasMany(s => s.Reservations)
+        //        .WithOne(r => r.Sitting)
+        //        .OnDelete(DeleteBehavior.Restrict);
                 
-        }
+        //}
     }
 }

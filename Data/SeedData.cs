@@ -38,15 +38,23 @@ namespace Group_BeanBooking.Data
             _reservationOrigin = _context.ResevationOrigins.ToList();
         }
 
-        public void SeedDataMain()
+        public async Task SeedDataMain()
         {
+            var list = _userManager.Users.ToList();
+            var usersInRole = _context.UserRoles.ToList();
+
             SeedRestaurant();
             SeedSittingTypes();
             SeedSittings();
             SeedRestaurantArea();
-            SeedRoles();
-            SeedUsers();
-            SeedUsersinRoles();
+            await SeedRolesAsync();
+            await SeedUsers();
+            SeedSupplierinRoles(list[2], usersInRole);
+            SeedStaffinRoles(list[3], usersInRole);
+            SeedAdministratorinRoles(list[1], usersInRole);
+            SeedCustomerinRoles(list[0], usersInRole);
+
+            //await SeedUsersinRoles();
             SeedReservationStatuses();
             SeedReservationsOrigin();
 
@@ -71,14 +79,36 @@ namespace Group_BeanBooking.Data
             _context.SaveChanges();
         }
 
-        public void SeedUsersinRoles()
+        public void SeedSupplierinRoles(ApplicationUser user , List<IdentityUserRole<string>> roles)
         {
-            var list = _userManager.Users.ToList();
-            
-            _userManager.AddToRoleAsync(list[0], "Supplier");
-            _userManager.AddToRoleAsync(list[1], "Staff");
-            _userManager.AddToRoleAsync(list[2], "Administrator");
-            _userManager.AddToRoleAsync(list[3], "Customer");
+            if(roles.FirstOrDefault(u=> u.UserId ==  user.Id) == null)
+            {
+                 _userManager.AddToRoleAsync(user, "Supplier");
+            }
+        }
+
+        public void SeedStaffinRoles(ApplicationUser user, List<IdentityUserRole<string>> roles)
+        {
+            if (roles.FirstOrDefault(u => u.UserId == user.Id) == null)
+            {
+                 _userManager.AddToRoleAsync(user, "Staff");
+            }
+        }
+
+        public void SeedAdministratorinRoles(ApplicationUser user, List<IdentityUserRole<string>> roles)
+        {
+            if (roles.FirstOrDefault(u => u.UserId == user.Id) == null)
+            {
+                _userManager.AddToRoleAsync(user, "Administrator");
+            }
+        }
+
+        public void SeedCustomerinRoles(ApplicationUser user, List<IdentityUserRole<string>> roles)
+        {
+            if (roles.FirstOrDefault(u => u.UserId == user.Id) == null)
+            {
+                _userManager.AddToRoleAsync(user, "Customer");
+            }
         }
 
         public void SeedReservationStatuses()
@@ -197,26 +227,24 @@ namespace Group_BeanBooking.Data
 
         }
 
-        public void SeedRoles()
+        public async Task SeedRolesAsync()
         {
             List<string> roles = new()
             {
-                "Administrator", "Staff", "Customer", "Supplier", "Owner"
+                "Administrator", "Staff", "Customer", "Supplier"
             };
 
             foreach (var role in roles)
             {
-                var result = _rolesManager.FindByNameAsync(role).Result;
-
                 if (_rolesManager.FindByNameAsync(role).Result == null)
                 {
-                    _rolesManager.CreateAsync(new IdentityRole { Name = role });
+                    await _rolesManager.CreateAsync(new IdentityRole { Name = role });
                 }
             }
             _context.SaveChanges();
             
         }
-        public void SeedUsers()
+        public async Task SeedUsers()
         {
             List<ApplicationUser> list = new()
             {
@@ -233,7 +261,7 @@ namespace Group_BeanBooking.Data
                 {
                    item.UserName = item.Email;
                    item.EmailConfirmed = true;
-                   _userManager.CreateAsync(item, item.PasswordHash);
+                   await _userManager.CreateAsync(item, item.PasswordHash);
                 }
             }
         }

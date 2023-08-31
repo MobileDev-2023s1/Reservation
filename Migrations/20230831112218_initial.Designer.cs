@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Group_BeanBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230831104616_initial")]
+    [Migration("20230831112218_initial")]
     partial class initial
     {
         /// <inheritdoc />
