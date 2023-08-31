@@ -4,6 +4,8 @@ using Group_BeanBooking.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ReservationSystem.Data;
 using System.Diagnostics;
 
 namespace Group_BeanBooking.Controllers
@@ -26,10 +28,26 @@ namespace Group_BeanBooking.Controllers
             
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             _seedData.SeedDataMain();
-            return View();
+            var c = new RestaurantList();
+            c.RestList = new SelectList(_context.Restaurants.ToList(), "Id", "Name");
+            var list = _context.Restaurants.ToList();
+            c.Restaurants.AddRange(list);
+            return View(c);
+        }
+
+        [HttpPost]
+        public IActionResult Index(RestaurantList c)
+        {
+            var restaurant = new Restaurant()
+            {
+                Id = c.RestaurantId
+            };
+            
+            return RedirectToAction("Create", "Bookings", new { id = c.RestaurantId });
         }
 
         public IActionResult Privacy()

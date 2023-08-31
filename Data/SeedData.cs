@@ -2,22 +2,28 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using ReservationSystem.Data;
+using System.Collections.Generic;
 
 namespace Group_BeanBooking.Data
 {
     public class SeedData
     {
-        private readonly ApplicationDbContext _context;
-        private readonly List<Restaurant> _restaurants;
-        private readonly List<RestaurantArea> _restaurantArea;
-        private readonly List<SittingType> _sittingTypes;
-        private readonly List<Sitting> _sittings;
-        private readonly List<RestaurantTable> _tables;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _rolesManager;
-        
+        #region fields
+        protected readonly ApplicationDbContext _context;
+        protected readonly List<Restaurant> _restaurants;
+        protected readonly List<RestaurantArea> _restaurantArea;
+        protected readonly List<SittingType> _sittingTypes;
+        protected readonly List<Sitting> _sittings;
+        protected readonly List<RestaurantTable> _tables;
+        protected readonly List<ReservationStatus> _reservationStatus;
+        protected readonly List<ResevationOrigin> _reservationOrigin;
 
-        public SeedData(ApplicationDbContext context , UserManager<ApplicationUser> userManager,
+        protected readonly UserManager<ApplicationUser> _userManager;
+        protected readonly RoleManager<IdentityRole> _rolesManager;
+
+        #endregion
+
+        public SeedData(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> rolesManager)
         {
             _context = context;
@@ -28,8 +34,9 @@ namespace Group_BeanBooking.Data
             _sittingTypes = _context.SittingTypes.ToList();
             _sittings = _context.Sittings.ToList();
             _tables = _context.RestaurantTables.ToList();
+            _reservationStatus = _context.ReservationStatuses.ToList();
+            _reservationOrigin = _context.ResevationOrigins.ToList();
         }
-
 
         public void SeedDataMain()
         {
@@ -39,6 +46,61 @@ namespace Group_BeanBooking.Data
             SeedRestaurantArea();
             SeedRoles();
             SeedUsers();
+            SeedUsersinRoles();
+            SeedReservationStatuses();
+            SeedReservationsOrigin();
+
+        }
+
+        public void SeedReservationsOrigin()
+        {
+            List<ResevationOrigin> origins = new()
+            {
+                new ResevationOrigin { Name = "Phone"},
+                new ResevationOrigin { Name = "Email"},
+                new ResevationOrigin { Name = "Person"},                
+            };
+
+            foreach (var item in origins)
+            {
+                if (_reservationOrigin.FirstOrDefault(r => r.Name == item.Name) == null)
+                {
+                    _context.ResevationOrigins.Add(item);
+                }
+            }
+            _context.SaveChanges();
+        }
+
+        public void SeedUsersinRoles()
+        {
+            var list = _userManager.Users.ToList();
+            
+            _userManager.AddToRoleAsync(list[0], "Supplier");
+            _userManager.AddToRoleAsync(list[1], "Staff");
+            _userManager.AddToRoleAsync(list[2], "Administrator");
+            _userManager.AddToRoleAsync(list[3], "Customer");
+        }
+
+        public void SeedReservationStatuses()
+        {
+       
+            List<ReservationStatus> list = new()
+            {
+                new ReservationStatus {Name = "Pending"},
+                new ReservationStatus {Name = "Confirmed"},
+                new ReservationStatus {Name = "Cancelled"},
+                new ReservationStatus {Name = "Seated"},
+                new ReservationStatus {Name = "Completed"}
+            };
+
+            foreach(var item in list) 
+            {
+                if (_reservationStatus.FirstOrDefault(r=>r.Name == item.Name) == null )
+                {
+                    _context.ReservationStatuses.Add(item);
+                }
+            }
+            _context.SaveChanges();
         }
 
         public void SeedRestaurant()

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Group_BeanBooking.Models.RestaurantList;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +8,23 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@*<div>
+   <label asp-for="RestaurantId"></label>
+   <select asp-for="RestaurantId" asp-items="@Model.RestList"></select>
+
+
+</div>*@
+
+<form method="post"> 
+    <div>
+        @foreach(var item in Model.Restaurants)
+        {
+            <a asp-area="Customers" asp-controller="Bookings" asp-action="Create">@item.Name</a> <br />
+            @*<button asp-area="Customers" asp-controller="Bookings" asp-action="Create" id="@item.Id">@item.Name</button>*@
+            @*<input type="submit" value="@item.Name" class="btn btn-primary" asp-for="RestaurantId" itemid="@item.Id"/> <br /><br />*@
+        }
+    </div>
+
+</form>
+
