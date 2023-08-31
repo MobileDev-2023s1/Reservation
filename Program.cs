@@ -8,14 +8,15 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(connectionString));
 
 builder.Services.AddRazorPages();
 
-var mySqlConnString = builder.Configuration.GetConnectionString("MySQLConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(mySqlConnString));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+//var mySqlConnString = builder.Configuration.GetConnectionString("MySQLConnection");
+//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(mySqlConnString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

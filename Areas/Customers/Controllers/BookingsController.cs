@@ -14,7 +14,12 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             
         }
         //data that
-        public IActionResult Create(int id)
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Create()
         {
             
             return View();

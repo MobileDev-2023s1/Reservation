@@ -9,19 +9,20 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-@*<div>
-   <label asp-for="RestaurantId"></label>
-   <select asp-for="RestaurantId" asp-items="@Model.RestList"></select>
-
-
-</div>*@
 
 <form method="post"> 
+@*    
+    <div>
+       <label asp-for="RestaurantId"></label>
+       <select asp-for="RestaurantId" asp-items="@Model.RestList"></select>
+
+        <input type="submit" value="Go" class="btn btn-primary" /> <br /><br />
+    </div>
+*@
     <div>
         @foreach(var item in Model.Restaurants)
         {
-            <a asp-area="Customers" asp-controller="Bookings" asp-action="Create">@item.Name</a> <br />
-            @*<button asp-area="Customers" asp-controller="Bookings" asp-action="Create" id="@item.Id">@item.Name</button>*@
+            <a asp-area="Customers" asp-controller="Bookings" asp-action="Index">@item.Name</a>
             @*<input type="submit" value="@item.Name" class="btn btn-primary" asp-for="RestaurantId" itemid="@item.Id"/> <br /><br />*@
         }
     </div>

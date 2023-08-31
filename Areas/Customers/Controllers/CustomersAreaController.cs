@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
     [Area("Customers")]
-    [Authorize(Roles = "Customer,Owner")] //if I need to add more roles
+    //[Authorize(Roles = "Customer,Owner")] //if I need to add more roles
     public class CustomersAreaController : AreasController
     {
         public CustomersAreaController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager) 

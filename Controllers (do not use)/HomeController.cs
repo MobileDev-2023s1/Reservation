@@ -47,7 +47,7 @@ namespace Group_BeanBooking.Controllers
                 Id = c.RestaurantId
             };
             
-            return RedirectToAction("Create", "Bookings", new { id = c.RestaurantId });
+            return RedirectToAction("Create", "Bookings", new { id = c.RestaurantId , area = "Customers"});
         }
 
         public IActionResult Privacy()
