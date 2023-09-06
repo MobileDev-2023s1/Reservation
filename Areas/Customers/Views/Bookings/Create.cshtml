@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Group_BeanBooking.Areas.Identity.Data;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model Group_BeanBooking.Areas.Customers.Models.Bookings.Create
+
+@{
+    var current = UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+}
+
+
+<div>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h1>Booking will be under </h1>
+        <h2>@current.FirstName @current.LastName</h2>
+        
+    }else
+    {
+        <!--this is the section for customer information -->
+        <h3>Customer Information</h3> <br />
+        <input asp-for="FirstName" placeholder="First Name" required="First Name cannot be empty" /><br />
+        @*<input asp-for="MiddleName" placeholder="Middle Name" /><br />*@
+        <input asp-for="LastName" placeholder="Family Name" required="Family name cannot be empty" /><br />
+        <input asp-for="PhoneNumber" type="tel" placeholder="Contact Details" required="Telephone is required, cannot be empty" /><br />
+        <input asp-for="Email" type="email" placeholder="email" required="email is required to send you confirmation and updates, cannot be empty" /><br />
+        
+    }
+
+</div>
+
+<div>
+    <!--This is the section for the booking details-->
+    <br />
+    <h3>Booking Information</h3> <br />
+    <label asp-for="Starttime"></label>
+    <input type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+           min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+
+    <label asp-for="Guests">Guests</label>
+    <input type="number" asp-for="Guests" min="1" max="100" /> <br /><br />
+    <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
+
+    @*<label asp-for="SittingAreasId">Sitting Area</label>
+    <select asp-for="SittingAreasId" asp-items="@Model.SittingAreasList">Select One</select> <br /><br />*@
+
+    <label asp-for="Comments">Comments</label><br />
+    <input type="text" width="150" height="300" maxlength="200" />
+
+</div>

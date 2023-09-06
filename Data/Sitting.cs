@@ -1,0 +1,23 @@
+﻿namespace ReservationSystem.Data
+{
+    public class Sitting
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }    
+      
+
+        public bool Closed { get; set; }
+        public DateTime Start {get; set; }
+        public DateTime End { get; set; }
+
+        public int Capacity { get; set; }
+
+        public int RestaurantId{ get; set; }
+        public  Restaurant Restaurant { get; set; }
+        public int TypeId { get; set; }
+        public SittingType Type { get; set; }
+        public List<Reservation> Reservations { get; set; } = new();
+
+
+    }
+}
