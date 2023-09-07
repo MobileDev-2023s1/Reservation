@@ -1,4 +1,7 @@
-﻿namespace ReservationSystem.Data
+﻿using Group_BeanBooking.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+
+namespace ReservationSystem.Data
 {
     public class Person
     {
@@ -9,6 +12,9 @@
         public string  Phone { get; set; }
         public List<Reservation> Reservations { get; set; } = new();
 
+        public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
 
 
 

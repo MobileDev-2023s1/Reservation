@@ -1,4 +1,5 @@
 ﻿using Group_BeanBooking.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ReservationSystem.Data;
@@ -24,14 +25,39 @@ namespace Group_BeanBooking.Data
         public DbSet<Sitting> Sittings { get; set; }
         public DbSet<SittingType> SittingTypes { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder
-        //        .Entity<Sitting>()
-        //        .HasMany(s => s.Reservations)
-        //        .WithOne(r => r.Sitting)
-        //        .OnDelete(DeleteBehavior.Restrict);
-                
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<Sitting>()
+                .HasMany(s => s.Reservations)
+                .WithOne(r => r.Sitting)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+                .Entity<Person>()
+                .Property(p => p.Email).HasMaxLength(150);
+
+            modelBuilder
+                .Entity<Person>()
+                .HasIndex(p => p.Email).IsUnique(true);
+
+            modelBuilder
+                .Entity<Person>()
+                .Property(p=> p.UserId).HasMaxLength(450);
+
+            //modelBuilder
+            //    .Entity<Person>()
+            //    .HasOne<IdentityUser>()
+            //    .WithOne().IsRequired(false).HasForeignKey("IdentityUser", new[] { "UserId" });
+
+            modelBuilder
+               .Entity<Person>()
+               .HasOne(p => p.User)
+               .WithOne().IsRequired(false);
+
+            
+        }
     }
 }
