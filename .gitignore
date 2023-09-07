@@ -22,3 +22,8 @@ config/*.conf
 /temp/
 *~
 *.swp
+*.vsidx
+/.vs/Group_BeanBooking/FileContentIndex/055fec61-b6b6-4ae7-a250-3fe45530283e.vsidx
+/.vs/Group_BeanBooking/FileContentIndex/2b928ba6-d71a-4967-b491-de39807be6a2.vsidx
+/.vs/Group_BeanBooking/FileContentIndex/70343e1c-400f-4163-a329-2ae4c197773a.vsidx
+/.vs/Group_BeanBooking/FileContentIndex/aadd6919-7673-46b7-af4f-fa78384da949.vsidx
