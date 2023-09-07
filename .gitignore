@@ -22,3 +22,4 @@ config/*.conf
 /temp/
 *~
 *.swp
+*.vsidx
