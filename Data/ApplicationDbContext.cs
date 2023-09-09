@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 using System.Reflection.Metadata;
 
 namespace Group_BeanBooking.Data

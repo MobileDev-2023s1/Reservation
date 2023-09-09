@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 
 namespace Group_BeanBooking.Models
 {

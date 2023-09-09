@@ -1,4 +1,4 @@
-﻿ namespace ReservationSystem.Data
+﻿ namespace Group_BeanBooking.Data
 {
     public class ReservationStatus
     {
