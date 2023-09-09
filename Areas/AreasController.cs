@@ -2,7 +2,7 @@
 using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 
 namespace Group_BeanBooking.Areas
 {

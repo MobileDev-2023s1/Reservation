@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace ReservationSystem.Data
+namespace Group_BeanBooking.Data
 {
     public class RestaurantArea
     {

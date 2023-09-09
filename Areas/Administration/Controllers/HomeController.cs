@@ -3,7 +3,7 @@ using Group_BeanBooking.Areas.Administration.Controllers;
 using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 
 namespace Group_BeanBooking.Areas.Administration.Controllers
 {
