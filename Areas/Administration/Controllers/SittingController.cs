@@ -15,7 +15,7 @@ using Group_BeanBooking.Data;
 
 namespace Group_BeanBooking.Areas.Administration.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Administrator")]
     public class SittingController : AdministrationAreaController
     {
 

@@ -7,7 +7,7 @@ using Group_BeanBooking.Data;
 
 namespace Group_BeanBooking.Areas.Administration.Controllers
 {
-    [Area("Administration"), Authorize(Roles = "Employee")]
+    [Area("Administration"), Authorize(Roles = "Administrator")]
     public class AdministrationAreaController : Controller
     {
         protected readonly ApplicationDbContext _context;
