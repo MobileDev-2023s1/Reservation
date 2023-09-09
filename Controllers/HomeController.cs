@@ -13,11 +13,11 @@ namespace Group_BeanBooking.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly SeedData _seedData;
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _rolesManager;
+        protected readonly ILogger<HomeController> _logger;
+        protected readonly SeedData _seedData;
+        protected readonly ApplicationDbContext _context;
+        protected readonly UserManager<ApplicationUser> _userManager;
+        protected readonly RoleManager<IdentityRole> _rolesManager;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context , 
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager)
@@ -60,5 +60,29 @@ namespace Group_BeanBooking.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        //public IActionResult RedirectUser()
+        //{
+        //    var roles = _rolesManager.Roles.ToList();
+
+        //    if (User.IsInRole("Supplier"))
+        //    {
+        //        return null;
+
+        //    }
+        //    else if (User.IsInRole("Staff"))
+        //    {
+        //        return null;
+        //    }
+        //    else if (User.IsInRole("Customer"))
+        //    {
+        //        return RedirectToAction;
+        //    }
+        //    else //Administrator
+        //    {
+
+        //    }
+
+        //}
     }
 }
