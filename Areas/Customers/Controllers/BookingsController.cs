@@ -22,8 +22,10 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         [HttpGet]
         public IActionResult Create(int id)
         {
-            
-            return View();
+            var c = new Group_BeanBooking.Areas.Customers.Models.Bookings.Create();
+
+
+            return View(c);
         }
 
         [HttpPost]
