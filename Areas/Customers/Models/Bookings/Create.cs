@@ -8,6 +8,8 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
     {
         public int Id { get; set; }
 
+        [ValidateNever] public string RestaurantName { get; set; }
+
         //Customer information
         [Required] public string FirstName { get; set; }
         [Required] public string LastName { get; set; }
@@ -21,11 +23,16 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
 
         //Booking information
 
-        public DateTime Starttime { get; set; }
-        public int Duration { get; set; }
+        [ValidateNever] public DateTime Starttime { get; set; }
+        [ValidateNever] public int Duration { get; set; }
 
-        public int SittingId { get; set; }
-        public SelectList SittingList { get; set; }
+        [ValidateNever] public int SittingAreaId { get; set; }
+        [ValidateNever] public SelectList SittingAreaList { get; set; }
+
+        [ValidateNever] public int SittingId { get; set; }
+        [ValidateNever] public SelectList SittingList { get; set; }
+
+
 
 
 

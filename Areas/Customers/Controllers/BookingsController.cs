@@ -2,6 +2,7 @@
 using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
@@ -22,8 +23,17 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         [HttpGet]
         public IActionResult Create(int id)
         {
-            var c = new Group_BeanBooking.Areas.Customers.Models.Bookings.Create();
+            var restInfo = 
+            var areas = _context.ResturantAreas.Where(r => r.RestaurantId == id).ToList();
+            var sittings = _context.Sittings.Where(r => r.RestaurantId == id).ToList();
+            var c = new Group_BeanBooking.Areas.Customers.Models.Bookings.Create()
+            {
+                
+                SittingAreaList = new SelectList(areas, "Id", "Name"),
+                SittingList = new SelectList(sittings, "Id", "Name"),
 
+            };
+            
 
             return View(c);
         }
