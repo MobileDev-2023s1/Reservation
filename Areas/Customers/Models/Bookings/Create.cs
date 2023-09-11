@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Group_BeanBooking.Areas.Identity.Data;
+using Group_BeanBooking.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,27 +13,31 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
 
         [ValidateNever] public string RestaurantName { get; set; }
 
+        [ValidateNever] public string UserId { get; set; }
+
         //Customer information
-        [Required] public string FirstName { get; set; }
-        [Required] public string LastName { get; set; }
-        [Required] public string PhoneNumber { get; set; }
-        [Required] public string Email { get; set; }
+        [ValidateNever] public string FirstName { get; set; }
+        [ValidateNever] public string LastName { get; set; }
+        [ValidateNever] public string PhoneNumber { get; set; }
+        [ValidateNever] public string Email { get; set; }
 
-        [Required] public int Guests { get; set; }
+        [ValidateNever] public int Guests { get; set; }
 
-        [Required] public string Comments { get; set; }
+        [ValidateNever] public string Comments { get; set; }
 
 
         //Booking information
 
-        [ValidateNever] public DateTime Starttime { get; set; }
-        [ValidateNever] public int Duration { get; set; }
+        [Required] public DateTime Starttime { get; set; }
+        [Required] public int Duration { get; set; }
 
-        [ValidateNever] public int SittingAreaId { get; set; }
+        [Required] public int SittingAreaId { get; set; }
         [ValidateNever] public SelectList SittingAreaList { get; set; }
 
-        [ValidateNever] public int SittingId { get; set; }
+        [Required] public int SittingId { get; set; }
         [ValidateNever] public SelectList SittingList { get; set; }
+
+
 
 
 

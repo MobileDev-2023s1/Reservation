@@ -38,7 +38,7 @@ namespace Group_BeanBooking.Data
             _reservationOrigin = _context.ResevationOrigins.ToList();
         }
 
-        public async Task SeedDataMain()
+        public void SeedDataMain()
         {
             var list = _userManager.Users.ToList();
             var usersInRole = _context.UserRoles.ToList();
@@ -47,8 +47,8 @@ namespace Group_BeanBooking.Data
             SeedSittingTypes();
             SeedSittings();
             SeedRestaurantArea();
-            await SeedRolesAsync();
-            await SeedUsers();
+            SeedRolesAsync();
+            SeedUsers();
             SeedSupplierinRoles(list[2], usersInRole);
             SeedStaffinRoles(list[3], usersInRole);
             SeedAdministratorinRoles(list[1], usersInRole);
@@ -64,9 +64,11 @@ namespace Group_BeanBooking.Data
         {
             List<ResevationOrigin> origins = new()
             {
+                new ResevationOrigin { Name = "Online"},
                 new ResevationOrigin { Name = "Phone"},
                 new ResevationOrigin { Name = "Email"},
-                new ResevationOrigin { Name = "Person"},                
+                new ResevationOrigin { Name = "Person"},  
+                
             };
 
             foreach (var item in origins)
@@ -227,7 +229,7 @@ namespace Group_BeanBooking.Data
 
         }
 
-        public async Task SeedRolesAsync()
+        public void SeedRolesAsync()
         {
             List<string> roles = new()
             {
@@ -238,13 +240,13 @@ namespace Group_BeanBooking.Data
             {
                 if (_rolesManager.FindByNameAsync(role).Result == null)
                 {
-                    await _rolesManager.CreateAsync(new IdentityRole { Name = role });
+                    _rolesManager.CreateAsync(new IdentityRole { Name = role });
                 }
             }
             _context.SaveChanges();
             
         }
-        public async Task SeedUsers()
+        public void SeedUsers()
         {
             List<ApplicationUser> list = new()
             {
@@ -261,7 +263,7 @@ namespace Group_BeanBooking.Data
                 {
                    item.UserName = item.Email;
                    item.EmailConfirmed = true;
-                   await _userManager.CreateAsync(item, item.PasswordHash);
+                   _userManager.CreateAsync(item, item.PasswordHash);
                 }
             }
         }

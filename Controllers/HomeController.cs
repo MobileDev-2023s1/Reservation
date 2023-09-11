@@ -31,7 +31,7 @@ namespace Group_BeanBooking.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            _seedData.SeedDataMain();
+            //_seedData.SeedDataMain();
             var c = new RestaurantList();
             c.RestList = new SelectList(_context.Restaurants.ToList(), "Id", "Name");
             var list = _context.Restaurants.ToList();
