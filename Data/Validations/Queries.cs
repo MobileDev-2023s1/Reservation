@@ -73,6 +73,10 @@ namespace Group_BeanBooking.Data
             return _context.Users.FirstOrDefault(r => r.Id == id);
         }
       
+        public List<Reservation> GetReservationsByPersonId(int personId)
+        {
+            return _context.Reservations.Where(r => r.PersonId == personId).ToList();
+        }
 
     }
 }

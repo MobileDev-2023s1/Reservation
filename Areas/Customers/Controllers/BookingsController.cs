@@ -1,6 +1,8 @@
-﻿using Group_BeanBooking.Areas.Identity.Data;
+﻿using Group_BeanBooking.Areas.Customers.Data;
+using Group_BeanBooking.Areas.Identity.Data;
 using Group_BeanBooking.Data;
 using Group_BeanBooking.Data.Validations;
+using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,12 +14,12 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
     public class BookingsController : CustomersAreaController
     {
         private readonly Queries _queries;
-        private readonly Group_BeanBooking.Data.Validations.Data _data;
+        private readonly Group_BeanBooking.Data.Validations.ValidateData _data;
         public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> rolesManager) : base(context, userManager, rolesManager)
         {
             _queries = new Queries(context);
-            _data = new Data.Validations.Data(context, userManager,rolesManager);
+            _data = new ValidateData(context, userManager,rolesManager);
             
         }
         //data that
@@ -33,7 +35,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             var areas = _queries.GetRestaurantAreaByRestaurantId(id);
             var sittings = _queries.GetSittingsByRestaurantId(id);
 
-            var c = new Group_BeanBooking.Areas.Customers.Models.Bookings.Create()
+            var c = new Create()
             {
                 RestaurantName = restInfo.Name,
                 SittingAreaList = new SelectList(areas, "Id", "Name"),
@@ -50,22 +52,18 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
 
             if(ModelState.IsValid)
             {
-                var reservation = new Reservation
-                {
-                    Start = c.Starttime,
-                    Duration = c.Duration,
-                    PersonId = person.Id,
-                    SittingID = c.SittingId,
-                    ReservationStatusID = 1,
-                    ResevationOrigin = _queries.GetResevationOrigins("online"),
-                    Guests = c.Guests,
-                };
-
-                _context.Reservations.Add(reservation);
-                _context.SaveChanges();
+                new Bookings(_context).CreateReservation(person, c);
             }
 
-            return View(c);
+            return RedirectToAction("Details", "Bookings" , new  { id = c.Id , area="Customers"});
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var list = _queries.GetReservationsByPersonId(id);
+
+            return View();
         }
 
 

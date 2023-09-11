@@ -42,11 +42,6 @@ namespace Group_BeanBooking.Controllers
         [HttpPost]
         public IActionResult Index(RestaurantList c)
         {
-            var restaurant = new Restaurant()
-            {
-                Id = c.RestaurantId
-            };
-            
             return RedirectToAction("Create", "Bookings", new { id = c.RestaurantId , area = "Customers"});
         }
 
@@ -61,28 +56,28 @@ namespace Group_BeanBooking.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //public IActionResult RedirectUser()
-        //{
-        //    var roles = _rolesManager.Roles.ToList();
+        public IActionResult RedirectUser()
+        {
+            var roles = _rolesManager.Roles.ToList();
 
-        //    if (User.IsInRole("Supplier"))
-        //    {
-        //        return null;
+            if (User.IsInRole("Supplier"))
+            {
+                return null;
 
-        //    }
-        //    else if (User.IsInRole("Staff"))
-        //    {
-        //        return null;
-        //    }
-        //    else if (User.IsInRole("Customer"))
-        //    {
-        //        return RedirectToAction;
-        //    }
-        //    else //Administrator
-        //    {
+            }
+            else if (User.IsInRole("Staff"))
+            {
+                return null;
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                return RedirectToAction("Details", "Bookings", new { id = User.Identity.Name, area = "Customers" });
+            } else
+            {
+                return null;
+            }
+            
 
-        //    }
-
-        //}
+        }
     }
 }

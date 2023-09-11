@@ -6,10 +6,10 @@ using Group_BeanBooking.Areas.Customers.Models.Bookings;
 
 namespace Group_BeanBooking.Data.Validations
 {
-    public class Data : AreasController
+    public class ValidateData : AreasController
     {
         private readonly Queries _queries;
-        public Data(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+        public ValidateData(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> rolesManager) : base(context, userManager, rolesManager)
         {
             _queries = new Queries(context);
