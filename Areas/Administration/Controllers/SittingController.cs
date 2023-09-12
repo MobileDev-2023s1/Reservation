@@ -65,6 +65,64 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                 End = start.AddHours(4)
             };
 
+            return View(m);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Models.Sitting.Create m)
+        {
+            if (ModelState.IsValid)
+            {
+                var sitting = new Sitting
+                {
+                    Name = m.Name,
+                    Start = m.Start,
+                    End = m.End,
+                    Capacity = m.Capacity,
+                    Closed = m.Closed,
+                    TypeId = m.TypeId,
+                    RestaurantId = 1
+                };
+                //= _mapper.Map<Data.Sitting>(m);
+                _context.Sittings.Add(sitting);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
+            return View(m);
+        }
+
+        // GET: Administration/Sitting/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Sittings == null)
+            {
+                return NotFound();
+            }
+
+            var sitting = await _context.Sittings.FindAsync(id);
+            if (sitting == null)
+            {
+                return NotFound();
+            }
+
+            var m = new Models.Sitting.Edit
+            {
+                Name = sitting.Name,
+                Start = sitting.Start,
+                End = sitting.End,
+                Capacity = sitting.Capacity,
+                Closed = sitting.Closed,
+                TypeId = sitting.TypeId,
+            };
+     
+            //_mapper.Map<Models.Sitting.Edit>(sitting);
+
+           m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
+
 
             return View(m);
         }
@@ -72,89 +130,46 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(Models.Sitting.Create m)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var sitting = _mapper.Map<Data.Sitting>(m);
+        public async Task<IActionResult> Edit(Models.Sitting.Edit m)
+        {
+            var sitting = _context.Sittings.FirstOrDefault(s => s.Id == m.Id);
 
+            if (sitting == null)
+            {
+                return NotFound();
+            }
 
-        //        sitting.RestaurantId = 1;
+            if (ModelState.IsValid)
+            {
+                try
+                {   sitting.Start = m.Start;
+                    sitting.End = m.End;
+                    sitting.Capacity = m.Capacity;
+                    sitting.Closed = m.Closed;
+                    sitting.Name = m.Name;
+                    sitting.TypeId = m.TypeId;
+                    //_mapper.Map(m, sitting);
+                  
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SittingExists(sitting.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
+            return View(m);
+        }
 
-        //        _context.Sittings.Add(sitting);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
-        //    return View(m);
-        //}
-
-        //// GET: Administration/Sitting/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null || _context.Sittings == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var sitting = await _context.Sittings.FindAsync(id);
-        //    if (sitting == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var m = _mapper.Map<Models.Sitting.Edit>(sitting);
-        //    m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
-
-
-        //    return View(m);
-        //}
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(Models.Sitting.Edit m)
-        //{
-        //    var sitting = _context.Sittings.FirstOrDefault(s => s.Id == m.Id);
-
-        //    if (sitting == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _mapper.Map(m, sitting);
-        //            //sitting.Start = m.Start;
-        //            //sitting.End = m.End;
-        //            //sitting.Capacity = m.Capacity;
-        //            //sitting.Closed = m.Closed;
-        //            //sitting.Name = m.Name;
-        //            //sitting.TypeId = m.TypeId;  
-
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!SittingExists(sitting.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
-        //    return View(m);
-        //}
-
-        // GET: Administration/Sitting/Delete/5
+        //GET: Administration/Sitting/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Sittings == null)
