@@ -6,58 +6,77 @@
 
 @{
     var current = UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-
+    
 }
 
-<form method="post">
-    <div>
+<head>
+    <script src="http://example.com/Areas/Customers/Views/Bookings/Create.js"></script>
+</head>
 
-        <h1>Welcome to @Model.RestaurantName</h1>
+<body>
+    <form method="post">
+        <div>
 
-        @if (User.Identity.IsAuthenticated)
-        {
-            <h3>Booking will be under </h3>
-            <h3>@current.FirstName @current.LastName</h3>
-            <input type="hidden" asp-for="UserId" value="@current.Id"/>
-        }else
-        {
-            <!--this is the section for customer information -->
-            <h3>Customer Information</h3> <br />
-            <input asp-for="FirstName" placeholder="First Name" required="First Name cannot be empty" /><br />
-            @*<input asp-for="MiddleName" placeholder="Middle Name" /><br />*@
-            <input asp-for="LastName" placeholder="Family Name" required="Family name cannot be empty" /><br />
-            <input asp-for="PhoneNumber" type="tel" placeholder="Contact Details" required="Telephone is required, cannot be empty" /><br />
-            <input asp-for="Email" type="email" placeholder="email" required="email is required to send you confirmation and updates, cannot be empty" /><br />
-        }
+            <h1>Welcome to @Model.RestaurantName</h1>
 
-    </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <h3>Booking will be under </h3>
+                <h3>@current.FirstName @current.LastName</h3>
+                <input type="hidden" asp-for="UserId" value="@current.Id"/>
+            }else
+            {
+                <!--this is the section for customer information -->
+                <h3>Customer Information</h3> <br />
+                <input asp-for="FirstName" placeholder="First Name" required="First Name cannot be empty" /><br />
+                @*<input asp-for="MiddleName" placeholder="Middle Name" /><br />*@
+                <input asp-for="LastName" placeholder="Family Name" required="Family name cannot be empty" /><br />
+                <input asp-for="PhoneNumber" type="tel" placeholder="Contact Details" required="Telephone is required, cannot be empty" /><br />
+                <input asp-for="Email" type="email" placeholder="email" required="email is required to send you confirmation and updates, cannot be empty" /><br />
+            }
 
-    <div>
-        <!--This is the section for the booking details-->
-        <br />
-        <h3>Booking Information</h3> <br />
-        <label asp-for="Starttime"></label>
-        <input type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
-               min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
-        <label asp-for="Duration">Booking length</label>
-        <input type="number" asp-for="Duration" min="30" max="180" value="30"/><br /><br />
+        </div>
+
+        <div>
+            <!--This is the section for the booking details-->
+            <br />
+            <h3>Booking Information</h3> <br />
+            <label asp-for="Starttime"></label>
+            <input type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+                   min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+            <label asp-for="Duration">Booking length</label>
+            <input type="number" asp-for="Duration" min="30" max="180" value="30"/><br /><br />
 
 
-        <label asp-for="Guests">Guests</label>
-        <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
-        <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
+            <label asp-for="Guests">Guests</label>
+            <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
+            <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
 
-        <label asp-for="SittingAreaId">Where to sit?</label><br />
-        <select asp-for="SittingAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br /> 
+            <label asp-for="SittingAreaId">Where to sit?</label><br />
+            <select asp-for="SittingAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br /> 
 
-        <label asp-for="SittingId">Food type?</label><br />
-        <select asp-for="SittingId" asp-items="@Model.SittingList"></select><br /> <br />
+            <label asp-for="SittingId">Food type?</label><br />
+            <select asp-for="SittingId" asp-items="@Model.SittingList"></select><br /> <br />
 
-        <label asp-for="Comments">Comments</label><br />
-        <input type="text" width="150" height="300" maxlength="200" />
+            <label asp-for="Comments">Comments</label><br />
+            <input type="text" width="150" height="300" maxlength="200" />
 
-    </div>
 
-    <br /><br /><input type="submit" value="Create" class="btn btn-primary" />
+        </div>
 
-</form>
+        <br /><br /><input type="submit" value="Create" class="btn btn-primary" />
+
+    </form>
+
+    <button onclick="handleButtonClick()">Click me</button>
+
+
+    <script>
+        //function handleButtonClick() {
+        //    alert('Button clicked!');
+        //}
+
+    </script>
+
+</body>
+

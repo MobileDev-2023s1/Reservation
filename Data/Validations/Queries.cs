@@ -1,5 +1,8 @@
 ﻿using Group_BeanBooking.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 using ReservationSystem.Data;
+using System.Linq;
+
 
 namespace Group_BeanBooking.Data
 {
@@ -77,6 +80,15 @@ namespace Group_BeanBooking.Data
         {
             return _context.Reservations.Where(r => r.PersonId == personId).ToList();
         }
+
+        public List<Reservation> GetReservations(int personId)
+        {
+            var value = _context.Reservations.AsQueryable().Join(_context.Sittings.ToList(), r => r.SittingID, s => s.Id,
+                (r, s) => new { Name = s.Name, Id = r.Id});
+
+            return _context.Reservations.Where(r => r.PersonId == personId).ToList();
+        }
+
 
     }
 }

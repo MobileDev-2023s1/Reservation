@@ -66,6 +66,21 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Details(string email) 
+        {
+            var model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
+            var user = _queries.GetPersonByEmail(email);
+            var bookings = _queries.GetReservations(user.Id);
+
+            model.Reservations = bookings;
+            model.Person = user;
+            model.Email = email;
+
+            
+            return View(model);
+        }
+
 
     }
 }

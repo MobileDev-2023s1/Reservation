@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Group_BeanBooking.styles.css" asp-append-version="true" />
+@*    @RenderSection("scripts", required: false) *@
+
+    @*The required:false setting in @RenderSection directive will make the script section in the content views optional. Set it to true to make it mandatory.*@
 </head>
 <body>
     <header>
@@ -19,9 +22,10 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                      @*  <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Customers" asp-controller="Bookings" asp-action="Create">Make a Booking</a>
-                        </li>*@
+                        <li class="nav-item">
+                            @*<a class="nav-link text-dark" asp-area="Customers" asp-controller="Bookings" asp-action="Create">Make a Booking</a>*@
+                            <a class="nav-link text-dark" asp-area="Customers" asp-controller="Bookings" asp-action="Details">Find Booking</a>
+                        </li>
                         @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>*@
