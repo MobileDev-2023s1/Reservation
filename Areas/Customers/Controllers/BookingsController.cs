@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ReservationSystem.Data;
+using System.Linq.Expressions;
 
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
@@ -55,31 +56,54 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
                 new Bookings(_context).CreateReservation(person, c);
             }
 
-            return RedirectToAction("Details", "Bookings" , new  { id = c.Id , area="Customers"});
+            return RedirectToAction("Details", "Bookings" , new  { id = person.Id , area="Customers"});
         }
 
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var list = _queries.GetReservationsByPersonId(id);
+            var model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
+            if(id != 0)
+            {
+                model.Reservations = _queries.GetReservations(id);
 
-            return View();
+            }
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Details(string email) 
+        public IActionResult Details(string? email , int? id) 
         {
             var model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
-            var user = _queries.GetPersonByEmail(email);
-            var bookings = _queries.GetReservations(user.Id);
+            Person user = new();
+            List<Reservation> bookings = new();
+
+            
+
+            if (ModelState.IsValid)
+            {
+                //person has not logged in and then email is used for search
+                if(id == null)
+                {
+                    user = _queries.GetPersonByEmail(email);
+                    bookings = _queries.GetReservationsByPersonId(user.Id);
+
+                }
+                else
+                {
+                    bookings = _queries.GetReservationsByPersonId(id);
+                }
+
+            }           
 
             model.Reservations = bookings;
             model.Person = user;
             model.Email = email;
-
             
             return View(model);
         }
+
+
 
 
     }

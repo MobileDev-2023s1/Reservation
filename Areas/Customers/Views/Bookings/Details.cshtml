@@ -33,7 +33,27 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div>
-            <h1>Welcome to your bookings: @User.Identity.Name</h1>
+            <h1>Welcome to your bookings:</h1>
+
+            @if(Model.Reservations.Count == 0){
+
+                <h4>You do not have any bookings yet.</h4>
+            }
+            else
+            {
+                @try{
+                    <div>
+                        @foreach (var r in Model.Reservations)
+                        {
+                            <h3>@r.Person.FirtName</h3>
+                        }
+                    </div>
+                    }catch (Exception ex)
+                    {
+
+                    }
+                
+            }
         </div>
     }
     else
@@ -48,6 +68,12 @@
 
         </form>
     }
+    
+    
+
+    
+
+
 
    
 

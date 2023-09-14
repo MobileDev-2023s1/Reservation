@@ -18,6 +18,7 @@ namespace Group_BeanBooking.Controllers
         protected readonly ApplicationDbContext _context;
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly RoleManager<IdentityRole> _rolesManager;
+        private readonly Queries _queries;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context , 
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager)
@@ -25,7 +26,8 @@ namespace Group_BeanBooking.Controllers
             _logger = logger;
             _context = context;
             _seedData = new SeedData(context, userManager, rolesManager);
-            
+            _queries = new Queries(context);
+
         }
 
         [HttpGet]
@@ -58,23 +60,16 @@ namespace Group_BeanBooking.Controllers
 
         public IActionResult RedirectUser()
         {
-            var roles = _rolesManager.Roles.ToList();
+            //var roles = _rolesManager.Roles.ToList();
 
-            if (User.IsInRole("Supplier"))
+            if (User.IsInRole("Customer"))
             {
-                return null;
+                var user = _queries.GetPersonByEmail(User.Identity.Name);
 
-            }
-            else if (User.IsInRole("Staff"))
-            {
-                return null;
-            }
-            else if (User.IsInRole("Customer"))
-            {
-                return RedirectToAction("Details", "Bookings", new { id = User.Identity.Name, area = "Customers" });
+                return RedirectToAction("Details", "Bookings", new { id = user == null? 0 : user.Id , area = "Customers" });
             } else
             {
-                return null;
+                return View();
             }
             
 

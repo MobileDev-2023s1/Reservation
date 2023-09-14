@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Group_BeanBooking.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 using ReservationSystem.Data;
 
 namespace Group_BeanBooking.Areas.Customers.Models.Bookings

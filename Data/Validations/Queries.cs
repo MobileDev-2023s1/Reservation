@@ -66,7 +66,7 @@ namespace Group_BeanBooking.Data
             return _context.ResevationOrigins.FirstOrDefault(r=> r.Name == reservationOriginName);
         }
 
-        public ApplicationUser GetUserByEmail(string email)
+        public ApplicationUser GetUserByEmail(string? email)
         {
             return _context.Users.FirstOrDefault(u => u.Email == email);
         }
@@ -76,27 +76,24 @@ namespace Group_BeanBooking.Data
             return _context.Users.FirstOrDefault(r => r.Id == id);
         }
       
-        public List<Reservation> GetReservationsByPersonId(int personId)
+        public List<Reservation> GetReservationsByPersonId(int? personId)
         {
             return _context.Reservations.Where(r => r.PersonId == personId).ToList();
         }
 
+
+        //https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager
         public List<Reservation> GetReservations(int personId)
         {
-            var query = _context.Reservations
-                .Join(_context.Sittings, r => r.SittingID, s => s.Id, (r, s) => new { Name = s.Restaurant.Name });
-                
-            
+            var reservations = _context.Reservations
+                .Include(r => r.Person) //eager loading
+                .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
+                    .ThenInclude(s => s.Restaurant)
+                .Include(r => r.ResevationOrigin)
+                .Include(r => r.ReservationStatus)
+                .Where(p => p.PersonId == personId).ToList();
 
-            //var value2 = from r in _context.Reservations
-            //             join s in _context.Sittings on r.SittingID equals s.Id
-            //             where r.PersonId == personId
-            //             select new
-            //             {
-            //                 Name = s.Restaurant.Name
-            //             };
-
-            return _context.Reservations.Where(r => r.PersonId == personId).ToList();
+            return reservations;
         }
 
 
