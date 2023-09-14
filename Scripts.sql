@@ -3,18 +3,23 @@ use BeanBookings;
 select * from ResturantAreas;
 select * from Restaurants;
 select * from Reservations;
-select * from Sittings
+select * from Sittings;
+
+select * from People;
 
 
 
 select st.Name as Sitting_type, CONCAT(pr.FirtName, ' ', pr.LastName) as Customer_name,
 Reservations.Start as Start, rsSt.Name as Status, resOr.Name as Origin,
-Reservations.Guests as Guests, rest.Name as Restaurant, Reservations.SittingID
+Reservations.Guests as Guests, place.Name as Place
 from Reservations
 join Sittings as st on Reservations.SittingID = st.Id
 join People as pr on Reservations.PersonId = pr.Id
 join ReservationStatuses as rsSt on Reservations.ReservationStatusID = rsSt.Id
-join ResevationOrigins as resOr on Reservations.ResevationOriginId = resOr.Id;
+join ResevationOrigins as resOr on Reservations.ResevationOriginId = resOr.Id
+join Restaurants as place on st.RestaurantId = place.Id
+where PersonId = 13;
+
 
 
 
@@ -22,7 +27,7 @@ join ResevationOrigins as resOr on Reservations.ResevationOriginId = resOr.Id;
 delete from Reservations
 where Id >= 1;
 
-select * from People;
+
 
 select * from ReservationStatuses;
 select * from ResevationOrigins;

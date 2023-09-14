@@ -83,8 +83,18 @@ namespace Group_BeanBooking.Data
 
         public List<Reservation> GetReservations(int personId)
         {
-            var value = _context.Reservations.AsQueryable().Join(_context.Sittings.ToList(), r => r.SittingID, s => s.Id,
-                (r, s) => new { Name = s.Name, Id = r.Id});
+            var query = _context.Reservations
+                .Join(_context.Sittings, r => r.SittingID, s => s.Id, (r, s) => new { Name = s.Restaurant.Name });
+                
+            
+
+            //var value2 = from r in _context.Reservations
+            //             join s in _context.Sittings on r.SittingID equals s.Id
+            //             where r.PersonId == personId
+            //             select new
+            //             {
+            //                 Name = s.Restaurant.Name
+            //             };
 
             return _context.Reservations.Where(r => r.PersonId == personId).ToList();
         }
