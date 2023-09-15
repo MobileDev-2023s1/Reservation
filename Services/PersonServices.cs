@@ -1,7 +1,7 @@
 ﻿using Group_BeanBooking.Areas;
 using Group_BeanBooking.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Group_BeanBooking.Data;
 using Microsoft.EntityFrameworkCore;

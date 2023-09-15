@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 using System.Collections;
 using System.Collections.Generic;
 

@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Http.Connections;
 

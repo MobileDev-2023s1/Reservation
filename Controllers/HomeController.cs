@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 using System.Diagnostics;
 
 namespace Group_BeanBooking.Controllers

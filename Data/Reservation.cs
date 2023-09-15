@@ -28,5 +28,7 @@
         
         //public int ReservationOriginId { get; set; }
         public ResevationOrigin ResevationOrigin { get; set; }
+
+        public string Comments { get; set; }
     }
 }

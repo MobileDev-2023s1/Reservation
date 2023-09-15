@@ -5,7 +5,7 @@ using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 using System.Linq.Expressions;
 using Group_BeanBooking.Services;
 

@@ -1,6 +1,6 @@
 ﻿using Group_BeanBooking.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
-using ReservationSystem.Data;
+using Group_BeanBooking.Data;
 
 namespace Group_BeanBooking.Areas.Customers.Models.Bookings
 {
