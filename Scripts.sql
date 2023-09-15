@@ -2,12 +2,12 @@ use BeanBookings;
 
 select * from ResturantAreas;
 select * from Restaurants;
-select * from Reservations;
+
 select * from Sittings;
 
 select * from People;
 
-
+select * from Reservations;
 
 select st.Name as Sitting_type, CONCAT(pr.FirtName, ' ', pr.LastName) as Customer_name,
 Reservations.Start as Start, rsSt.Name as Status, resOr.Name as Origin,
@@ -22,7 +22,8 @@ where PersonId = 13;
 
 
 
-
+delete from People
+where Id = 13;
 
 delete from Reservations
 where Id >= 1;
@@ -33,6 +34,10 @@ select * from ReservationStatuses;
 select * from ResevationOrigins;
 
 select * from AspNetUsers;
+
+delete from AspNetUsers
+where id = '27917673-cd91-4cdc-b604-44e7d80e0816';
+
 select * from AspNetRoles;
 select * from AspNetUserRoles;
 
