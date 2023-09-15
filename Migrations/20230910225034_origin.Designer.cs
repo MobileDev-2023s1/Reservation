@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Group_BeanBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230907083924_fifth")]
-    partial class fifth
+    [Migration("20230910225034_origin")]
+    partial class origin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -303,10 +303,10 @@ namespace Group_BeanBooking.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("Guests")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReservationOriginId")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReservationStatusID")

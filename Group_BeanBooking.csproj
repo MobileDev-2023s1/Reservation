@@ -41,6 +41,7 @@
     <Folder Include="Areas\Administration %28Taka%29\Data\" />
     <Folder Include="Areas\Administration %28Taka%29\Models\" />
     <Folder Include="Areas\Administration %28Taka%29\Views\" />
+    <Folder Include="Areas\Customers\Data\" />
     <Folder Include="Areas\Staff %28yenny%29\Controllers\" />
     <Folder Include="Areas\Staff %28yenny%29\Data\" />
     <Folder Include="Areas\Staff %28yenny%29\Models\" />

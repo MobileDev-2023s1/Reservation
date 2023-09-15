@@ -1,7 +1,9 @@
 ﻿using Group_BeanBooking.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Group_BeanBooking.Data;
+using ReservationSystem.Data;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Group_BeanBooking.Data
@@ -10,14 +12,6 @@ namespace Group_BeanBooking.Data
     {
         #region fields
         protected readonly ApplicationDbContext _context;
-        protected readonly List<Restaurant> _restaurants;
-        protected readonly List<RestaurantArea> _restaurantArea;
-        protected readonly List<SittingType> _sittingTypes;
-        protected readonly List<Sitting> _sittings;
-        protected readonly List<RestaurantTable> _tables;
-        protected readonly List<ReservationStatus> _reservationStatus;
-        protected readonly List<ResevationOrigin> _reservationOrigin;
-
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly RoleManager<IdentityRole> _rolesManager;
 
@@ -29,202 +23,45 @@ namespace Group_BeanBooking.Data
             _context = context;
             _userManager = userManager;
             _rolesManager = rolesManager;
-            _restaurants = _context.Restaurants.ToList();
-            _restaurantArea = _context.ResturantAreas.ToList();
-            _sittingTypes = _context.SittingTypes.ToList();
-            _sittings = _context.Sittings.ToList();
-            _tables = _context.RestaurantTables.ToList();
-            _reservationStatus = _context.ReservationStatuses.ToList();
-            _reservationOrigin = _context.ResevationOrigins.ToList();
         }
 
         public async Task SeedDataMain()
         {
-            var list = _userManager.Users.ToList();
-            var usersInRole = _context.UserRoles.ToList();
-
-            SeedRestaurant();
-            SeedSittingTypes();
-            SeedSittings();
-            SeedRestaurantArea();
+            
+            await SeedRestaurant();
+            await SeedSittingTypes();
+            await SeedSittings();
+            await SeedRestaurantArea();
             await SeedRolesAsync();
             await SeedUsers();
-            SeedSupplierinRoles(list[2], usersInRole);
-            SeedStaffinRoles(list[3], usersInRole);
-            SeedAdministratorinRoles(list[1], usersInRole);
-            SeedCustomerinRoles(list[0], usersInRole);
+            await AddUserToRoles();
 
             //await SeedUsersinRoles();
-            SeedReservationStatuses();
-            SeedReservationsOrigin();
+            await SeedReservationStatuses();
+            await SeedReservationsOrigin();
 
         }
 
-        public void SeedReservationsOrigin()
+        public async Task SeedReservationsOrigin()
         {
             List<ResevationOrigin> origins = new()
             {
+                new ResevationOrigin { Name = "Online"},
                 new ResevationOrigin { Name = "Phone"},
                 new ResevationOrigin { Name = "Email"},
-                new ResevationOrigin { Name = "Person"},                
+                new ResevationOrigin { Name = "Person"},  
+                
             };
 
             foreach (var item in origins)
             {
-                if (_reservationOrigin.FirstOrDefault(r => r.Name == item.Name) == null)
-                {
-                    _context.ResevationOrigins.Add(item);
-                }
-            }
-            _context.SaveChanges();
-        }
-
-        public void SeedSupplierinRoles(ApplicationUser user , List<IdentityUserRole<string>> roles)
-        {
-            if(roles.FirstOrDefault(u=> u.UserId ==  user.Id) == null)
-            {
-                 _userManager.AddToRoleAsync(user, "Supplier");
-            }
-        }
-
-        public void SeedStaffinRoles(ApplicationUser user, List<IdentityUserRole<string>> roles)
-        {
-            if (roles.FirstOrDefault(u => u.UserId == user.Id) == null)
-            {
-                 _userManager.AddToRoleAsync(user, "Staff");
-            }
-        }
-
-        public void SeedAdministratorinRoles(ApplicationUser user, List<IdentityUserRole<string>> roles)
-        {
-            if (roles.FirstOrDefault(u => u.UserId == user.Id) == null)
-            {
-                _userManager.AddToRoleAsync(user, "Administrator");
-            }
-        }
-
-        public void SeedCustomerinRoles(ApplicationUser user, List<IdentityUserRole<string>> roles)
-        {
-            if (roles.FirstOrDefault(u => u.UserId == user.Id) == null)
-            {
-                _userManager.AddToRoleAsync(user, "Customer");
-            }
-        }
-
-        public void SeedReservationStatuses()
-        {
-       
-            List<ReservationStatus> list = new()
-            {
-                new ReservationStatus {Name = "Pending"},
-                new ReservationStatus {Name = "Confirmed"},
-                new ReservationStatus {Name = "Cancelled"},
-                new ReservationStatus {Name = "Seated"},
-                new ReservationStatus {Name = "Completed"}
-            };
-
-            foreach(var item in list) 
-            {
-                if (_reservationStatus.FirstOrDefault(r=>r.Name == item.Name) == null )
-                {
-                    _context.ReservationStatuses.Add(item);
-                }
-            }
-            _context.SaveChanges();
-        }
-
-        public void SeedRestaurant()
-        {
-            List<Restaurant> list = new()
-            {
-                new Restaurant { Name = "Opera Bar", Phone = "02 5020 5560" },
-                new Restaurant { Name = "Grill'd", Phone = "02 3025 6210"}
-
-            };
-
-            foreach(var restaurant in list)
-            {
-                if(_restaurants.FirstOrDefault(r=> r.Name == restaurant.Name) == null)
-                {
-                    _context.Add(restaurant);
-                    _context.SaveChanges();
-                } 
-            }
-        }
-
-        public void SeedRestaurantArea()
-        {
-            List<RestaurantArea> list = new()
-            {
-                new RestaurantArea { Name = "Main"},
-                new RestaurantArea { Name = "Outside"},
-                new RestaurantArea { Name = "Balcony"}
-            };
-
-            foreach (var area in list)
-            {
-                foreach(var rest in _restaurants)
-                {
-                    if(_restaurantArea.Where(ra => ra.Name == area.Name && ra.RestaurantId == rest.Id).FirstOrDefault() == null)
-                    {
-                        rest.RestaurantAreas.Add(area);
-                        _context.Add(area);
-                    }
-
-                }
-                _context.SaveChanges();
-            }
-        }
                 
-        public void SeedSittingTypes()
-        {
-            List<SittingType> list = new()
-            {
-                new SittingType { Name = "Breakfast"},
-                new SittingType { Name = "Lunch"},
-                new SittingType { Name = "Dinner"}
-            };
-
-            foreach (var type in list)
-            {
-                if(_sittingTypes.FirstOrDefault(st => st.Name == type.Name) == null)
+                if (await _context.ResevationOrigins.FirstOrDefaultAsync(r => r.Name == item.Name) == null)
                 {
-                    _context.Add(type);
-                }
-                else
-                {
-
-                }
-                _context.SaveChanges();
-            }
-        }
-
-        public void SeedSittings()
-        {
-            
-            List<Sitting> list = new()
-            {
-                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Now , End = DateTime.Now.AddHours(4) , Capacity= 40, TypeId = 1}
-            };
-
-            foreach(var r  in _restaurants)
-            {
-                if(_sittings.FirstOrDefault(st => st.RestaurantId == r.Id) == null)
-                {
-                    r.Sittings.Add(list[0]);
+                    await _context.ResevationOrigins.AddAsync(item);
                 }
             }
-
-            foreach (var type in list)
-            {
-                if (_sittings.FirstOrDefault(st => st.Name == type.Name) == null)
-                {
-                    _context.Add(type);
-                }
-                _context.SaveChanges();
-            }
-
-
+            await _context.SaveChangesAsync();
         }
 
         public async Task SeedRolesAsync()
@@ -236,35 +73,178 @@ namespace Group_BeanBooking.Data
 
             foreach (var role in roles)
             {
-                if (_rolesManager.FindByNameAsync(role).Result == null)
+                if ( await _rolesManager.FindByNameAsync(role) == null)
                 {
                     await _rolesManager.CreateAsync(new IdentityRole { Name = role });
                 }
             }
-            _context.SaveChanges();
-            
+            await _context.SaveChangesAsync();
         }
+
         public async Task SeedUsers()
         {
             List<ApplicationUser> list = new()
             {
                 new ApplicationUser {FirstName = "Admin" , LastName = "Admin" , PhoneNumber="0212345678", Email ="admin@beancafe.com" , PasswordHash = "Admin123." },
                 new ApplicationUser {FirstName = "Staff" , LastName = "Staff" , PhoneNumber="0212345679", Email ="staff@beancafe.com" , PasswordHash = "Staff123."},
-                new ApplicationUser {FirstName = "Customer" , LastName = "Customer" , PhoneNumber="0212345680", Email ="Customer@beancafe.com" , PasswordHash = "Customer123." },
-                new ApplicationUser {FirstName = "Supplier" , LastName = "Supplier" , PhoneNumber="0212345681", Email ="Supplier@beancafe.com" , PasswordHash = "Supplier123."},
+                new ApplicationUser {FirstName = "Customer" , LastName = "Customer" , PhoneNumber="0212345680", Email ="customer@beancafe.com" , PasswordHash = "Customer123." },
+                new ApplicationUser {FirstName = "Supplier" , LastName = "Supplier" , PhoneNumber="0212345681", Email ="supplier@beancafe.com" , PasswordHash = "Supplier123."},
 
             };
 
-            foreach(var item in list)
+            foreach (var item in list)
             {
-                if(_userManager.FindByEmailAsync(item.Email).Result == null)
+                if (await _userManager.FindByEmailAsync(item.Email) == null)
                 {
-                   item.UserName = item.Email;
-                   item.EmailConfirmed = true;
-                   await _userManager.CreateAsync(item, item.PasswordHash);
+                    item.UserName = item.Email;
+                    item.EmailConfirmed = true;
+                    await _userManager.CreateAsync(item, item.PasswordHash);
                 }
             }
+            await _context.SaveChangesAsync();
         }
+
+        public async Task AddUserToRoles()
+        {
+            foreach (var user in _userManager.Users.ToList())
+            {
+                if (user.Email == "admin@beancafe.com")
+                {
+                    await _userManager.AddToRoleAsync(user, "Administrator");
+                }
+                else if (user.Email == "staff@beancafe.com")
+                {
+                    await _userManager.AddToRoleAsync(user, "Staff");
+                }
+                else if (user.Email == "customer@beancafe.com")
+                {
+                    await _userManager.AddToRoleAsync(user, "Customer");
+                }
+                else if (user.Email == "supplier@beancafe.com")
+                {
+                    await _userManager.AddToRoleAsync(user, "Supplier");
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SeedReservationStatuses()
+        {
+            List<ReservationStatus> list = new()
+            {
+                new ReservationStatus {Name = "Pending"},
+                new ReservationStatus {Name = "Confirmed"},
+                new ReservationStatus {Name = "Cancelled"},
+                new ReservationStatus {Name = "Seated"},
+                new ReservationStatus {Name = "Completed"}
+            };
+
+            foreach(var item in list) 
+            {
+                if (await _context.ReservationStatuses.FirstOrDefaultAsync(r=>r.Name == item.Name) == null )
+                {
+                    await _context.ReservationStatuses.AddAsync(item);
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SeedRestaurant()
+        {
+            List<Restaurant> list = new()
+            {
+                new Restaurant { Name = "Opera Bar", Phone = "02 5020 5560" },
+                new Restaurant { Name = "Grill'd", Phone = "02 3025 6210"}
+
+            };
+
+            foreach(var restaurant in list)
+            {
+                
+                if(await _context.Restaurants.FirstOrDefaultAsync(r=> r.Name == restaurant.Name) == null)
+                {
+                    await _context.Restaurants.AddAsync(restaurant);
+                } 
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SeedRestaurantArea()
+        {
+            List<RestaurantArea> list = new()
+            {
+                new RestaurantArea { Name = "Main"},
+                new RestaurantArea { Name = "Outside"},
+                new RestaurantArea { Name = "Balcony"}
+            };
+
+            var restaurants = await _context.Restaurants.ToListAsync();
+            var restaAreas = await _context.ResturantAreas.ToListAsync();
+
+            foreach(var item in list)
+            {
+                foreach (var restaurant in restaurants)
+                {
+                    if(restaAreas.FirstOrDefault(r=> r.RestaurantId == restaurant.Id && r.Name == item.Name) == null)
+                    {
+                        item.RestaurantId = restaurant.Id;
+                        await _context.ResturantAreas.AddAsync(item);
+                    }
+                    
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SeedSittingTypes()
+        {
+            List<SittingType> list = new()
+            {
+                new SittingType { Name = "Breakfast"},
+                new SittingType { Name = "Lunch"},
+                new SittingType { Name = "Dinner"}
+            };
+
+            foreach (var type in list)
+            {
+                if (await _context.SittingTypes.FirstOrDefaultAsync(st => st.Name == type.Name) == null)
+                {
+                    await _context.SittingTypes.AddAsync(type);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SeedSittings()
+        {
+            List<Sitting> list = new()
+            {
+                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Now , End = DateTime.Now.AddHours(4) , Capacity= 40, TypeId = 1},
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Now.AddHours(6) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 1},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Now.AddHours(12) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 1}
+            };
+            var restaurants = await _context.Restaurants.ToListAsync();
+            var sittings = await _context.Sittings.ToListAsync();
+
+            
+            
+            foreach (var t in list)
+            {
+                foreach (var r in restaurants)
+                {
+                    //Restaurant Id and Sitting name does not exist in Sitting, then create them
+                    if (sittings.FirstOrDefault(st => st.RestaurantId == r.Id && st.Name == t.Name) == null)
+                    {
+                        t.RestaurantId = r.Id;
+                        await _context.Sittings.AddAsync(t);
+                    }
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+
 
         public void SeedTables()
         {

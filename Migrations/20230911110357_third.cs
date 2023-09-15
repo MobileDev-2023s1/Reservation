@@ -5,24 +5,24 @@
 namespace Group_BeanBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class fourth : Migration
+    public partial class third : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateIndex(
-                name: "IX_People_Email",
-                table: "People",
-                column: "Email",
-                unique: true);
+            migrationBuilder.RenameColumn(
+                name: "Guests",
+                table: "Reservations",
+                newName: "Pax");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_People_Email",
-                table: "People");
+            migrationBuilder.RenameColumn(
+                name: "Pax",
+                table: "Reservations",
+                newName: "Guests");
         }
     }
 }

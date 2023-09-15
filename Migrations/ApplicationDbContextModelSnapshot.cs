@@ -300,10 +300,10 @@ namespace Group_BeanBooking.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("Guests")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReservationOriginId")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReservationStatusID")
