@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 using Group_BeanBooking.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Build.Framework;
 
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
@@ -65,11 +67,15 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             var model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
-            if(id != 0)
+            if(id != null)
             {
-                
                 model.Reservations = await _reservationServices.GetReservationsByPersonId(id);
+            } else if(User.Identity.IsAuthenticated)
+            {
+                var person = await _context.People.SingleOrDefaultAsync(u => u.Email == User.Identity.Name);
+                model.Reservations = await _reservationServices.GetReservationsByPersonId(person.Id);
             }
+
             return View(model);
         }
 
