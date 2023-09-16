@@ -43,6 +43,11 @@
                 <select asp-for="TypeId" class ="form-control" asp-items="Model.SittingTypes"></select>
             </div>
             <div class="form-group">
+                <label asp-for="Interval" class="control-label"></label>
+                <input asp-for="Interval" class="form-control" />
+                <span asp-validation-for="Interval" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

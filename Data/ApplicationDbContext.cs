@@ -24,6 +24,7 @@ namespace Group_BeanBooking.Data
         public DbSet<RestaurantTable> RestaurantTables { get; set; }
         public DbSet<Sitting> Sittings { get; set; }
         public DbSet<SittingType> SittingTypes { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

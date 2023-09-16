@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto;
-using Group_BeanBooking.Data;
+
 
 namespace Group_BeanBooking.Areas.Administration.Controllers
 {
