@@ -5,7 +5,9 @@ select * from Restaurants;
 
 select * from Sittings;
 
-select * from People;
+
+delete from People
+where id >= 1;
 
 select * from Reservations;
 
@@ -23,7 +25,7 @@ where PersonId = 13;
 
 
 delete from People
-where Id = 13;
+where Id >= 1;
 
 delete from Reservations
 where Id >= 1;
@@ -33,17 +35,20 @@ where Id >= 1;
 select * from ReservationStatuses;
 select * from ResevationOrigins;
 
+select * from People;
+
 select * from AspNetUsers;
 
 delete from AspNetUsers
-where id = '27917673-cd91-4cdc-b604-44e7d80e0816';
+where id >= '04540b37-783b-4fdb-b272-59e756bef703';
+
+delete from AspNetUsers
+where id = '706fbd1e-cda8-4f82-9d60-c473bbdeb52c';
 
 select * from AspNetRoles;
 select * from AspNetUserRoles;
 
 
-select * from People
-where UserId = 'dcf5c1fb-0bc3-4dec-a023-5cf26f949446';
 
 delete from People
 where id >= 1;

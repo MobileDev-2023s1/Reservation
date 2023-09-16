@@ -24,6 +24,7 @@
                 <h3>Booking will be under </h3>
                 <h3>@current.FirstName @current.LastName</h3>
                 <input type="hidden" asp-for="UserId" value="@current.Id"/>
+                <input type="hidden" asp-for="Email" value="@current.Email" />
             }else
             {
                 <!--this is the section for customer information -->
@@ -52,14 +53,14 @@
             <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
             <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
 
-            <label asp-for="SittingAreaId">Where to sit?</label><br />
-            <select asp-for="SittingAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br /> 
+            <label asp-for="RestaurantAreaId">Where to sit?</label><br />
+            <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br /> 
 
             <label asp-for="SittingId">Food type?</label><br />
             <select asp-for="SittingId" asp-items="@Model.SittingList"></select><br /> <br />
 
             <label asp-for="Comments">Comments</label><br />
-            <input type="text" width="150" height="300" maxlength="200" />
+            <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
 
 
         </div>

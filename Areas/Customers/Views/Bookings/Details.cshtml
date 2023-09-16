@@ -33,42 +33,75 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div>
-            <h1>Welcome to your bookings:</h1>
-
-            @if(Model.Reservations.Count == 0){
-
-                <h4>You do not have any bookings yet.</h4>
-            }
-            else
-            {
-                @try{
-                    <div>
-                        @foreach (var r in Model.Reservations)
-                        {
-                            <h3>@r.Person.FirtName</h3>
-                        }
-                    </div>
-                    }catch (Exception ex)
-                    {
-
-                    }
-                
-            }
+            <h1>Welcome to your bookings</h1>
         </div>
     }
     else
     {
         <form method="post">
             <div>
-                <h1>You have not logged in yet!!</h1>
+                <h1>Welcome to your bookings</h1>
                 <label>Type in your email to search booking</label>
-                <input type="text" asp-for="Email">
+                <br />
+                <input type="text" asp-for="Email" value="">
                 <button asp-area="Customers" asp-controller="Bookings" asp-action="Details">Search</button>
             </div>
 
         </form>
+    } <br /><br />
+
+
+    @try
+    {
+        if (Model.Reservations.Count != 0)
+        {
+            
+            <div>
+                <table border="1">
+                    <th>Sitting Type</th>
+                    <th>Customer Name</th>
+                    <th>Date & time</th>
+                    <th>Guests</th>
+                    <th>Place</th>
+                    <th>Other Actions</th>
+
+                    <tbody>
+                        @foreach (var p in Model.Reservations)
+                        {
+                            <tr>
+                                <td>@p.Sitting.Name</td>
+                                <td>@p.Person.FirtName @p.Person.LastName</td>
+                                <td>@p.Start</td>
+                                <td>@p.Guests</td>
+                                <td>@p.Sitting.Restaurant.Name</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@p.Id"> Edit</a>||
+                                    <a asp-action="Delete" asp-route-id="@p.Id"> Delete</a>
+                                </td>
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div>
+                
+                <h4>You do not have any bookings yet.</h4>
+            </div>
+        }
+
+    }
+    catch (Exception ex)
+    {
+
     }
     
+
+    <br /><br /><a asp-area="" asp-controller="Home" asp-action="Index">Make booking</a>
     
 
     

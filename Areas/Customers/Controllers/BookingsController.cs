@@ -5,7 +5,6 @@ using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Group_BeanBooking.Data;
 using System.Linq.Expressions;
 using Group_BeanBooking.Services;
 
@@ -52,7 +51,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Group_BeanBooking.Areas.Customers.Models.Bookings.Create c)
         {
-            var person = await _personServices.UserValidation(c);
+            var person = await _personServices.UserValidation(c, null);
 
             if(ModelState.IsValid)
             {
@@ -63,12 +62,13 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
             var model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
             if(id != 0)
             {
-                model.Reservations = await _reservationServices.GetReservations(id);
+                
+                model.Reservations = await _reservationServices.GetReservationsByPersonId(id);
             }
             return View(model);
         }
@@ -84,9 +84,9 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             {
                 //person has not logged in and then email is used for search
                 if(id == null)
-                {
-                    await _personServices.GetPersonByEmail(email);
-                    bookings = await _reservationServices.GetReservationsByPersonId(user.Id);
+                {   var u = await _personServices.GetPersonByEmail(email);
+
+                    if(u != null) {bookings = await _reservationServices.GetReservationsByPersonId(u.Id);}
                 }
                 else
                 {
@@ -99,6 +99,49 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             model.Email = email;
             
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var reservation = await _reservationServices.GetReservationsByReservationId(id);
+            var areas = await _restaurantServices.GetRestaurantAreaByRestaurantId(reservation.Sitting.RestaurantId);
+            var sittings = await _restaurantServices.GetSittingsByRestaurantId(reservation.Sitting.RestaurantId);
+
+            var model = new Edit
+            {
+                ReservationId = reservation.Id,
+                RestaurantName = reservation.Sitting.Restaurant.Name,
+                PersonId = reservation.Person.Id,
+                FirstName = reservation.Person.FirtName,
+                LastName = reservation.Person.LastName,
+                PhoneNumber = reservation.Person.Phone,
+                Email = reservation.Person.Email,
+                Guests = reservation.Guests,
+                Comments = reservation.Comments,
+                Starttime = reservation.Start,
+                Duration = reservation.Duration,
+                SittingId = reservation.SittingID,
+                RestaurantAreaId = reservation.RestaurantAreaId,
+                SittingAreaName = areas.Single(a => a.Id == reservation.RestaurantAreaId).Name,
+                SittingName = sittings.Single(a => a.Id == reservation.SittingID).Name,
+                SittingAreaList = new SelectList(areas, "Id", "Name", new { CurrentId = reservation.RestaurantAreaId }),
+                SittingList = new SelectList(sittings, "Id", "Name")
+            };   
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Edit c)
+        {
+            if (ModelState.IsValid)
+            {
+                await _reservationServices.EditReservation(c);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Details", "Bookings", new {area= "Customers" });
         }
 
     }

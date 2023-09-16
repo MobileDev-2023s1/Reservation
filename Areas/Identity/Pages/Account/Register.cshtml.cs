@@ -22,6 +22,8 @@ using Microsoft.Extensions.Logging;
 using Group_BeanBooking.Data;
 using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Http.Connections;
+using Group_BeanBooking.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Group_BeanBooking.Areas.Identity.Pages.Account
 {
@@ -35,6 +37,9 @@ namespace Group_BeanBooking.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
+        private readonly PersonServices _personServices;
+        
+        
 
         public RegisterModel(
             ApplicationDbContext context,
@@ -42,7 +47,8 @@ namespace Group_BeanBooking.Areas.Identity.Pages.Account
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> rolesManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -51,6 +57,8 @@ namespace Group_BeanBooking.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _personServices = new PersonServices(context, userManager, rolesManager);
+            
         }
 
         /// <summary>
@@ -154,6 +162,21 @@ namespace Group_BeanBooking.Areas.Identity.Pages.Account
                     var userId = await _userManager.GetUserIdAsync(user);
                     await _userManager.AddToRoleAsync(user, "Customer");
                     await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    //if a person has not booked first before registering
+                    var newuser = await _personServices.UserValidation(null, user);
+
+                    //{
+                    //    await _personServices.CreatePerson(null, user);
+                    //}
+                    //else
+                    //{
+                    //    await _context.People.Where(p => p.Email == user.Email)
+                    //        .ExecuteUpdateAsync(b => b
+                    //            .SetProperty(b => b.UserId, user.Id)
+                    //        );
+                    //}
+                    
                     return RedirectToAction("RedirectUser", "Home", new { area = ""});
                 }
                 foreach (var error in result.Errors)
