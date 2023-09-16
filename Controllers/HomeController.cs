@@ -1,10 +1,12 @@
 ﻿using Group_BeanBooking.Areas.Identity.Data;
 using Group_BeanBooking.Data;
 using Group_BeanBooking.Models;
+using Group_BeanBooking.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Group_BeanBooking.Data;
 using System.Diagnostics;
 
@@ -18,35 +20,31 @@ namespace Group_BeanBooking.Controllers
         protected readonly ApplicationDbContext _context;
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly RoleManager<IdentityRole> _rolesManager;
+        private readonly PersonServices _personServices;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context , 
-            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context , UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager)
         {
             _logger = logger;
             _context = context;
             _seedData = new SeedData(context, userManager, rolesManager);
-            
+            _personServices = new PersonServices(context, userManager, rolesManager);
+
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            _seedData.SeedDataMain();
+            await _seedData.SeedDataMain();
+            var restaurants = await _context.Restaurants.ToListAsync();
             var c = new RestaurantList();
-            c.RestList = new SelectList(_context.Restaurants.ToList(), "Id", "Name");
-            var list = _context.Restaurants.ToList();
-            c.Restaurants.AddRange(list);
+            c.RestList = new SelectList(restaurants, "Id", "Name");
+            c.Restaurants.AddRange(restaurants);
             return View(c);
         }
 
         [HttpPost]
         public IActionResult Index(RestaurantList c)
         {
-            var restaurant = new Restaurant()
-            {
-                Id = c.RestaurantId
-            };
-            
             return RedirectToAction("Create", "Bookings", new { id = c.RestaurantId , area = "Customers"});
         }
 
@@ -61,28 +59,22 @@ namespace Group_BeanBooking.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //public IActionResult RedirectUser()
-        //{
-        //    var roles = _rolesManager.Roles.ToList();
+        public async Task<IActionResult> RedirectUser()
+        {
+            //var roles = _rolesManager.Roles.ToList();
 
-        //    if (User.IsInRole("Supplier"))
-        //    {
-        //        return null;
+            if (User.IsInRole("Customer"))
+            {
+                var user = await _personServices.GetPersonByEmail(User.Identity.Name);
 
-        //    }
-        //    else if (User.IsInRole("Staff"))
-        //    {
-        //        return null;
-        //    }
-        //    else if (User.IsInRole("Customer"))
-        //    {
-        //        return RedirectToAction;
-        //    }
-        //    else //Administrator
-        //    {
+                return RedirectToAction("Details", "Bookings", new { id = user == null? 0 : user.Id , area = "Customers" });
 
-        //    }
+            } else
+            {
+                return View();
+            }
+            
 
-        //}
+        }
     }
 }

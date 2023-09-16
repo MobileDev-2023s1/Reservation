@@ -117,7 +117,8 @@ namespace Group_BeanBooking.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    //return LocalRedirect(returnUrl);
+                    return RedirectToAction("RedirectUser" , "Home", new {area = ""});
                 }
                 if (result.RequiresTwoFactor)
                 {

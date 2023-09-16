@@ -1,0 +1,80 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Group_BeanBooking.Areas.Identity.Data;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model Group_BeanBooking.Areas.Customers.Models.Bookings.Details;
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<head>
+
+</head>
+
+<body>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div>
+            <h1>Welcome to your bookings:</h1>
+
+            @if(Model.Reservations.Count == 0){
+
+                <h4>You do not have any bookings yet.</h4>
+            }
+            else
+            {
+                @try{
+                    <div>
+                        @foreach (var r in Model.Reservations)
+                        {
+                            <h3>@r.Person.FirtName</h3>
+                        }
+                    </div>
+                    }catch (Exception ex)
+                    {
+
+                    }
+                
+            }
+        </div>
+    }
+    else
+    {
+        <form method="post">
+            <div>
+                <h1>You have not logged in yet!!</h1>
+                <label>Type in your email to search booking</label>
+                <input type="text" asp-for="Email">
+                <button asp-area="Customers" asp-controller="Bookings" asp-action="Details">Search</button>
+            </div>
+
+        </form>
+    }
+    
+    
+
+    
+
+
+
+   
+
+</body>
