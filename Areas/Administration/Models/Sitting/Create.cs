@@ -18,7 +18,7 @@ namespace Group_BeanBooking.Areas.Administration.Models.Sitting
         public int TypeId { get; set; }
         public SelectList? SittingTypes { get; set; }
         public Guid? Guid { get; set; }
-        public string? RepeatPattern { get; set; }
+        public string RepeatPattern { get; set; }
         public int Interval { get; set; }
         public int Repeats { get; set; }
     }

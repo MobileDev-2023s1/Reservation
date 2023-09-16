@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Group_BeanBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230914092741_SittingRepats")]
-    partial class SittingRepats
+    [Migration("20230916011659_RepeatedSitting")]
+    partial class RepeatedSitting
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,13 +148,17 @@ namespace Group_BeanBooking.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("Guests")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReservationOriginId")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReservationStatusID")

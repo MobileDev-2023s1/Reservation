@@ -69,7 +69,18 @@ namespace Group_BeanBooking.Controllers
 
                 return RedirectToAction("Details", "Bookings", new { id = user == null? 0 : user.Id , area = "Customers" });
 
-            } else
+            }
+            if (User.IsInRole("Administrator"))
+            {
+
+
+                var user = await _personServices.GetPersonByEmail(User.Identity.Name);
+
+                return RedirectToAction("Index", "Home", new { id = user == null ? 0 : user.Id, area = "Administration" });
+            }
+
+
+            else
             {
                 return View();
             }
