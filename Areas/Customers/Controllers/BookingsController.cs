@@ -58,6 +58,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             if(ModelState.IsValid)
             {
                 await _reservationServices.CreateReservation(person, c);
+                TempData["AlertMessage"] = "Booking created successfully";
             }
 
             return RedirectToAction("Details", "Bookings" , new  { id = person.Id , area="Customers"});
@@ -145,6 +146,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             {
                 await _reservationServices.EditReservation(c);
                 await _context.SaveChangesAsync();
+                TempData["AlertMessage"] = "Booking modified successfully";
             }
 
             return RedirectToAction("Details", "Bookings", new {area= "Customers" });
@@ -187,6 +189,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             if (ModelState.IsValid)
             {
                 await _reservationServices.DeleteReservation(id);
+                TempData["AlertMessage"] = "Booking deleted successfully";
             }
 
             return RedirectToAction("Details", "Bookings", new { area = "Customers" });

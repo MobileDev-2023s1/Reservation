@@ -25,7 +25,7 @@ where PersonId = 13;
 
 
 delete from People
-where Id >= 1;
+where Id = 14;
 
 delete from Reservations
 where Id = 11;
@@ -44,7 +44,7 @@ delete from AspNetUsers
 where id >= '3ac25ef3-267e-47d5-a4ef-4781b7db5cb6';
 
 delete from AspNetUsers
-where id = 'eccc6966-8d31-433a-9ae4-b6181286e05d';
+where id = '7c18ea7d-be1f-4635-98f8-e474ac1731fb';
 
 select * from AspNetRoles;
 select * from AspNetUserRoles;
