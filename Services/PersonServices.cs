@@ -56,23 +56,23 @@ namespace Group_BeanBooking.Services
         /// <returns>The information from the user either logged in or not </returns>
         public async Task<Person> UserValidation(Create? c, ApplicationUser? user)
         {
-            //var userByID = c == null ? await GetUserById(user.Id) : await GetUserById(c.UserId);
             var userByEmail = c == null ? await GetUserByEmail(user.Email) : await GetUserByEmail(c.Email);
             var personByEmail = c == null ? await GetPersonByEmail(user.Email) : await GetPersonByEmail(c.Email);
-            var personById = c  == null ? await GetPersonById(user.Id) : await GetPersonById(c.UserId);
-
+            
                 //if they exist in both tables then return the Person
                 if (userByEmail != null && personByEmail != null)
                 {
                     //is person by ID present? Means that user has Id in the person table
-                    if(personById != null)
+                    if(personByEmail.UserId != null)
                     {
-                        return personById;
-
+                        return personByEmail;
                     } 
                     else //if User Id not present then asign it and then return person
                     {
-                        await _context.People.ExecuteUpdateAsync(b => b.SetProperty(b => b.UserId, userByEmail.Id));
+                        await _context.People.Where(p => p.Email == user.Email)
+                            .ExecuteUpdateAsync(b => b
+                                .SetProperty(b => b.UserId, userByEmail.Id)
+                            );
                         return personByEmail;
                     }
                 }

@@ -9,7 +9,7 @@ select * from Sittings;
 delete from People
 where id >= 1;
 
-select * from Reservations;
+
 
 select st.Name as Sitting_type, CONCAT(pr.FirtName, ' ', pr.LastName) as Customer_name,
 Reservations.Start as Start, rsSt.Name as Status, resOr.Name as Origin,
@@ -28,22 +28,23 @@ delete from People
 where Id >= 1;
 
 delete from Reservations
-where Id >= 1;
+where Id = 11;
 
 
 
 select * from ReservationStatuses;
 select * from ResevationOrigins;
 
+select * from Reservations;
 select * from People;
 
 select * from AspNetUsers;
 
 delete from AspNetUsers
-where id >= '04540b37-783b-4fdb-b272-59e756bef703';
+where id >= '3ac25ef3-267e-47d5-a4ef-4781b7db5cb6';
 
 delete from AspNetUsers
-where id = '706fbd1e-cda8-4f82-9d60-c473bbdeb52c';
+where id = 'eccc6966-8d31-433a-9ae4-b6181286e05d';
 
 select * from AspNetRoles;
 select * from AspNetUserRoles;

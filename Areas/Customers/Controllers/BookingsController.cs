@@ -150,5 +150,47 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             return RedirectToAction("Details", "Bookings", new {area= "Customers" });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var reservation = await _reservationServices.GetReservationsByReservationId(id);
+            var areas = await _restaurantServices.GetRestaurantAreaByRestaurantId(reservation.Sitting.RestaurantId);
+            var sittings = await _restaurantServices.GetSittingsByRestaurantId(reservation.Sitting.RestaurantId);
+
+            var model = new Edit
+            {
+                ReservationId = reservation.Id,
+                RestaurantName = reservation.Sitting.Restaurant.Name,
+                PersonId = reservation.Person.Id,
+                FirstName = reservation.Person.FirtName,
+                LastName = reservation.Person.LastName,
+                PhoneNumber = reservation.Person.Phone,
+                Email = reservation.Person.Email,
+                Guests = reservation.Guests,
+                Comments = reservation.Comments,
+                Starttime = reservation.Start,
+                Duration = reservation.Duration,
+                SittingId = reservation.SittingID,
+                RestaurantAreaId = reservation.RestaurantAreaId,
+                SittingAreaName = areas.Single(a => a.Id == reservation.RestaurantAreaId).Name,
+                SittingName = sittings.Single(a => a.Id == reservation.SittingID).Name,
+                SittingAreaList = new SelectList(areas, "Id", "Name", new { CurrentId = reservation.RestaurantAreaId }),
+                SittingList = new SelectList(sittings, "Id", "Name")
+            };
+
+            return View(model);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                await _reservationServices.DeleteReservation(id);
+            }
+
+            return RedirectToAction("Details", "Bookings", new { area = "Customers" });
+        }
+
     }
 }

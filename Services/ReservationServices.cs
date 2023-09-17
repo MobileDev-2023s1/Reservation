@@ -93,5 +93,12 @@ namespace Group_BeanBooking.Services
                        
         }
 
+        public async Task DeleteReservation(int id)
+        {
+            await _context.Reservations
+                .Where(r => r.Id == id)
+                .ExecuteDeleteAsync();
+        }
+
     }
 }
