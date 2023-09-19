@@ -1,6 +1,4 @@
-﻿View booking details
-
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @using Group_BeanBooking.Areas.Identity.Data;
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -62,8 +60,7 @@
 </div>
 
 <head>
-    <script src="~/js/customers.js"></script>
-    <script src="~/js/customers/customers.js"></script>
+    
 </head>
 
 <body>
@@ -80,7 +77,6 @@
                 <h1>Welcome to your bookings</h1>
                 <label>Type in your email to search booking</label>
                 <br />
-                <input type="text" asp-for="Email" value="">
                 <input type="text" asp-for="Email" value="" required>
                 <button asp-area="Customers" asp-controller="Bookings" asp-action="Details">Search</button>
             </div>

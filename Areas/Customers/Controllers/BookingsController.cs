@@ -1,5 +1,4 @@
-﻿
-using Group_BeanBooking.Areas.Identity.Data;
+﻿using Group_BeanBooking.Areas.Identity.Data;
 using Group_BeanBooking.Data;
 using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Microsoft.AspNetCore.Identity;
@@ -35,10 +34,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int id)
         {
-            var restInfo = await _restaurantServices.GetRestaurantByID(id);
-            var areas = await _restaurantServices.GetRestaurantAreaByRestaurantId(id);
-            var sittings = await _restaurantServices.GetSittingsByRestaurantId(id);
-
+           
             var restaurant = await _context.Restaurants
                 .Include(s => s.Sittings)
                 .Include(a => a.RestaurantAreas)
@@ -46,13 +42,30 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
 
             var c = new Create()
             {
+                RestaurantId = id,
                 RestaurantName = restaurant.Name,
-                SittingAreaList = new SelectList(restaurant.RestaurantAreas, "Id", "Name"),
-                SittingList = new SelectList(restaurant.Sittings, "Id", "Name")
+                //SittingAreaList = new SelectList(restaurant.RestaurantAreas, "Id", "Name"),
+                //SittingList = new SelectList(restaurant.Sittings, "Id", "Name")
             };
             
             return View(c);
         }
+
+
+        [HttpGet]
+        public async Task<Restaurant> GetRestuarantData(int restaurantId)
+        {
+            var restaurant = await _context.Restaurants
+                .Include(s => s.Sittings)
+                .Include(a => a.RestaurantAreas)
+                .SingleOrDefaultAsync(r => r.Id == restaurantId);
+
+            return restaurant;
+
+
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Create(Group_BeanBooking.Areas.Customers.Models.Bookings.Create c)
