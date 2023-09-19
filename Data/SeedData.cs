@@ -1,10 +1,7 @@
 ﻿using Group_BeanBooking.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Group_BeanBooking.Data;
-using System.Collections;
-using System.Collections.Generic;
+
 
 namespace Group_BeanBooking.Data
 {
@@ -218,30 +215,55 @@ namespace Group_BeanBooking.Data
 
         public async Task SeedSittings()
         {
+            var start = "19/09/2023 7:00:00 AM";
             List<Sitting> list = new()
             {
                 new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Now , End = DateTime.Now.AddHours(4) , Capacity= 40, TypeId = 1},
                 new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Now.AddHours(6) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 1},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Now.AddHours(12) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 1}
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Now.AddHours(12) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 1},
+                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start),Capacity= 40, TypeId = 1},
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start) , Capacity= 50, TypeId = 2},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start) , Capacity= 50, TypeId = 3},
+                
             };
             var restaurants = await _context.Restaurants.ToListAsync();
             var sittings = await _context.Sittings.ToListAsync();
+            
+            var listrestaurants = await _context.Restaurants
+                .Include(r => r.Sittings).ToListAsync();
 
             
             
-            foreach (var t in list)
+            //review each restaurant sitting areas
+            foreach(var restaurant in listrestaurants)
             {
-                foreach (var r in restaurants)
+                //review if these sittings in the list exist in the restaurant
+                foreach (var item in list)
                 {
-                    //Restaurant Id and Sitting name does not exist in Sitting, then create them
-                    if (sittings.FirstOrDefault(st => st.RestaurantId == r.Id && st.Name == t.Name) == null)
+                    //repeat 90 times and create if they do not exist. 
+                    for (int i = 0; i < 90; i++)
                     {
-                        t.RestaurantId = r.Id;
-                        await _context.Sittings.AddAsync(t);
+                foreach (var r in restaurants)
+                        if (restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == DateTime.Parse(start).AddDays(i) && r.RestaurantId == restaurant.Id) == null)
+                        {
+                            await _context.Sittings.AddAsync(new Sitting
+                            {
+                                Name = item.Name,
+                                Closed = false,
+                                Start = DateTime.Parse(start).AddDays(i),
+                                End = DateTime.Parse(start).AddDays(90 - i).AddHours(4),
+                                Capacity = item.Capacity,
+                                TypeId = item.TypeId,
+                                RestaurantId = restaurant.Id
+                            }) ;
+                            await _context.SaveChangesAsync();
+
+                        }
                     }
                 }
             }
             await _context.SaveChangesAsync();
+            
         }
 
 

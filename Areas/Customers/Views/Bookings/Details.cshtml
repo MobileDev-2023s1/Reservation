@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿View booking details
+
+@using Microsoft.AspNetCore.Identity
 @using Group_BeanBooking.Areas.Identity.Data;
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -38,29 +40,30 @@
         </symbol>
     </svg>
 
-  @*  <div class="alert alert-success d-flex align-items-center" role="alert">
-        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
-        <div>
-            An example success alert with an icon
-        </div>
+    @*  <div class="alert alert-success d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+    <div>
+    An example success alert with an icon
+    </div>
     </div>
     <div class="alert alert-warning d-flex align-items-center" role="alert">
-        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill" /></svg>
-        <div>
-            An example warning alert with an icon
-        </div>
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+    <div>
+    An example warning alert with an icon
+    </div>
     </div>
     <div class="alert alert-danger d-flex align-items-center" role="alert">
-        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
-        <div>
-            An example danger alert with an icon
-        </div>
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+    <div>
+    An example danger alert with an icon
     </div>
-*@
+    </div>
+    *@
 </div>
 
 <head>
     <script src="~/js/customers.js"></script>
+    <script src="~/js/customers/customers.js"></script>
 </head>
 
 <body>
@@ -78,14 +81,17 @@
                 <label>Type in your email to search booking</label>
                 <br />
                 <input type="text" asp-for="Email" value="">
+                <input type="text" asp-for="Email" value="" required>
                 <button asp-area="Customers" asp-controller="Bookings" asp-action="Details">Search</button>
             </div>
 
         </form>
-    } <br />
+    }
+    <br />
 
-    @if(TempData["AlertMessage"] != null)
-    {   <div class="alert alert-success">
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-success">
             <strong>Sucess! </strong>@TempData["AlertMessage"]
         </div>
     }
@@ -94,7 +100,7 @@
     {
         if (Model.Reservations.Count != 0)
         {
-            
+
             <div>
                 <table border="1">
                     <th>Sitting Type</th>
@@ -145,20 +151,25 @@
     {
 
     }
-    
-
-    <br /><br /><a class="btn btn-info" asp-area="" asp-controller="Home" asp-action="Index">Make booking</a>
-
-    
-
- 
 
 
+    <br />
+    <br />
+    <a class="btn btn-info" asp-area="" asp-controller="Home" asp-action="Index">Make booking</a>
+
+    <button onclick="myfunction()">click me</button>
+
+    <table>
+    </table>
 
 
 
-    
 
-   
+
+
+
+
+
+
 
 </body>

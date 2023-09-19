@@ -5,10 +5,9 @@ using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq.Expressions;
 using Group_BeanBooking.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Build.Framework;
+
 
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
@@ -40,11 +39,16 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             var areas = await _restaurantServices.GetRestaurantAreaByRestaurantId(id);
             var sittings = await _restaurantServices.GetSittingsByRestaurantId(id);
 
+            var restaurant = await _context.Restaurants
+                .Include(s => s.Sittings)
+                .Include(a => a.RestaurantAreas)
+                .SingleOrDefaultAsync(r => r.Id == id);
+
             var c = new Create()
             {
-                RestaurantName = restInfo.Name,
-                SittingAreaList = new SelectList(areas, "Id", "Name"),
-                SittingList = new SelectList(sittings, "Id", "Name"),
+                RestaurantName = restaurant.Name,
+                SittingAreaList = new SelectList(restaurant.RestaurantAreas, "Id", "Name"),
+                SittingList = new SelectList(restaurant.Sittings, "Id", "Name")
             };
             
             return View(c);

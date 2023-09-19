@@ -1,6 +1,4 @@
-﻿using Group_BeanBooking.Areas.Identity.Data;
-using Group_BeanBooking.Data;
-using Microsoft.AspNetCore.Identity;
+﻿
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +10,8 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
         public int ReservationId { get; set; }
 
         [ValidateNever] public string RestaurantName { get; set; }
+
+        [ValidateNever] public int RestaurantId { get; set; }
 
         [ValidateNever] public string UserId { get; set; }
 
