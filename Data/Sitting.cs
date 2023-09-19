@@ -18,6 +18,8 @@
         public SittingType Type { get; set; }
         public List<Reservation> Reservations { get; set; } = new();
         public Guid? Guid { get; set; }
+
+
         public string RepeatPattern { get; set; }
         public int Interval  { get; set; }
         public int Repeats { get; set; }

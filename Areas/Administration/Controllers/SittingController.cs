@@ -75,18 +75,40 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
         {
             if (ModelState.IsValid)
             {
-                var sitting = new Sitting
+              m.RepeatPattern =
+              m.Monday.ToString().Substring(0, 1) +
+              m.Tuesday.ToString().Substring(0, 1) +
+              m.Wednesday.ToString().Substring(0, 1) +
+              m.Thursday.ToString().Substring(0, 1) +
+              m.Friday.ToString().Substring(0, 1) +
+              m.Saturday.ToString().Substring(0, 1) +
+              m.Sunday.ToString().Substring(0, 1);
+
+                for (int i = 0; i <m.Repeats; i++)
                 {
-                    Name = m.Name,
-                    Start = m.Start,
-                    End = m.End,
-                    Capacity = m.Capacity,
-                    Closed = m.Closed,
-                    TypeId = m.TypeId,
-                    RestaurantId = 1
-                };
-                //= _mapper.Map<Data.Sitting>(m);
-                _context.Sittings.Add(sitting);
+                    //think
+                
+                
+                    var sitting = new Sitting
+                    {
+                        Name = m.Name,
+                        Start = m.Start,
+                        End = m.End,
+                        Capacity = m.Capacity,
+                        Closed = m.Closed,
+                        TypeId = m.TypeId,
+                        RestaurantId = 1,
+                    };
+                    //= _mapper.Map<Data.Sitting>(m);
+                    _context.Sittings.Add(sitting);
+                }
+  
+                
+                
+                
+                
+                
+                
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

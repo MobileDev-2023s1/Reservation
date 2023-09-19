@@ -44,9 +44,51 @@
             </div>
             <div class="form-group">
                 <label asp-for="Interval" class="control-label"></label>
-                <input asp-for="Interval" class="form-control" />
+                <input asp-for="Interval" class="form-control" min="1" value="1"/>
                 <span asp-validation-for="Interval" class="text-danger"></span>
             </div>
+           
+            
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    Mon
+                    <input type="checkbox"  asp-for="Monday" />
+                </label>
+                <label class="form-check-label">
+                    Tue
+                    <input type="checkbox"  asp-for="Tuesday" />
+                </label>
+                <label class="form-check-label">
+                    Wed
+                    <input type="checkbox" asp-for="Wednesday" />
+                </label>              
+                <label class="form-check-label">
+                    Thu
+                    <input type="checkbox" asp-for="Thursday" />
+                </label>
+                <label class="form-check-label">
+                    Fri
+                    <input type="checkbox" asp-for="Friday" />
+                </label>
+                <label class="form-check-label">
+                    Sat
+                    <input type="checkbox" asp-for="Saturday" />
+                </label>
+                <label class="form-check-label">
+                    Sun
+                    <input type="checkbox" asp-for="Sunday" />
+                </label>
+            </div>
+           
+            
+
+
+            <div class="form-group">
+                <label asp-for="Repeats" class="control-label"></label>
+                <input asp-for="Repeats" class="form-control" />
+                <span asp-validation-for="Repeats" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
