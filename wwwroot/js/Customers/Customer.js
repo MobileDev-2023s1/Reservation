@@ -1,34 +1,57 @@
-﻿function myfuncti() {
+﻿const baseURL = "https://localhost:7113";
 
-    console.log("q damiers")
+document.addEventListener("DOMContentLoaded", () => {
+    
+    const selectedDate = document.getElementById("Date");
+    const id = document.getElementById("RestaurantId");
+    const menu = document.getElementById("MenuType");
 
-}
+    selectedDate.addEventListener("focusout", async () => {
+        try {
+            console.log(id.value)
+            console.log(selectedDate.value)
 
-const baseURL = "https://localhost:7113";
+            const menuData = await GetListOfAreas(id.value, selectedDate.value);
 
-async function GetListOfAreas(restaurantId) {
-    try {
-        const url = new URL("/Customers/Bookings/GetRestuarantData/" + restaurantId, baseURL);
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-        });
+            menuData.forEach(menuItem => {
+                const option = document.createElement("option");
+                option.value = menuItem.id;
+                option.textContent = menuItem.name;
+                console.log(option);
+                menu.appendChild(option);
+            })
 
-        if (!response.ok) {
-            throw new Error("Request failed with status " + response.status);
+            
+            
+        } catch (error) {
+            console.log(error);
+            alert(error);
         }
 
-        const list = await response.json();
+    });
+    
 
-        
-        return list;
 
-    } catch (error) {
-        console.error("Error signing in to API:", error);
-        throw error;
-    }
+    async function GetListOfAreas(restaurantId, selectedDate) {
 
-};
+        const url = new URL("/Customers/Bookings/GetRestuarantData?Id="+restaurantId+"&Date="+selectedDate, baseURL);
+
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("HTTP error " + response.status);
+            }
+
+            const data = await response.json();
+            console.log(data);
+            return await data;
+
+        } catch (error) {
+            console.error(error);
+        }
+          
+    };
+
+})
+

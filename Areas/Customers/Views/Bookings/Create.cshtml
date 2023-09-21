@@ -11,6 +11,7 @@
 
 <head>
     <script src="~/js/customers/customer.js"></script>
+    <input id="RestaurantId" type="hidden" asp-for="RestaurantId" value="@Model.RestaurantId"/> 
     
 </head>
 
@@ -26,7 +27,6 @@
                 <h3>@current.FirstName @current.LastName</h3>
                 <input type="hidden" asp-for="UserId" value="@current.Id" />
                 <input type="hidden" asp-for="Email" value="@current.Email" />
-
             }
             else
             {
@@ -54,8 +54,9 @@
             <br />
             <h3>Booking Information</h3> <br />
             <label asp-for="Starttime"></label>
-            <input type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
-                   min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+            <input id="Date" type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")"
+                  /><br /><br />
+            
             <label asp-for="Duration">Booking length</label>
             <input type="number" asp-for="Duration" min="30" max="180" value="30" /><br /><br />
 
@@ -64,11 +65,15 @@
             <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
             <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
 
+            <label asp-for="SittingId">What menu?</label><br />
+            <select id="MenuType">
+                <option value="">Select one</option>
+            </select>
+
+            <br /><br />
+            
             <label asp-for="RestaurantAreaId">Where to sit?</label><br />
             <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
-
-            <label asp-for="SittingId">Food type?</label><br />
-            <select asp-for="SittingId" asp-items="@Model.SittingList"></select><br /> <br />
 
             <label asp-for="Comments">Comments</label><br />
             <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
@@ -80,9 +85,11 @@
 
     </form>
 
-    <button onclick="GetListOfAreas(@Model.RestaurantId)">click me</button>
+    <a asp-area="Customers" asp-controller="Bookings" asp-action="GetRestuarantData">click</a>
 
 </body>
+
+
 
 
 

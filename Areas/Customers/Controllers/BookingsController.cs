@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Group_BeanBooking.Services;
 using Microsoft.EntityFrameworkCore;
-
+using Humanizer;
 
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
@@ -44,8 +44,8 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             {
                 RestaurantId = id,
                 RestaurantName = restaurant.Name,
-                //SittingAreaList = new SelectList(restaurant.RestaurantAreas, "Id", "Name"),
-                //SittingList = new SelectList(restaurant.Sittings, "Id", "Name")
+                SittingAreaList = new SelectList(restaurant.RestaurantAreas, "Id", "Name"),
+                SittingList = new SelectList(restaurant.Sittings, "Id", "Name")
             };
             
             return View(c);
@@ -53,15 +53,27 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
 
 
         [HttpGet]
-        public async Task<Restaurant> GetRestuarantData(int restaurantId)
+        public async Task<List<Sitting>> GetRestuarantData(int Id, string Date)
         {
-            var restaurant = await _context.Restaurants
-                .Include(s => s.Sittings)
-                .Include(a => a.RestaurantAreas)
-                .SingleOrDefaultAsync(r => r.Id == restaurantId);
+            var timeBooking = DateTime.Parse(Date);
+            
+            
+            var Time = DateTime.Now;
+            var end = timeBooking.AtMidnight().AddMicroseconds(1);
 
-            return restaurant;
+            var sitting = await _context.Sittings
+                .Include(r => r.Restaurant)
+                .Where(r => r.RestaurantId == Id)
+                .Where(s => s.Start >= timeBooking && s.End < end).ToListAsync();
 
+            return sitting;
+
+            //var restaurant = await _context.Restaurants
+            //    //.Include(s => s.Sittings)
+            //    .Include(a => a.RestaurantAreas)
+            //    .SingleOrDefaultAsync(restaurant => restaurant.Id == Id);
+
+            //return restaurant;
 
         }
 

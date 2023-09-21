@@ -49,6 +49,8 @@ where id = '7c18ea7d-be1f-4635-98f8-e474ac1731fb';
 select * from AspNetRoles;
 select * from AspNetUserRoles;
 
+select count (*) from sittings
+where RestaurantId = 2;
 
 
 delete from People
