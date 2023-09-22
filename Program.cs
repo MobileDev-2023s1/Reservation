@@ -2,10 +2,10 @@ using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Group_BeanBooking.Areas.Identity.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+var MyAlloSpecificOrigins = "_myAlloSpecificOrigins";
 
 // Add services to the container.
 
@@ -26,15 +26,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
  
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddControllers(config =>
-//{
-//    var policy = new AuthorizationPolicyBuilder()
-//                     .RequireAuthenticatedUser()
-//                     .Build();
-//    config.Filters.Add(new AuthorizeFilter(policy));
-//});
+builder.Services.AddMvc().AddJsonOptions(
+            options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 
-
+        );
 
 var app = builder.Build();
 
@@ -43,6 +38,32 @@ var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 
 
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: MyAlloSpecificOrigins,
+//        policy =>
+//        {
+//            policy.WithOrigins("https://localhost:7113")
+//            .AllowAnyHeader()
+//            .AllowAnyMethod()
+//            .AllowAnyOrigin();
+//        });
+//});
+
+
+
+
+
+
+var handler = new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
+    {
+        // Allow any certificate, regardless of validity
+        return true;
+    }
+};
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -54,12 +75,14 @@ else
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCors(MyAlloSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();

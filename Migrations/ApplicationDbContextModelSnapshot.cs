@@ -146,7 +146,6 @@ namespace Group_BeanBooking.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Duration")
@@ -164,6 +163,9 @@ namespace Group_BeanBooking.Migrations
                     b.Property<int>("ResevationOriginId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RestaurantAreaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SittingID")
                         .HasColumnType("int");
 
@@ -177,6 +179,8 @@ namespace Group_BeanBooking.Migrations
                     b.HasIndex("ReservationStatusID");
 
                     b.HasIndex("ResevationOriginId");
+
+                    b.HasIndex("RestaurantAreaId");
 
                     b.HasIndex("SittingID");
 
@@ -532,6 +536,12 @@ namespace Group_BeanBooking.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Group_BeanBooking.Data.RestaurantArea", "RestaurantArea")
+                        .WithMany()
+                        .HasForeignKey("RestaurantAreaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Group_BeanBooking.Data.Sitting", "Sitting")
                         .WithMany("Reservations")
                         .HasForeignKey("SittingID")
@@ -543,6 +553,8 @@ namespace Group_BeanBooking.Migrations
                     b.Navigation("ReservationStatus");
 
                     b.Navigation("ResevationOrigin");
+
+                    b.Navigation("RestaurantArea");
 
                     b.Navigation("Sitting");
                 });

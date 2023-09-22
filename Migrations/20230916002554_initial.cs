@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Group_BeanBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class origin : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -315,8 +315,10 @@ namespace Group_BeanBooking.Migrations
                     Guests = table.Column<int>(type: "int", nullable: false),
                     SittingID = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantAreaId = table.Column<int>(type: "int", nullable: false),
                     ReservationStatusID = table.Column<int>(type: "int", nullable: false),
-                    ResevationOriginId = table.Column<int>(type: "int", nullable: false)
+                    ResevationOriginId = table.Column<int>(type: "int", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -339,6 +341,12 @@ namespace Group_BeanBooking.Migrations
                         principalTable: "ResevationOrigins",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservations_ResturantAreas_RestaurantAreaId",
+                        column: x => x.RestaurantAreaId,
+                        principalTable: "ResturantAreas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_Sittings_SittingID",
                         column: x => x.SittingID,
@@ -442,6 +450,12 @@ namespace Group_BeanBooking.Migrations
                 name: "IX_Reservations_ResevationOriginId",
                 table: "Reservations",
                 column: "ResevationOriginId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_RestaurantAreaId",
+                table: "Reservations",
+                column: "RestaurantAreaId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_SittingID",

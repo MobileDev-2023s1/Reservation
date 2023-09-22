@@ -2,12 +2,25 @@ use BeanBookings;
 
 select * from ResturantAreas;
 select * from Restaurants;
+select * from SittingTypes;
 
-select * from Sittings;
+select count(*) from Sittings;
 
-select * from People;
+delete from Sittings
+where Id > 6;
 
-select * from Reservations;
+select * from sittings
+where RestaurantId = 1 and Start >= '2023-09-22 7:00:00 AM' and [End] < '2023-09-22 10:37:00 AM';
+
+Select * from Sittings
+where name = 'Continental Lunch' and RestaurantId = 1;
+
+
+
+delete from People
+where id >= 1;
+
+
 
 select st.Name as Sitting_type, CONCAT(pr.FirtName, ' ', pr.LastName) as Customer_name,
 Reservations.Start as Start, rsSt.Name as Status, resOr.Name as Origin,
@@ -23,27 +36,33 @@ where PersonId = 13;
 
 
 delete from People
-where Id = 13;
+where Id = 14;
 
 delete from Reservations
-where Id >= 1;
+where Id = 11;
 
 
 
 select * from ReservationStatuses;
 select * from ResevationOrigins;
 
+select * from Reservations;
+select * from People;
+
 select * from AspNetUsers;
 
 delete from AspNetUsers
-where id = '27917673-cd91-4cdc-b604-44e7d80e0816';
+where id >= '3ac25ef3-267e-47d5-a4ef-4781b7db5cb6';
+
+delete from AspNetUsers
+where id = '7c18ea7d-be1f-4635-98f8-e474ac1731fb';
 
 select * from AspNetRoles;
 select * from AspNetUserRoles;
 
+select count (*) from sittings
+where RestaurantId = 2;
 
-select * from People
-where UserId = 'dcf5c1fb-0bc3-4dec-a023-5cf26f949446';
 
 delete from People
 where id >= 1;

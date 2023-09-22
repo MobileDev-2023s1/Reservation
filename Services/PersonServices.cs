@@ -1,9 +1,8 @@
-﻿using Group_BeanBooking.Areas;
+﻿using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Group_BeanBooking.Areas.Identity.Data;
+using Group_BeanBooking.Data;
+
 using Microsoft.AspNetCore.Identity;
-using Group_BeanBooking.Data;
-using Group_BeanBooking.Areas.Customers.Models.Bookings;
-using Group_BeanBooking.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Group_BeanBooking.Services
@@ -16,40 +15,71 @@ namespace Group_BeanBooking.Services
            
         }
 
+        #region Includes Queries in the DB Person Related 
+
+        public async Task<Person> GetPersonById(string? UserId)
+        {
+            return await _context.People.SingleOrDefaultAsync(p => p.UserId.Equals(UserId));
+           
+        }
+
+        public async Task<Person> GetPersonByEmail(string email)
+        {
+            try
+            {
+                return await _context.People.SingleOrDefaultAsync(p => p.Email == email);
+
+            }catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<ApplicationUser> GetUserById(string id)
+        {
+            return await _userManager.FindByIdAsync(id);
+        }
+
+        public async Task<ApplicationUser> GetUserByEmail(string? email)
+        {
+            var result = await _userManager.FindByEmailAsync(email);
+            return result;
+        }
+
+        #endregion
+
         /// <summary>
         /// Validates whether the values entered for reservation exist or not in the data base
         /// either as a Registered user or as a not registered Person
         /// </summary>
         /// <param name="c">It is the information included in the form for creating a reservation </param>
         /// <returns>The information from the user either logged in or not </returns>
-        public async Task<Person> UserValidation(Create c)
+        public async Task<Person> UserValidation(Create? c, ApplicationUser? user)
         {
-            var userByID = await GetUserById(c.UserId);
-            var userByEmail = await GetUserByEmail(c.Email);
-            var personByEmail = await GetPersonByEmail(c.Email);
-            var personById = await GetPersonById(c.UserId);
-
-            //means not logged in
-            if (c.UserId == null)
-            {
+            var userByEmail = c == null ? await GetUserByEmail(user.Email) : await GetUserByEmail(c.Email);
+            var personByEmail = c == null ? await GetPersonByEmail(user.Email) : await GetPersonByEmail(c.Email);
+            
                 //if they exist in both tables then return the Person
                 if (userByEmail != null && personByEmail != null)
                 {
-                    var person = new Person
+                    //is person by ID present? Means that user has Id in the person table
+                    if(personByEmail.UserId != null)
                     {
-                        FirtName = c.FirstName,
-                        LastName = c.LastName,
-                        Email = c.Email,
-                        Phone = c.PhoneNumber,
-                        Id = personByEmail.Id
-                    };
-
-                    return person;
+                        return personByEmail;
+                    } 
+                    else //if User Id not present then asign it and then return person
+                    {
+                        await _context.People.Where(p => p.Email == user.Email)
+                            .ExecuteUpdateAsync(b => b
+                                .SetProperty(b => b.UserId, userByEmail.Id)
+                            );
+                        return personByEmail;
+                    }
                 }
                 //If email exist in DB but not in people
                 else if (userByEmail != null && personByEmail == null)
                 {
-                    return CreatePerson(null, userByEmail);
+                    return await CreatePerson(null, userByEmail);
                 }
                 //exists in people and not in DB
                 else if (userByEmail == null && personByEmail != null)
@@ -59,29 +89,13 @@ namespace Group_BeanBooking.Services
                 //doesn't exist in either
                 else
                 {
-                    return CreatePerson(c, null);
+                    return await CreatePerson(c, null);
                 }
-
-            } 
-            //mean person has logged in
-            else
-            {
-                //logged in and does not exist in person list
-                if (personById == null)
-                {
-                    return CreatePerson(null, userByID);
-                }
-                //logged in and exist in the person list
-                else
-                {
-                    return personById;
-                }
-            }
         }
 
         //if c has something in it, means person has logged in.
         //Otherwise, User 
-        public Person CreatePerson(Create? c, ApplicationUser? user)
+        public async Task<Person> CreatePerson(Create? c, ApplicationUser? user)
         {
             var person = new Person();
             if (c == null)
@@ -101,41 +115,13 @@ namespace Group_BeanBooking.Services
 
             }
 
-            _context.People.Add(person);
-            _context.SaveChanges();
+            await _context.People.AddAsync(person);
+            await _context.SaveChangesAsync();
 
             return person;
         }
 
-        #region Includes Queries in the DB Person Related 
-
-        public async Task<Person> GetPersonById(string? UserId)
-        {
-            if (UserId == null)
-            {
-                return null;
-            }
-            {
-                return await _context.People.FirstOrDefaultAsync(p => p.UserId.Equals(UserId));
-            }
-        }
-
-        public async Task<Person> GetPersonByEmail(string email)
-        {
-            return await _context.People.FirstOrDefaultAsync(u => u.Email == email);
-        }
-
-        public async Task<ApplicationUser> GetUserById(string id)
-        {
-            return await _context.Users.FirstOrDefaultAsync(r => r.Id == id);
-        }
-
-        public async Task<ApplicationUser> GetUserByEmail(string? email)
-        {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-        }
-
-        #endregion
+        
 
     }
 }

@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Group_BeanBooking.Areas.Identity.Data;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model Group_BeanBooking.Areas.Customers.Models.Bookings.Edit;
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #ddd;
+        text-align: center
+
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<head>
+    <h1>See details of your booking below.</h1>
+    <h2>Make all necesary changes where required.</h2>
+    <br />
+
+</head>
+
+<body>
+    <form method="post">
+        <h2>Booking under: <br /> @Model.FirstName @Model.LastName</h2> <br />
+        <input asp-for="ReservationId" type="hidden" />
+        <table border="1" align="center">
+            <th>Current Details</th>
+            
+            <tbody>
+                <tr>
+                    <td><h3>StartTime:</h3> <h3>@Model.Starttime</h3></td>
+                </tr>
+                <tr>
+                    <td><h2>Booking length:</h2> <h2>@Model.Duration mins</h2></td>
+                </tr>
+                <tr>
+                    <td><h2>Guests:</h2> <h2>@Model.Guests</h2></td>
+                </tr>
+                <tr>
+                    <td><h2>Sitting at:</h2> <h2>@Model.SittingAreaName area</h2></td>
+                </tr>
+                <tr>
+                    <td><h2>Food type:</h2> <h2>@Model.SittingName</h2></td>
+                </tr>
+                <tr>
+                    <td><h2>Comments:</h2> @Model.Comments </h2></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+
+        <br /><br /><input type="submit" value="Delete" class="btn btn-danger" />
+       
+
+
+    </form>
+</body>
+

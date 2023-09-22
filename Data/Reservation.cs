@@ -20,8 +20,12 @@
         //Tie the reservation data to the user -- https://learn.microsoft.com/en-us/aspnet/core/security/authorization/secure-data?view=aspnetcore-7.0
         public int PersonId { get; set; }
         public Person Person { get; set; }
-      
-        
+
+        public int RestaurantAreaId { get; set; }
+
+        public RestaurantArea RestaurantArea { get; set; }
+
+
         public int ReservationStatusID { get; set; }
         public ReservationStatus ReservationStatus { get; set; }
         
@@ -29,6 +33,6 @@
         //public int ReservationOriginId { get; set; }
         public ResevationOrigin ResevationOrigin { get; set; }
 
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
     }
 }

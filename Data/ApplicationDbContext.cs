@@ -37,6 +37,13 @@ namespace Group_BeanBooking.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder
+                .Entity<Reservation>()
+                .HasOne(r => r.RestaurantArea)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder
                 .Entity<Person>()
                 .Property(p => p.Email).HasMaxLength(150);
 

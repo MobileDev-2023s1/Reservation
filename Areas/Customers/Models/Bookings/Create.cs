@@ -1,6 +1,4 @@
-﻿using Group_BeanBooking.Areas.Identity.Data;
-using Group_BeanBooking.Data;
-using Microsoft.AspNetCore.Identity;
+﻿
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -9,9 +7,11 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
 {
     public class Create
     {
-        public int Id { get; set; }
+        public int ReservationId { get; set; }
 
         [ValidateNever] public string RestaurantName { get; set; }
+
+        [ValidateNever] public int RestaurantId { get; set; }
 
         [ValidateNever] public string UserId { get; set; }
 
@@ -23,7 +23,7 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
 
         [ValidateNever] public int Guests { get; set; }
 
-        [ValidateNever] public string Comments { get; set; }
+        [ValidateNever] public string? Comments { get; set; }
 
 
         //Booking information
@@ -31,7 +31,7 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
         [Required] public DateTime Starttime { get; set; }
         [Required] public int Duration { get; set; }
 
-        [Required] public int SittingAreaId { get; set; }
+        [Required] public int RestaurantAreaId { get; set; }
         [ValidateNever] public SelectList SittingAreaList { get; set; }
 
         [Required] public int SittingId { get; set; }
