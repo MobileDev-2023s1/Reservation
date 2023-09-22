@@ -227,9 +227,9 @@ namespace Group_BeanBooking.Data
             var start = "22/09/2023 7:00:00 AM";
             List<Sitting> list = new()
             {
-                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Now , End = DateTime.Now.AddHours(4) , Capacity= 40, TypeId = 1, RepeatPattern="FFFFFFF"},
-                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Now.AddHours(6) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 2,RepeatPattern="FFFFFFF"},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Now.AddHours(12) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 3, RepeatPattern = "FFFFFFF"}
+                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1, RepeatPattern="FFFFFFF"},
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(6) , End = DateTime.Parse(start).AddHours(4) , Capacity= 50, TypeId = 2,RepeatPattern="FFFFFFF"},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(12) , End = DateTime.Parse(start).AddHours(4) , Capacity= 50, TypeId = 3, RepeatPattern = "FFFFFFF"}
             };
 
             
@@ -255,7 +255,9 @@ namespace Group_BeanBooking.Data
                                 End = item.End.AddDays(i),
                                 Capacity = item.Capacity,
                                 TypeId = item.TypeId,
-                                RestaurantId = restaurant.Id
+                                RestaurantId = restaurant.Id,
+                                RepeatPattern = item.RepeatPattern
+                                
                             });
                             await _context.SaveChangesAsync();
 
