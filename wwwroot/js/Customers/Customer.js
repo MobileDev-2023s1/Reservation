@@ -13,7 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const menuData = await GetListOfAreas(id.value, selectedDate.value);
 
+            while (menu.childElementCount>0) {
+                menu.removeChild(menu.firstChild);
+            }
+
             menuData.forEach(menuItem => {
+                
                 const option = document.createElement("option");
                 option.value = menuItem.id;
                 option.textContent = menuItem.name;

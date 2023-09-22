@@ -24,10 +24,19 @@ namespace Group_BeanBooking.Data
 
         public async Task SeedDataMain()
         {
-            
+
             await SeedRestaurant();
             await SeedSittingTypes();
-            await SeedSittings();
+
+            if (_context.Sittings.Count() == 546)
+            {
+
+            }
+            else
+            {
+                await SeedSittings();
+            }
+
             await SeedRestaurantArea();
             await SeedRolesAsync();
             await SeedUsers();
@@ -215,58 +224,47 @@ namespace Group_BeanBooking.Data
 
         public async Task SeedSittings()
         {
-            var start = "19/09/2023 7:00:00 AM";
+            var start = "22/09/2023 7:00:00 AM";
             List<Sitting> list = new()
             {
-                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Now , End = DateTime.Now.AddHours(4) , Capacity= 40, TypeId = 1},
-                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Now.AddHours(6) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 1},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Now.AddHours(12) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 1},
-                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start),Capacity= 40, TypeId = 1},
-                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start) , Capacity= 50, TypeId = 2},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start) , Capacity= 50, TypeId = 3},
-                
+                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start), End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1},
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(8) , Capacity= 50, TypeId = 2},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(8).AddSeconds(1) , End = DateTime.Parse(start).AddHours(15) , Capacity= 50, TypeId = 3}
             };
-            var restaurants = await _context.Restaurants.ToListAsync();
-            var sittings = await _context.Sittings.ToListAsync();
+
+            
             
             var listrestaurants = await _context.Restaurants
                 .Include(r => r.Sittings).ToListAsync();
 
-            
-            
-            //review each restaurant sitting areas
             foreach(var restaurant in listrestaurants)
             {
-                //review if these sittings in the list exist in the restaurant
                 foreach (var item in list)
                 {
-                    //repeat 90 times and create if they do not exist. 
                     for (int i = 0; i < 90; i++)
                     {
-                foreach (var r in restaurants)
-                        if (restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == DateTime.Parse(start).AddDays(i) && r.RestaurantId == restaurant.Id) == null)
-                        {
+                        var rest = restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == item.Start.AddDays(i) &&
+                        r.End == item.End.AddDays(i) && r.RestaurantId == restaurant.Id);
+                        if (rest == null)
+                        { 
                             await _context.Sittings.AddAsync(new Sitting
                             {
                                 Name = item.Name,
                                 Closed = false,
-                                Start = DateTime.Parse(start).AddDays(i),
-                                End = DateTime.Parse(start).AddDays(90 - i).AddHours(4),
+                                Start = item.Start.AddDays(i),
+                                End = item.End.AddDays(i),
                                 Capacity = item.Capacity,
                                 TypeId = item.TypeId,
                                 RestaurantId = restaurant.Id
-                            }) ;
+                            });
                             await _context.SaveChangesAsync();
 
                         }
+
                     }
                 }
             }
-            await _context.SaveChangesAsync();
-            
         }
-
-
 
         public void SeedTables()
         {

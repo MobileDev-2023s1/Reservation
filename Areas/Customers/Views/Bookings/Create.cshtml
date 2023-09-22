@@ -66,8 +66,8 @@
             <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
 
             <label asp-for="SittingId">What menu?</label><br />
-            <select id="MenuType">
-                <option value="">Select one</option>
+            <select asp-for="SittingId" id="MenuType">
+                <option value="">Select One</option>
             </select>
 
             <br /><br />
@@ -84,8 +84,6 @@
         <br /><br /><input type="submit" value="Create" class="btn btn-primary" />
 
     </form>
-
-    <a asp-area="Customers" asp-controller="Bookings" asp-action="GetRestuarantData">click</a>
 
 </body>
 

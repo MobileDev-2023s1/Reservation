@@ -2,8 +2,19 @@ use BeanBookings;
 
 select * from ResturantAreas;
 select * from Restaurants;
+select * from SittingTypes;
 
-select * from Sittings;
+select count(*) from Sittings;
+
+delete from Sittings
+where Id > 6;
+
+select * from sittings
+where RestaurantId = 1 and Start >= '2023-09-22 7:00:00 AM' and [End] < '2023-09-22 10:37:00 AM';
+
+Select * from Sittings
+where name = 'Continental Lunch' and RestaurantId = 1;
+
 
 
 delete from People

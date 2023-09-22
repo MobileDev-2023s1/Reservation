@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Group_BeanBooking.Services;
 using Microsoft.EntityFrameworkCore;
 using Humanizer;
+using Microsoft.VisualBasic;
 
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
@@ -55,25 +56,25 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         [HttpGet]
         public async Task<List<Sitting>> GetRestuarantData(int Id, string Date)
         {
-            var timeBooking = DateTime.Parse(Date);
+            DateTime? start = null;
+            DateTime? end = null;
+
+            var review = DateTime.Parse(Date).TimeOfDay.TotalHours;
+            //breakfast
+            if (review < 11 ) {start = DateTime.Parse(Date).Date.AddHours(7); end = start.Value.AddHours(4); }
+            //lunch
+            else if(review >= 11 && review < 15) { start = DateTime.Parse(Date).Date.AddHours(11); end = start.Value.AddHours(4); }
+            //dinner
+            else if(review >= 15 && review < 22 ) { start = DateTime.Parse(Date).Date.AddHours(15); end = start.Value.AddHours(7); }
+                      
             
-            
-            var Time = DateTime.Now;
-            var end = timeBooking.AtMidnight().AddMicroseconds(1);
 
             var sitting = await _context.Sittings
                 .Include(r => r.Restaurant)
-                .Where(r => r.RestaurantId == Id)
-                .Where(s => s.Start >= timeBooking && s.End < end).ToListAsync();
+                .Where(r=> r.RestaurantId == Id)
+                .Where(s => s.Start >= start && s.End <= end).ToListAsync();
 
             return sitting;
-
-            //var restaurant = await _context.Restaurants
-            //    //.Include(s => s.Sittings)
-            //    .Include(a => a.RestaurantAreas)
-            //    .SingleOrDefaultAsync(restaurant => restaurant.Id == Id);
-
-            //return restaurant;
 
         }
 
