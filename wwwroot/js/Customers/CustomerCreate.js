@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
 
             //add function to call time conversion for bookings ...
+            
 
             /**
              * add a function that calls the function reservation within selected times and 
@@ -24,17 +25,19 @@ document.addEventListener("DOMContentLoaded", () => {
             //change this function to get the list of sittings and update name
             const menuData = await GetListOfAreas(id.value, selectedDate.value);
 
-
-            while (menu.childElementCount>0) {
-                menu.removeChild(menu.firstChild);
+            if (menuData != undefined) {
+                while (menu.childElementCount>0) {
+                    menu.removeChild(menu.firstChild);
+                }
+                menuData.forEach(menuItem => {
+                    const option = document.createElement("option");
+                    option.value = menuItem.id;
+                    option.textContent = menuItem.name;
+                    menu.appendChild(option);
+                })
             }
 
-            menuData.forEach(menuItem => {
-                const option = document.createElement("option");
-                option.value = menuItem.id;
-                option.textContent = menuItem.name;
-                menu.appendChild(option);
-            })
+
         } catch (error) {
             console.log(error);
             alert(error);
@@ -53,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //validate time amd date: time has to be after 7am open time
             //and before 
             const result = TimeValidation(selectedDate);
-            const capacityValidation = 
+            /*const capacityValidation */
             if (result) {
                 const url = new URL("/Customers/Bookings/GetRestuarantData?Id=" + restaurantId + "&Date=" + selectedDate, baseURL);
                 const response = await fetch(url);
@@ -94,17 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 result.innerHTML = "We are open!! However, our kitchen is closed. You may order beverages only."
                 bookingDetails.style == null ? true : "display: contents"
                 return true;
-            } else if (hourOfDay < 7) {
+            } else if (hourOfDay < 7 || hourOfDay >= 23) {
                 result.style = "display: flex"
+                bookingDetails.style = "display: none"
                 result.className = "alert alert-danger"
-                result.innerHTML = "Restaurant is not open at that time. Chose an alternative time please"
+                result.innerHTML = "Not trading hours. Please chose an alternative time."
                 return false;
-            } else {
-                result.style = "display: flex"
-                result.className = "alert alert-danger"
-                result.innerHTML = "Restaurant is closed. Please select another date."
-                return false;
-            }
+            } 
 
         } catch (error) {
 

@@ -8,6 +8,7 @@ using Group_BeanBooking.Services;
 using Microsoft.EntityFrameworkCore;
 using Humanizer;
 using Microsoft.VisualBasic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Group_BeanBooking.Areas.Customers.Controllers
 {
@@ -50,6 +51,24 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             };
             
             return View(c);
+        }
+
+        [HttpGet]
+        public List<DateTime> ConvertDate(string date)
+        {
+            DateTime start = new ();
+            DateTime end = new DateTime();
+
+            var review = DateTime.Parse(date).TimeOfDay.TotalHours;
+            //breakfast
+            if (review < 11) { start = DateTime.Parse(date).Date.AddHours(7); end = start.AddHours(4); }
+            //lunch
+            else if (review >= 11 && review < 17) { start = DateTime.Parse(date).Date.AddHours(11).AddSeconds(1); end = start.AddHours(6); }
+            //dinner
+            else if (review >= 17 && review < 23) { start = DateTime.Parse(date).Date.AddHours(16).AddSeconds(1); end = start.AddHours(7); }
+
+            return new List<DateTime> { start, end };
+            
         }
 
         //change this to return List of Date Time including start and end date
