@@ -26,11 +26,17 @@
         background-color: #f2f2f2;
     }
 </style>
+<div>
+    <input id="RestaurantId" asp-for="RestaurantId" type="hidden" value="@Model.RestaurantId" />
+    <script src="~/js/customers/customercreate.js"></script>
+</div>
+
 
 <head>
-    <h1>See details of your booking below.</h1>
-    <h2>Make all necesary changes where required.</h2>
+    <h1>See details of your booking below at @Model.RestaurantName</h1>
+    <h2>Make changes where required.</h2>
     <br />
+    
 
 </head>
 
@@ -44,16 +50,19 @@
 
             <tbody>
                 <tr>
-                    <td><h3>StartTime:</h3> <h3>@Model.Starttime</h3></td>
+                    <td><h3>Start Time:</h3> <h3>@Model.Starttime</h3></td>
                     <td valign="middle">
                         <label asp-for="Starttime">
-                            <input type="datetime-local" asp-for="Starttime" value="@Model.Starttime.ToString("yyyy-MM-ddTHH:mm")" 
-                                min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+                            <input id="Date" type="datetime-local" asp-for="Starttime" value="@Model.Starttime.ToString("yyyy-MM-ddTHH:mm")"
+                                   min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
                         </label><br />
                     </t>
                 </tr>
                 <tr>
-                    <td><h2>Booking length:</h2> <h2>@Model.Duration mins</h2></td>
+                    <td><h2>Booking length:</h2> <h2>@Model.Duration mins</h2>
+                        <h3>End Time:</h3> <h3>@Model.Starttime.AddMinutes(Model.Duration)</h3>
+                    </td>
+                    
                     <td><label asp-for="Duration">
                             <input type="number" asp-for="Duration" min="30" max="180" value="@Model.Duration" />
                         </label> <br />
@@ -79,7 +88,9 @@
                     <td><h2>Food type:</h2> <h2>@Model.SittingName</h2></td>
                     <td>
                         <label asp-for="SittingId">
-                            <select asp-for="SittingId" asp-items="@Model.SittingList"></select>
+                            <select asp-for="SittingId" id="MenuType">
+                                <option value="">@Model.SittingName</option>
+                            </select>
                         </label><br />
                     </td>
                 </tr>

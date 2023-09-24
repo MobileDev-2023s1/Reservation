@@ -228,11 +228,9 @@ namespace Group_BeanBooking.Data
             List<Sitting> list = new()
             {
                 new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1, RepeatPattern="FFFFFFF"},
-                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(6) , End = DateTime.Parse(start).AddHours(4) , Capacity= 50, TypeId = 2,RepeatPattern="FFFFFFF"},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(12) , End = DateTime.Parse(start).AddHours(4) , Capacity= 50, TypeId = 3, RepeatPattern = "FFFFFFF"}
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 50, TypeId = 2,RepeatPattern="FFFFFFF"},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 50, TypeId = 3, RepeatPattern = "FFFFFFF"}
             };
-
-            
             
             var listrestaurants = await _context.Restaurants
                 .Include(r => r.Sittings).ToListAsync();

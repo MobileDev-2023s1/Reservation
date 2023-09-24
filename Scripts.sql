@@ -7,7 +7,7 @@ select * from SittingTypes;
 select count(*) from Sittings;
 
 delete from Sittings
-where Id > 6;
+where Id >= 1;
 
 select * from sittings
 where RestaurantId = 1 and Start >= '2023-09-22 7:00:00 AM' and [End] < '2023-09-22 10:37:00 AM';

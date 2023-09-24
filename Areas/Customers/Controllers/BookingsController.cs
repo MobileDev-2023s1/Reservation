@@ -67,8 +67,6 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             //dinner
             else if(review >= 15 && review < 22 ) { start = DateTime.Parse(Date).Date.AddHours(15); end = start.Value.AddHours(7); }
                       
-            
-
             var sitting = await _context.Sittings
                 .Include(r => r.Restaurant)
                 .Where(r=> r.RestaurantId == Id)
@@ -148,6 +146,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             var model = new Edit
             {
                 ReservationId = reservation.Id,
+                RestaurantId = reservation.Sitting.RestaurantId,
                 RestaurantName = reservation.Sitting.Restaurant.Name,
                 PersonId = reservation.Person.Id,
                 FirstName = reservation.Person.FirtName,
