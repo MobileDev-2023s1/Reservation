@@ -53,30 +53,35 @@
             <!--This is the section for the booking details-->
             <br />
             <h3>Booking Information</h3> <br />
-            <label asp-for="Starttime"></label>
+            <label asp-for="Starttime">Booking time</label>
             <input id="Date" type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")"
                   /><br /><br />
+            <div id="HourAlert" class="" role="alert" style="display: none"></div>
+
+            <div id="BookingDetails" style="display: none">
+                <label asp-for="Duration">Booking length</label>
+                <input type="number" asp-for="Duration" min="30" max="180" value="30" /><br /><br />
+
+
+                <label asp-for="Guests">Guests</label>
+                <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
+                <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
+
+                <label asp-for="SittingId">What menu?</label><br />
+                <select asp-for="SittingId" id="MenuType">
+                    <option value="">Select One</option>
+                </select>
+
+                <br /><br />
             
-            <label asp-for="Duration">Booking length</label>
-            <input type="number" asp-for="Duration" min="30" max="180" value="30" /><br /><br />
+                <label asp-for="RestaurantAreaId">Where to sit?</label><br />
+                <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
 
+                <label asp-for="Comments">Comments</label><br />
+                <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
 
-            <label asp-for="Guests">Guests</label>
-            <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
-            <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
-
-            <label asp-for="SittingId">What menu?</label><br />
-            <select asp-for="SittingId" id="MenuType">
-                <option value="">Select One</option>
-            </select>
-
-            <br /><br />
+            </div>
             
-            <label asp-for="RestaurantAreaId">Where to sit?</label><br />
-            <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
-
-            <label asp-for="Comments">Comments</label><br />
-            <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
 
 
         </div>
