@@ -53,19 +53,27 @@
             <!--This is the section for the booking details-->
             <br />
             <h3>Booking Information</h3> <br />
+
+            <div id="BookingVariables">
+            <label asp-for="Duration">Booking length</label>
+            <input id="duration" type="number" asp-for="Duration" min="30" max="180" value="30" /><br /><br />
+
+            <label asp-for="Guests">Guests</label>
+            <input id="guests" type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
+            <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
+            
             <label asp-for="Starttime">Booking time</label>
             <input id="Date" type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")"
                   /><br /><br />
-            <div id="HourAlert" class="" role="alert" style="display: none"></div>
+            
+
+            </div>
+
+                  <div id="UserAlert" class="" role="alert" style="display: none"></div>
+            
 
             <div id="BookingDetails" style="display: none">
-                <label asp-for="Duration">Booking length</label>
-                <input type="number" asp-for="Duration" min="30" max="180" value="30" /><br /><br />
 
-
-                <label asp-for="Guests">Guests</label>
-                <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
-                <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
 
                 <label asp-for="SittingId">What menu?</label><br />
                 <select asp-for="SittingId" id="MenuType">

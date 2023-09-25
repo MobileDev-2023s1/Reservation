@@ -33,10 +33,11 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             return View();
         }
 
+        #region API's for CRUD operations
+
         [HttpGet]
         public async Task<IActionResult> Create(int id)
         {
-           
             var restaurant = await _context.Restaurants
                 .Include(s => s.Sittings)
                 .Include(a => a.RestaurantAreas)
@@ -52,59 +53,6 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             
             return View(c);
         }
-
-        [HttpGet]
-        public List<DateTime> ConvertDate(string date)
-        {
-            DateTime start = new ();
-            DateTime end = new DateTime();
-
-            var review = DateTime.Parse(date).TimeOfDay.TotalHours;
-            //breakfast
-            if (review < 11) { start = DateTime.Parse(date).Date.AddHours(7); end = start.AddHours(4); }
-            //lunch
-            else if (review >= 11 && review < 17) { start = DateTime.Parse(date).Date.AddHours(11).AddSeconds(1); end = start.AddHours(6); }
-            //dinner
-            else if (review >= 17 && review < 23) { start = DateTime.Parse(date).Date.AddHours(16).AddSeconds(1); end = start.AddHours(7); }
-
-            return new List<DateTime> { start, end };
-            
-        }
-
-        //change this to return List of Date Time including start and end date
-        [HttpGet]
-        public async Task<List<Sitting>> GetRestuarantData(int Id, string Date)
-        {
-            DateTime? start = null;
-            DateTime? end = null;
-
-            var review = DateTime.Parse(Date).TimeOfDay.TotalHours;
-            //breakfast
-            if (review < 11 ) {start = DateTime.Parse(Date).Date.AddHours(7); end = start.Value.AddHours(4); }
-            //lunch
-            else if(review >= 11 && review < 17) { start = DateTime.Parse(Date).Date.AddHours(11).AddSeconds(1); end = start.Value.AddHours(6); }
-            //dinner
-            else if(review >= 17 && review < 23 ) { start = DateTime.Parse(Date).Date.AddHours(16).AddSeconds(1); end = start.Value.AddHours(7); }
-
-            //add this to reservation services and add a function for this... 
-            var bookings = await _context.Reservations
-                .Include(s => s.Sitting)
-                .ThenInclude(r => r.Restaurant)
-                .Where(r => r.Sitting.RestaurantId == Id)
-                .Where(r =>r.Start >= start && r.Start <= end)
-                .ToListAsync();
-
-            //add sitting services and add a function for this... 
-            var sitting = await _context.Sittings
-                .Include(r => r.Restaurant)
-                .Where(r => r.RestaurantId == Id)
-                .Where(s => s.Start >= start && s.End <= end).ToListAsync();
-
-            return sitting;
-
-        }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Create(Group_BeanBooking.Areas.Customers.Models.Bookings.Create c)
@@ -252,5 +200,62 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             return RedirectToAction("Details", "Bookings", new { area = "Customers" });
         }
 
+        #endregion
+
+
+
+        [HttpGet]
+        public List<DateTime> ConvertDateTime(string date)
+        {
+            DateTime start = new();
+            DateTime end = new DateTime();
+
+            var review = DateTime.Parse(date).TimeOfDay.TotalHours;
+            //breakfast
+            if (review < 11) { start = DateTime.Parse(date).Date.AddHours(7); end = start.AddHours(4); }
+            //lunch
+            else if (review >= 11 && review < 17) { start = DateTime.Parse(date).Date.AddHours(11).AddSeconds(1); end = start.AddHours(6); }
+            //dinner
+            else if (review >= 17 && review < 23) { start = DateTime.Parse(date).Date.AddHours(16).AddSeconds(1); end = start.AddHours(7); }
+
+            return new List<DateTime> { start, end };
+
+        }
+
+        //change this to return List of Date Time including start and end date
+        [HttpGet]
+        public async Task<List<Sitting>> GetAvailableSittings(int Id, string begin, string final)
+        {
+            DateTime? start = DateTime.Parse(begin);
+            DateTime? end = DateTime.Parse(final);
+
+            //add sitting services and add a function for this... 
+            var sitting = await _context.Sittings
+                .Include(r => r.Restaurant)
+                .Where(r => r.RestaurantId == Id)
+                .Where(s => s.Start >= start && s.End <= end)
+                .Include(r => r.Reservations)
+                .Where(r => r.End >= start)
+                .ToListAsync();
+
+            return sitting;
+        }
+
+        [HttpGet]
+        public async Task<List<Reservation>> GetReservations(int Id, string begin, int duration)
+        {
+            DateTime? start = DateTime.Parse(begin);
+            DateTime? end = DateTime.Parse(begin).AddMinutes(duration);
+
+            //add this to reservation services and add a function for this... 
+            var bookings = await _context.Reservations
+                .Include(s => s.Sitting)
+                .ThenInclude(r => r.Restaurant)
+                .Where(r => r.Sitting.RestaurantId == Id)
+                .Where(r => r.Start >= start && r.Start <= end)
+                .ToListAsync();
+
+            return bookings;
+        }
     }
 }
