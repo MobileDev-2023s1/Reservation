@@ -51,12 +51,12 @@
                 <tr>
                     <td><h3>Start Time:</h3> <h3>@Model.Starttime</h3></td>
                     <td valign="middle">
-                        <label asp-for="Starttime">Booking time
+                        <label asp-for="Starttime">
                             <input id="Date" type="datetime-local" asp-for="Starttime" value="@Model.Starttime.ToString("yyyy-MM-ddTHH:mm")"
                                     min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" 
                                     /><br /><br />
                         </label><br />
-                    </t>
+                    </td>
                 </tr>
                 <tr>
                     <td><h2>Booking length:</h2> <h2>@Model.Duration mins</h2>

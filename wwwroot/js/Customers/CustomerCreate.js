@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let current = new Date();
     current.setMinutes(current.getMinutes() - 1).toLocaleString();
 
-    selectedDate.addEventListener("focusin", async () => {
+    BookingVariables.addEventListener("focusin", async () => {
         bookingDetails.style = "display: none"
         result.style = "display: none"
     })
@@ -29,8 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     BookingVariables.addEventListener("change", async () => {
         try {
-            if (DateNotInPast() && BookingBeforeClosing())             
-            {
+            if (DateNotInPast() && BookingBeforeClosing()) {
                 //Check at the timeframe chosen what the capacity capacity is
                 let timeFrame = await ConvertDateTime(selectedDate.value);
 
@@ -41,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     //define and validate the total capacity for the restaurant at that the chosen time
                     let totalCapacity = await TotalCapacityValidation(menuData);
                     //checks the current capacity given current level of reservations
-                    let currentCapacity = await CurrentCapacityValidation(menuData)
+                    let currentOccupancy = await CurrentCapacityValidation(menuData)
 
-                    let remainder = totalCapacity - currentCapacity;
+                    let remainder = totalCapacity - currentOccupancy;
 
                     //if there is capacity in the restaurant, allow the booking
                     if (remainder >= guests.value) {
@@ -62,14 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         DisplayDangerAlert("We cannot accomodate your party at the time. Please chose an alternative time.");
                     }
                 }
+            } else if (!BookingBeforeClosing()) {
+                DisplayDangerAlert("Please reduce desired time. Booking cannot go over closing time");
             } else {
-
-                if (!BookingBeforeClosing()) {
-                    DisplayDangerAlert("Please reduce desired time. Booking cannot go over closing time");
-                } else {
-                    DisplayDangerAlert("Booking date cannot be in the past. Please chose an alternative time.");
-
-                }
+            DisplayDangerAlert("Booking date cannot be in the past. Please chose an alternative time.");
             }
             
         } catch (error) {
@@ -78,18 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     });
-
-
-    function DateNotInPast() {
-        return new Date(Date.parse(selectedDate.value)) >= current ? true : false;
-    }
-
-    function BookingBeforeClosing() {
-        var currentDate = new Date(Date.parse(selectedDate.value)).getHours() + (duration.value /60);
-
-        return currentDate <= 23 ? true : false;
-    }
-
 
     /**Get the type of food that is going to be offered by the restaurant, based on the time of the booking and the date
      * @param {any} restaurantId
@@ -119,11 +102,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    function DisplayDangerAlert(message) {
-        result.style = "display: flex"
-        bookingDetails.style = "display: none"
-        result.className = "alert alert-danger"
-        result.innerHTML = message;
+    function DateNotInPast() {
+        return new Date(Date.parse(selectedDate.value)) >= current ? true : false;
+    }
+
+    function BookingBeforeClosing() {
+        var currentDate = new Date(Date.parse(selectedDate.value)).getHours() + (duration.value / 60);
+        
+
+        return currentDate < 23 ? true : false;
     }
 
     /**
@@ -146,6 +133,12 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(error);
         }
     };
+    function DisplayDangerAlert(message) {
+        result.style = "display: flex"
+        bookingDetails.style = "display: none"
+        result.className = "alert alert-danger"
+        result.innerHTML = message;
+    }
 
     /**
      * validate that date time is between 7 AM and 11 PM.
