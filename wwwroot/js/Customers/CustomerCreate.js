@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const id = document.getElementById("RestaurantId");
     const menu = document.getElementById("MenuType");
 
-    const result = document.getElementById("UserAlert");
+    const userMessage = document.getElementById("UserAlert");
     const bookingDetails = document.getElementById("BookingDetails");
 
     let current = new Date();
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     BookingVariables.addEventListener("focusin", async () => {
         bookingDetails.style = "display: none"
-        result.style = "display: none"
+        userMessage.style = "display: none"
     })
 
     /**
@@ -108,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function BookingBeforeClosing() {
         var currentDate = new Date(Date.parse(selectedDate.value)).getHours() + (duration.value / 60);
-        
 
         return currentDate < 23 ? true : false;
     }
@@ -134,10 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
     function DisplayDangerAlert(message) {
-        result.style = "display: flex"
+        userMessage.style = "display: flex"
         bookingDetails.style = "display: none"
-        result.className = "alert alert-danger"
-        result.innerHTML = message;
+        userMessage.className = "alert alert-danger"
+        userMessage.innerHTML = message;
     }
 
     /**
@@ -149,21 +148,21 @@ document.addEventListener("DOMContentLoaded", () => {
             const hourOfDay = new Date(Date.parse(selectedDate)).getHours();
 
             if (hourOfDay >= 7 && hourOfDay < 22) {
-                result.style = "display: none"
+                userMessage.style = "display: none"
                 bookingDetails.style = "display: contents"
                 return true;
                 
             } else if (hourOfDay >= 22 && hourOfDay < 23) {
-                result.style = "display: flex"
-                result.className = "alert alert-warning"
-                result.innerHTML = "We are open!! However, our kitchen is closed. You may order beverages only."
+                userMessage.style = "display: flex"
+                userMessage.className = "alert alert-warning"
+                userMessage.innerHTML = "We are open!! However, our kitchen is closed. You may order beverages only."
                 bookingDetails.style = "display: contents"
                 return true;
             } else if (hourOfDay < 7 || hourOfDay >= 23) {
-                result.style = "display: flex"
+                userMessage.style = "display: flex"
                 bookingDetails.style = "display: none"
-                result.className = "alert alert-danger"
-                result.innerHTML = "Not trading hours. Please chose an alternative time."
+                userMessage.className = "alert alert-danger"
+                userMessage.innerHTML = "Not trading hours. Please chose an alternative time."
                 return false;
             } 
 
