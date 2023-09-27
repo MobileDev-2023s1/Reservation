@@ -47,15 +47,14 @@
         <table border="1" align="center">
             <th>Current Details</th>
             <th>New Details</th>
-
             <tbody>
                 <tr>
                     <td><h3>Start Time:</h3> <h3>@Model.Starttime</h3></td>
                     <td valign="middle">
                         <label asp-for="Starttime">Booking time
                             <input id="Date" type="datetime-local" asp-for="Starttime" value="@Model.Starttime.ToString("yyyy-MM-ddTHH:mm")"
-                                   min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" 
-                                   /><br /><br />
+                                    min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" 
+                                    /><br /><br />
                         </label><br />
                     </t>
                 </tr>
@@ -78,6 +77,8 @@
                     </td>
                 </tr>
                 <tr>
+
+               
                     <td><h2>Sitting at:</h2> <h2>@Model.SittingAreaName area</h2></td>
                     <td>
                         <label asp-for="RestaurantAreaId">
@@ -104,11 +105,12 @@
                         </label><br />
                     </td>
                 </tr>
-
             </tbody>
+        
 
         </table>
 
+        
 
 
         <br /><br /><input type="submit" value="Edit" class="btn btn-primary" />

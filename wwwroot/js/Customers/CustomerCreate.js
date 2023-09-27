@@ -1,5 +1,6 @@
 ﻿const baseURL = "https://localhost:7113";
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
     /**Gets the date chosen by the user for the reservation*/
@@ -15,32 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const result = document.getElementById("UserAlert");
     const bookingDetails = document.getElementById("BookingDetails");
 
-    selectedDate.addEventListener("focusin", async () => {
+    let current = new Date();
+    current.setMinutes(current.getMinutes() - 1).toLocaleString();
 
+    selectedDate.addEventListener("focusin", async () => {
         bookingDetails.style = "display: none"
         result.style = "display: none"
-
     })
-
-    function DateNotInPast(current) {
-        return new Date(Date.parse(selectedDate.value)) >= current ? true : false;
-    }
-
-    function BookingBeforeClosing() {
-        var currentDate = new Date(Date.parse(selectedDate.value)).getHours() + (duration.value /60);
-
-        return currentDate <= 23 ? true : false;
-    }
-
-
 
     /**
      * event listener for changes in the date and time of the bookings
      */
     BookingVariables.addEventListener("change", async () => {
         try {
-            let current = new Date();
-            if (DateNotInPast(current) && BookingBeforeClosing())             
+            if (DateNotInPast() && BookingBeforeClosing())             
             {
                 //Check at the timeframe chosen what the capacity capacity is
                 let timeFrame = await ConvertDateTime(selectedDate.value);
@@ -49,8 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 const menuData = await GetAvailableSittings(id.value, timeFrame);
 
                 if (menuData != undefined) {
-                    //define and validate the total capacity for the restaurant at that time
+                    //define and validate the total capacity for the restaurant at that the chosen time
                     let totalCapacity = await TotalCapacityValidation(menuData);
+                    //checks the current capacity given current level of reservations
                     let currentCapacity = await CurrentCapacityValidation(menuData)
 
                     let remainder = totalCapacity - currentCapacity;
@@ -69,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         })
                     } else //if there isn't capacity, then give message to choose other time. 
                     {
-                        
                         DisplayDangerAlert("We cannot accomodate your party at the time. Please chose an alternative time.");
                     }
                 }
@@ -81,12 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     DisplayDangerAlert("Booking date cannot be in the past. Please chose an alternative time.");
 
                 }
-
-
             }
-            //add function to call time conversion for bookings ...
-
-            
             
         } catch (error) {
             console.log(error);
@@ -94,6 +78,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     });
+
+
+    function DateNotInPast() {
+        return new Date(Date.parse(selectedDate.value)) >= current ? true : false;
+    }
+
+    function BookingBeforeClosing() {
+        var currentDate = new Date(Date.parse(selectedDate.value)).getHours() + (duration.value /60);
+
+        return currentDate <= 23 ? true : false;
+    }
 
 
     /**Get the type of food that is going to be offered by the restaurant, based on the time of the booking and the date
