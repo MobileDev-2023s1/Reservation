@@ -62,9 +62,9 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
             {
                 SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name"),
                 Start = start,
-                End = start.AddHours(4)
+                End = start.AddHours(4),
+                Guid = Guid.NewGuid()
             };
-
             return View(m);
         }
 
@@ -75,47 +75,84 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
         {
             if (ModelState.IsValid)
             {
-              m.RepeatPattern =
-              m.Monday.ToString().Substring(0, 1) +
-              m.Tuesday.ToString().Substring(0, 1) +
-              m.Wednesday.ToString().Substring(0, 1) +
-              m.Thursday.ToString().Substring(0, 1) +
-              m.Friday.ToString().Substring(0, 1) +
-              m.Saturday.ToString().Substring(0, 1) +
-              m.Sunday.ToString().Substring(0, 1);
-
-                for (int i = 0; i <m.Repeats; i++)
+                var sitting = new Sitting
                 {
-                    //think
-                
-                
-                    var sitting = new Sitting
-                    {
-                        Name = m.Name,
-                        Start = m.Start,
-                        End = m.End,
-                        Capacity = m.Capacity,
-                        Closed = m.Closed,
-                        TypeId = m.TypeId,
-                        RestaurantId = 1,
-                    };
-                    //= _mapper.Map<Data.Sitting>(m);
+                    Name = m.Name,
+                    Start = m.Start,
+                    End = m.End,
+                    Capacity = m.Capacity,
+                    Closed = m.Closed,
+                    TypeId = m.TypeId,
+                    RestaurantId = 1
+                };
+                if (m.Repeats == 0)
+                {
                     _context.Sittings.Add(sitting);
+                    await _context.SaveChangesAsync();
                 }
-  
-                
-                
-                
-                
-                
-                
-                await _context.SaveChangesAsync();
+
+                else
+                {
+                    sitting.Guid = m.Guid;
+                    var sittings = new List<Sitting> { sitting };
+
+
+
+                    DateTime additionalStart = new();
+                    DateTime additionalEnd = new();
+                    bool[] RepeatPattern =
+                        {m.Sunday,m.Monday,m.Tuesday,m.Wednesday,m.Thursday,m.Friday,m.Saturday};
+                    double days = 0;
+
+
+                    for (int j = 0; j < 7; j++)
+                    {
+                        if (RepeatPattern[j] == true)
+                        {
+                            for (int i = 1; i <= m.Repeats; i++)
+                            {
+                                if ((j - (int)m.Start.DayOfWeek) % 7 == 0)
+                                {
+                                    days = i * 7 * m.Interval;
+                                    additionalStart = m.Start.AddDays(days);
+                                    additionalEnd = m.End.AddDays(days);
+                                }
+                                else
+                                {
+                                    days = ((j - (int)m.Start.DayOfWeek) % 7) + (i * 7 * m.Interval);
+                                    additionalStart = m.Start.AddDays(days);
+                                    additionalEnd = m.End.AddDays(days);
+                                }
+                                var additionalSitting = new Sitting
+                                {
+                                    Guid = m.Guid,
+                                    Name = m.Name,
+                                    Start = additionalStart,
+                                    End = additionalEnd,
+                                    Capacity = m.Capacity,
+                                    Closed = m.Closed,
+                                    TypeId = m.TypeId,
+                                    RestaurantId = 1
+                                };
+                                sittings.Add(additionalSitting);
+
+                            }
+                        }
+                    }
+
+                    _context.Sittings.AddRange(sittings);
+                    await _context.SaveChangesAsync();
+
+
+
+                }
                 return RedirectToAction("Index");
             }
 
             m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
             return View(m);
         }
+
 
         // GET: Administration/Sitting/Edit/5
         public async Task<IActionResult> Edit(int? id)

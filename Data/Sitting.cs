@@ -20,9 +20,9 @@
         public Guid? Guid { get; set; }
 
 
-        public string RepeatPattern { get; set; }
-        public int Interval  { get; set; }
-        public int Repeats { get; set; }
+      //  public string RepeatPattern { get; set; }
+       // public int Interval  { get; set; }
+     //   public int Repeats { get; set; }
 
 
 
