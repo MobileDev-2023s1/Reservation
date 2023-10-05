@@ -32,7 +32,10 @@ namespace Group_BeanBooking.Services
                     .ThenInclude(s => s.Restaurant)
                 .Include(r => r.ResevationOrigin)
                 .Include(r => r.ReservationStatus)
-                .Where(p => p.PersonId == personId).ToListAsync();
+                .Where(r => r.PersonId == personId && r.Start >= DateTime.Now 
+                        && r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .OrderBy(r => r.Start)
+                .ToListAsync();
 
             return reservations;
         }
@@ -97,7 +100,9 @@ namespace Group_BeanBooking.Services
         {
             await _context.Reservations
                 .Where(r => r.Id == id)
-                .ExecuteDeleteAsync();
+                .ExecuteUpdateAsync(r => r
+                    .SetProperty(r => r.ReservationStatusID, 3)
+                );
         }
 
     }

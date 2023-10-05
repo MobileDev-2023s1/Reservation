@@ -9,19 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const guests = document.getElementById("guests");
     /**Gets the amount of time reservation is intender for*/
     const duration = document.getElementById("duration")
-
+    /**Gets the id of the restuarant being selected for the booking*/
     const id = document.getElementById("RestaurantId");
+    /**Gets the type of menu selected for the booking*/
     const menu = document.getElementById("MenuType");
-
+    /**It is the user alert element that can be updated as required. Receives text and displays it on the screen*/
     const userMessage = document.getElementById("UserAlert");
+    /**It is the id of a section of the page. Depending of the stage, this is displayed on the screen */
     const bookingDetails = document.getElementById("BookingDetails");
 
     let current = new Date();
     current.setMinutes(current.getMinutes() - 1).toLocaleString();
 
+    /**These are the variables for the booking including time, guests and lenght */
     BookingVariables.addEventListener("focusin", async () => {
-        bookingDetails.style = "display: none"
-        userMessage.style = "display: none"
+        bookingDetails.style = "display: none";
+        userMessage.style = "display: none";
+        submit.disabled = "disabled";
     })
 
     /**
@@ -29,7 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     BookingVariables.addEventListener("change", async () => {
         try {
-            if (DateNotInPast() && BookingBeforeClosing()) {
+            
+            if (duration.value < 30) {
+                DisplayDangerAlert("Booking duration cannot be less thant 30 min. Please change the value");
+            } else if (duration.value > 180) {
+                DisplayDangerAlert("Booking duration cannot be more than 180 min. Please change the value");
+            }
+            else if (DateNotInPast() && BookingBeforeClosing())
+            {
                 //Check at the timeframe chosen what the capacity capacity is
                 let timeFrame = await ConvertDateTime(selectedDate.value);
 
@@ -49,13 +60,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         while (menu.childElementCount > 0) {
                             menu.removeChild(menu.firstChild);
                         }
-
                         menuData.forEach(menuItem => {
                             const option = document.createElement("option");
                             option.value = menuItem.id;
                             option.textContent = menuItem.name;
                             menu.appendChild(option);
                         })
+
+                        submit.disabled = "";
+
                     } else //if there isn't capacity, then give message to choose other time. 
                     {
                         DisplayDangerAlert("We cannot accomodate your party at the time. Please chose an alternative time.");

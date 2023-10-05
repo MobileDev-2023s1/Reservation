@@ -4,38 +4,10 @@
 @inject UserManager<ApplicationUser> UserManager
 @model Group_BeanBooking.Areas.Customers.Models.Bookings.Edit;
 
-@{
-    var typeOfColumn = "col-6";
-    var borderBottom = "border-bottom";
-    var borderStart = "border-start";
-    var borderEnd = "border-end";
-    var borderTop = "border-top";
-}
 
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #ddd;
-        text-align: center
-
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-</style>
 <div>
     <input id="RestaurantId" asp-for="RestaurantId" type="hidden" value="@Model.RestaurantId" />
+    <input asp-for="SittingId" type="hidden" />
     <script src="~/js/customers/customercreate.js"></script>
     
 </div>
@@ -59,11 +31,11 @@
                 @*first row*@
                 <div class="row bg-primary" >
                     <!-- First Column -->
-                    <div class="col-6 border-bottom border-start border-end border-top">
+                    <div class="col border-bottom border-start border-end border-top">
                         <h1>Current details</h1>
                     </div>
                     <!-- Second Column -->
-                    <div class="col-6 border-bottom border-start border-end border-top">
+                    <div class="col border-bottom border-start border-end border-top">
                         <h1>New details</h1>
                     </div>
                 </div>
@@ -139,7 +111,7 @@
                     </div>
                     <!-- Second Column -->
                     <div class="col-6 border-bottom border-start border-end border-top">
-                        <input asp-for="SittingId" type="hidden" />
+                        
                         <label asp-for="SittingId">What menu?</label><br />
                         <select asp-for="SittingId" id="MenuType">
                             <option value="">Select One</option>
@@ -164,7 +136,7 @@
                 </div>
             </div>
 
-        <br /><br /><input type="submit" value="Edit" class="btn btn-primary" />
+            <br /><br /><input id="submit" type="submit" value="Edit" class="btn btn-primary" disabled="disabled" />
         </div>
                   
     </form>
