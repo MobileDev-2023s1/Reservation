@@ -214,9 +214,9 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             //breakfast
             if (review < 11) { start = DateTime.Parse(date).Date.AddHours(7); end = start.AddHours(4); }
             //lunch
-            else if (review >= 11 && review < 17) { start = DateTime.Parse(date).Date.AddHours(11).AddSeconds(1); end = start.AddHours(6); }
+            else if (review >= 11 && review < 17) { start = DateTime.Parse(date).Date.AddHours(11).AddSeconds(1); end = start.AddHours(6).AddSeconds(-1); }
             //dinner
-            else if (review >= 17 && review < 23) { start = DateTime.Parse(date).Date.AddHours(16).AddSeconds(1); end = start.AddHours(7); }
+            else if (review >= 17 && review < 23) { start = DateTime.Parse(date).Date.AddHours(16).AddSeconds(1); end = start.AddHours(7).AddSeconds(-1); }
 
             return new List<DateTime> { start, end };
 
