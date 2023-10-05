@@ -63,7 +63,7 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                 SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name"),
                 Start = start,
                 End = start.AddHours(4),
-                Guid = Guid.NewGuid()
+             
             };
             return View(m);
         }
@@ -84,7 +84,8 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                     Closed = m.Closed,
                     TypeId = m.TypeId,
                     RestaurantId = 1
-                };
+                };               
+               
                 if (m.Repeats == 0)
                 {
                     _context.Sittings.Add(sitting);
@@ -93,11 +94,9 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
 
                 else
                 {
-                    sitting.Guid = m.Guid;
+                    
+                    sitting.Guid= Guid.NewGuid();
                     var sittings = new List<Sitting> { sitting };
-
-
-
                     DateTime additionalStart = new();
                     DateTime additionalEnd = new();
                     bool[] RepeatPattern =
@@ -125,7 +124,7 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                                 }
                                 var additionalSitting = new Sitting
                                 {
-                                    Guid = m.Guid,
+                                    Guid = sitting.Guid,
                                     Name = m.Name,
                                     Start = additionalStart,
                                     End = additionalEnd,
@@ -163,10 +162,14 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
             }
 
             var sitting = await _context.Sittings.FindAsync(id);
+            
+            
             if (sitting == null)
             {
                 return NotFound();
             }
+
+
 
             var m = new Models.Sitting.Edit
             {
@@ -176,13 +179,13 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                 Capacity = sitting.Capacity,
                 Closed = sitting.Closed,
                 TypeId = sitting.TypeId,
+              
             };
      
             //_mapper.Map<Models.Sitting.Edit>(sitting);
 
            m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
-
-
+            ViewData["guid"] = sitting.Guid;
             return View(m);
         }
 
@@ -200,28 +203,60 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {   sitting.Start = m.Start;
-                    sitting.End = m.End;
-                    sitting.Capacity = m.Capacity;
-                    sitting.Closed = m.Closed;
-                    sitting.Name = m.Name;
-                    sitting.TypeId = m.TypeId;
-                    //_mapper.Map(m, sitting);
-                  
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
+                if (sitting.Guid == null)
                 {
-                    if (!SittingExists(sitting.Id))
+                    try
                     {
-                        return NotFound();
+                        sitting.Start = m.Start;
+                        sitting.End = m.End;
+                        sitting.Capacity = m.Capacity;
+                        sitting.Closed = m.Closed;
+                        sitting.Name = m.Name;
+                        sitting.TypeId = m.TypeId;
+                        //_mapper.Map(m, sitting);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!SittingExists(sitting.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
+                
+                else {
+                    try
+                    {
+                        sitting.Start = m.Start;
+                        sitting.End = m.End;
+                        sitting.Capacity = m.Capacity;
+                        sitting.Closed = m.Closed;
+                        sitting.Name = m.Name;
+                        sitting.TypeId = m.TypeId;
+                        //_mapper.Map(m, sitting);
+
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!SittingExists(sitting.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+
+
+
                 return RedirectToAction(nameof(Index));
             }
             m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);

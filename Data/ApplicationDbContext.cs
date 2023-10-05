@@ -54,7 +54,7 @@ namespace Group_BeanBooking.Data
             modelBuilder
                 .Entity<Person>()
                 .Property(p=> p.UserId).HasMaxLength(450);
-
+             
             //modelBuilder
             //    .Entity<Person>()
             //    .HasOne<IdentityUser>()
