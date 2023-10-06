@@ -11,7 +11,7 @@ where Id >= 1;
 
 select * from Reservations;
 select * from sittings
-where RestaurantId = 1 and Start >= '2023-09-25 7:00:00 AM' and [End] <= '2023-09-25 11:00:00 PM';
+where RestaurantId = 1 and Start >= '2023-10-13 7:00:00 AM' and [End] <= '2023-10-13 11:00:00 PM';
 
 Select * from Sittings
 where name = 'Continental Lunch' and RestaurantId = 1;

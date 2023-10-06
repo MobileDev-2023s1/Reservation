@@ -202,8 +202,6 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
 
         #endregion
 
-
-
         [HttpGet]
         public List<DateTime> ConvertDateTime(string date)
         {
