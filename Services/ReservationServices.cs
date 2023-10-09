@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Humanizer;
 
 namespace Group_BeanBooking.Services
 {
@@ -21,6 +22,23 @@ namespace Group_BeanBooking.Services
        public async Task<ResevationOrigin> GetResevationOrigins(string reservationOriginName)
         {
             return await _context.ResevationOrigins.FirstOrDefaultAsync(r => r.Name == reservationOriginName);
+        }
+        
+        /// <summary>
+        /// Gets all the reservation that are not cancelled and are 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Reservation>> GetActiveReservationsByMonth(DateTime start, DateTime end)
+        {
+            var reservations = await _context.Reservations
+                .Include(r => r.Person) //eager loading
+                .Include(a => a.RestaurantArea)
+                .Where(r=> r.Start >= start.AtMidnight() && r.Start <= end.AtMidnight())
+                .OrderBy(r => r.Start)
+                .ToListAsync();
+
+            return reservations;
+
         }
                
         //https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager

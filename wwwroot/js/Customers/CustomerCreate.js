@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     async function ConvertDateTime(date) {
         try {
-            /*const capacityValidation */
+            
             const url = new URL("/Customers/Bookings/ConvertDateTime?date=" + date, baseURL);
             const response = await fetch(url);
 
