@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using Microsoft.Identity.Client;
 
+using Org.BouncyCastle.Bcpg.OpenPgp;
+
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Group_BeanBooking.Areas.Staff.Controllers
@@ -42,9 +44,30 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         }
 
         [HttpGet]
-        public async Task<List<LoadDetails>> GetReservations()
+        public async Task<List<LoadDetails>> GetAllReservations()
         {
-            var current = DateTime.Now;
+            var model = new List<LoadDetails>();
+
+            var reservations = await _reservationServices.GetAllReservations();
+
+            foreach (var r in reservations)
+            {
+                model.Add(new LoadDetails
+                {
+                    BookingId = r.Id,
+                    Start = r.Start,
+                    Name = r.Person.FirtName.ToString() + " " + r.Person.LastName.ToString(),
+                });
+            }
+
+            return model;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetReservations(string start)
+        {
+            var current = DateTime.Parse(start);
+            //var current = DateTime.Now;
             var startDate = current.AddDays(-current.Day).AtMidnight();
             var endDate = startDate.AddDays(Days(current));
 
@@ -52,17 +75,16 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             
             var reservations = await _reservationServices.GetActiveReservationsByMonth(startDate, endDate);
 
-            foreach(var r in reservations)
+            var result = reservations.Select(r => new
             {
-                model.Add(new LoadDetails
-                {
-                    BookingId = r.Id,
-                    Start = r.Start,
-                    Name = r.Person.FirtName.ToString()+" "+r.Person.LastName.ToString(),
-                });
-            }
-            
-            return model;
+                title = r.Person.FirtName.ToString() + " " + r.Person.LastName.ToString(),
+                start = r.Start,
+                end = r.Start.AddMinutes(r.Duration),
+                color = "#000"
+                
+            });
+
+            return Ok(result);
         }
 
         public int Days(DateTime date)

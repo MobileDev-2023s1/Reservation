@@ -1,4 +1,9 @@
-﻿
+﻿@{
+    string buttonColor = "#2c3e50";
+    string buttonTextColor = "white";
+
+}
+
 <style>
 
     html, body {
@@ -15,33 +20,59 @@
 
 </style>
 
-<head>
-    <script src="~/js/staff/details.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-    <link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />
-</head>
 
-        <h1>Restaurant name</h1> <h1>customer email</h1> <h1>Status</h1>
+<link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />
 
-        <div class="row">
-            <div class="col-4">
-                <div class="fc-button-group">
-                    <button id="previousMonth">Previous</button>
-                    <button id="nextMonth">next</button>
+    
+
+
+<div id="searchSection" class="row">
+    <div id="searchSection" class="row">
+        <div class="col-4">
+            <label>Restaurant Name:</label>
+        </div>
+        <div class="col-3">
+            <label>User Email:</label>
+        </div>
+        <div class="col-4">
+            <label>Booking status:</label>
+        </div>
+        <div class="col-1">
+            <button id="search">Search</button>
+        </div>
+    </div>
+    <br /><br /><br />
+
+    <div id="calendarControls" class="row">
+        <div class="col-5" >
+            <div class="col-3">
+                <div class="fc-button-group" style="background-color: @buttonColor;">
+                    <button id="previousMonth" class="btn" style="background-color: @buttonColor;">
+                        <span class="fc-icon fc-icon-chevron-left" style="color: @buttonTextColor"></span></button>
+                    <button id="nextMonth" class="btn" style="style=" background-color: @buttonColor;">
+                        <span class="fc-icon fc-icon-chevron-right" style="color: @buttonTextColor"></span>
+                    </button>
                 </div>
             </div>
-            <div class="col-4">
-                <h2 class="fc-toolbar-title" id="fc-dom-1">mONTH</h2>
+        </div>
+        <div class="col-3">
+            <h2 class="fc-toolbar-title" id="fc-dom-1">mONTH</h2>
+        </div>
+        <div class="col-4">
+            <div class="fc-button-group">
+                <button id="previousMonth">Previous</button>
+                <button id="previousMonth">next</button>
             </div>
-            <div class="col-4">
-                <div class="fc-button-group">
-                    <button id="previousMonth">Previous</button>
-                    <button id="previousMonth">next</button>
-                </div>
-            </div>
+        </div>
 
             
-        </div>
+    </div>
+
+    
+
+</div>
+
+
 <form>
     <body>
 
@@ -51,8 +82,7 @@
 
 </form>
 
-@*https://getbootstrap.com/docs/5.3/components/modal/*@
-https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button
-https://fullcalendar.io/docs/initialize-globals-demo
-
-https://fullcalendar.io/docs/initialize-globals
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="/js/staff/Details.js"></script>
+}
