@@ -3,6 +3,8 @@ using Group_BeanBooking.Areas.Staff.Models.Bookings;
 using Group_BeanBooking.Data;
 using Group_BeanBooking.Services;
 
+using Humanizer;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -43,11 +45,12 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         public async Task<List<LoadDetails>> GetReservations()
         {
             var current = DateTime.Now;
-            var date = Days(current);
+            var startDate = current.AddDays(-current.Day).AtMidnight();
+            var endDate = startDate.AddDays(Days(current));
 
             var model = new List<LoadDetails>();
-
-            var reservations = await _reservationServices.GetActiveReservationsByMonth(current.AddDays(-current.Day), current.AddDays(date-current.Day));
+            
+            var reservations = await _reservationServices.GetActiveReservationsByMonth(startDate, endDate);
 
             foreach(var r in reservations)
             {

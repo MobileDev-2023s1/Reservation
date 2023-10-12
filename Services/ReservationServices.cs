@@ -33,7 +33,8 @@ namespace Group_BeanBooking.Services
             var reservations = await _context.Reservations
                 .Include(r => r.Person) //eager loading
                 .Include(a => a.RestaurantArea)
-                .Where(r=> r.Start >= start.AtMidnight() && r.Start <= end.AtMidnight())
+                .Where(r=>r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .Where(r => r.Start >= start && r.Start <= end)
                 .OrderBy(r => r.Start)
                 .ToListAsync();
 

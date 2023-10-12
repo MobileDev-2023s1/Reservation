@@ -1,48 +1,45 @@
 ﻿const baseURL = "https://localhost:7113";
 
 
-document.addEventListener('DOMContentLoaded', function () {
 
-    var currentDate = new Date(Date.now());
+document.addEventListener("DOMContentLoaded", () => {
+    
+    var calendar = LoadCalendar();
+    calendar.render();
+    document.getElementById('previousMonth').addEventListener('click', function () {
+        calendar.prev();
+        
+    });
+    document.getElementById('nextMonth').addEventListener('click', function () {
+        calendar.next();
+    });
+    addEvent(calendar); //https://fullcalendar.io/docs/Calendar-addEvent-
+});
+
+
+
+function LoadCalendar(view) {
 
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
-        initialDate: GetDate(currentDate),
+        /*initialDate: *//*GetDate(currentDate)*//* view,*/
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        }        
+        },
+        editable: true,
+        selectable: true
     });
-    addEvent(calendar); //https://fullcalendar.io/docs/Calendar-addEvent
-    calendar.render();
-});
+    
+    return calendar;
+    
+}
 
-//document.addEventListener('DOMContentLoaded', function () {
-//    const previousMonth = document.querySelector(".fc-prev-button");
-
-//    previousMonth.addEventListener("click", function () {
-
-        
-
-//        var calendarEl = document.getElementById('calendar');
-//        var calendar = new FullCalendar.Calendar(calendarEl, {
-//            initialView: 'dayGridMonth',
-//            initialDate: GetDate(currentDate),
-//            headerToolbar: {
-//                left: 'prev,next today',
-//                center: 'title',
-//                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-//            }
-//        });
-//        addEvent(calendar);
-//        calendar.render();
-//    })
-//});
-
-
-
+function NextMonth(calendar) {
+    calendar.prev();
+}
 
 async function GetReservation() {
     try {
@@ -61,6 +58,10 @@ async function GetReservation() {
     }
 }
 
+/**
+ * 
+ * @param {any} calendar
+ */
 function addEvent(calendar) {
     GetReservation().then((data) => {
         data.forEach((item) =>
