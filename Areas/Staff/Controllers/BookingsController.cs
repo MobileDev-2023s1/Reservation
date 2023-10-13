@@ -71,17 +71,17 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             var startDate = current.AddDays(-current.Day).AtMidnight();
             var endDate = startDate.AddDays(Days(current));
 
-            var model = new List<LoadDetails>();
-            
             var reservations = await _reservationServices.GetActiveReservationsByMonth(startDate, endDate);
 
             var result = reservations.Select(r => new
             {
-                title = r.Person.FirtName.ToString() + " " + r.Person.LastName.ToString(),
+                id= r.Id,
+                title = r.Person.FirtName.ToString() + " " + r.Person.LastName.ToString() + " - Guests: " + r.Guests.ToString(),
                 start = r.Start,
-                end = r.Start.AddMinutes(r.Duration),
-                color = "#000"
-                
+                end = r.End,
+                backgroundColor = AssignBackgroundColor(r.ReservationStatusID),
+                borderColor = AssignBorderColor(r.ReservationStatusID),
+                textColor = AssignTextColor(r.ReservationStatusID),
             });
 
             return Ok(result);
@@ -106,6 +106,53 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
 
             return 0;
         }
+
+        public string AssignBackgroundColor(int id)
+        {
+            switch (id)
+            {
+                //pending
+                case 1: return "#f8d7da"; break;
+                //confirmed
+                case 2: return "#d1e7dd"; break;
+                //seated
+                case 4: return "#cfe2ff"; break;
+                default: return null;
+
+
+            }
+        }
+
+        public string AssignBorderColor(int id)
+        {
+            switch (id)
+            {
+                //pending
+                case 1: return "#f5c2c7"; break;
+                //confirmed
+                case 2: return "#badbcc"; break;
+                //seated
+                case 4: return "#b6d4fe"; break;
+                default: return null;
+
+            }
+        }
+
+        public string AssignTextColor(int id)
+        {
+            switch (id)
+            {
+                //pending
+                case 1: return "#842029"; break;
+                //confirmed
+                case 2: return "#0f5132"; break;
+                //seated
+                case 4: return "#084298"; break;
+                default: return null;
+
+            }
+        }
+
 
 
     }

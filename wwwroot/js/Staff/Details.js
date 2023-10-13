@@ -1,12 +1,15 @@
 ﻿
 $(() => {
-    //GetAllReservatios();
+    
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         showNonCurrentDates: false,
         events: {
             url: '/Staff/Bookings/GetReservations'
+        },  
+        eventClick: (info) => {
+            alert(info.event.id + " " + info.event.title)
         },
         headerToolbar: {
             left: 'prev,next today',
@@ -18,6 +21,10 @@ $(() => {
     });
     calendar.render();
 });
+
+function GetEvent(calendar, id) {
+    calendar.GetEvent(id)
+}
 
 
 

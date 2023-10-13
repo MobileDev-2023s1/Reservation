@@ -9,6 +9,7 @@ select count(*) from Sittings;
 delete from Sittings
 where Id >= 1;
 
+select * from People;
 select * from Reservations;
 select * from sittings
 where RestaurantId = 1 and Start >= '2023-10-13 7:00:00 AM' and [End] <= '2023-10-13 11:00:00 PM';
@@ -48,7 +49,7 @@ select * from ReservationStatuses;
 select * from ResevationOrigins;
 
 
-select * from People;
+
 
 select * from AspNetUsers;
 
