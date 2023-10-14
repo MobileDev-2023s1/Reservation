@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Humanizer;
 
 namespace Group_BeanBooking.Services
 {
@@ -22,6 +23,41 @@ namespace Group_BeanBooking.Services
         {
             return await _context.ResevationOrigins.FirstOrDefaultAsync(r => r.Name == reservationOriginName);
         }
+
+        public async Task<List<Reservation>> GetAllReservations()
+        {
+            var reservations = await _context.Reservations
+                .Include(r => r.Person) //eager loading
+                .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
+                    .ThenInclude(s => s.Restaurant)
+                .Include(r => r.ResevationOrigin)
+                .Include(r => r.ReservationStatus)
+                .OrderBy(r => r.Start)
+                .ToListAsync();
+
+            return reservations;
+        }
+
+
+
+        /// <summary>
+        /// Gets all the reservation that are not cancelled and are 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Reservation>> GetActiveReservationsByMonth(DateTime start, DateTime end)
+        {
+            var reservations = await _context.Reservations
+                .Include(r => r.Person) //eager loading
+                .Include(a => a.RestaurantArea)
+                /*.Include(r => r.ReservationStatus)*/ //185 read without - 437 with this
+                .Where(r=>r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .Where(r => r.Start >= start && r.Start <= end)
+                .OrderBy(r => r.Start)
+                .ToListAsync();
+
+            return reservations;
+
+        }
                
         //https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager
         public async Task<List<Reservation>> GetReservationsByPersonId(int? personId)
@@ -32,7 +68,10 @@ namespace Group_BeanBooking.Services
                     .ThenInclude(s => s.Restaurant)
                 .Include(r => r.ResevationOrigin)
                 .Include(r => r.ReservationStatus)
-                .Where(p => p.PersonId == personId).ToListAsync();
+                .Where(r => r.PersonId == personId && r.Start >= DateTime.Now 
+                        && r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .OrderBy(r => r.Start)
+                .ToListAsync();
 
             return reservations;
         }
@@ -97,7 +136,9 @@ namespace Group_BeanBooking.Services
         {
             await _context.Reservations
                 .Where(r => r.Id == id)
-                .ExecuteDeleteAsync();
+                .ExecuteUpdateAsync(r => r
+                    .SetProperty(r => r.ReservationStatusID, 3)
+                );
         }
 
     }

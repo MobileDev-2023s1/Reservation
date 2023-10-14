@@ -4,103 +4,141 @@
 @inject UserManager<ApplicationUser> UserManager
 @model Group_BeanBooking.Areas.Customers.Models.Bookings.Edit;
 
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
 
-    th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
+<div>
+    <input id="RestaurantId" asp-for="RestaurantId" type="hidden" value="@Model.RestaurantId" />
+    <input asp-for="SittingId" type="hidden" />
+    <script src="~/js/customers/customercreate.js"></script>
+    
+</div>
 
-    th {
-        background-color: #ddd;
-        text-align: center
-
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-</style>
 
 <head>
-    <h1>See details of your booking below.</h1>
-    <h2>Make all necesary changes where required.</h2>
+    <h1>See details of your booking below at @Model.RestaurantName</h1>
+    <h2>Make changes where required.</h2>
     <br />
+    
 
 </head>
-
+@*I am going to change this page. So I will now include 2 columns but they are going to be independent. *@
 <body>
     <form method="post">
         <h2>Booking under: <br /> @Model.FirstName @Model.LastName</h2> <br />
         <input asp-for="ReservationId" type="hidden" />
-        <table border="1" align="center">
-            <th>Current Details</th>
-            <th>New Details</th>
 
-            <tbody>
-                <tr>
-                    <td><h3>StartTime:</h3> <h3>@Model.Starttime</h3></td>
-                    <td valign="middle">
+        <div class="container">
+            <div id="BookingVariables">
+                @*first row*@
+                <div class="row bg-primary" >
+                    <!-- First Column -->
+                    <div class="col border-bottom border-start border-end border-top">
+                        <button>Hello</button>
+                    </div>
+                    <!-- Second Column -->
+                    <div class="col border-bottom border-start border-end border-top">
+                        <h1>New details</h1>
+                    </div>
+                </div>
+
+                @*second row*@
+                <div class="row">
+                    <!-- First Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        <h3>Start Time:</h3> <h3>@Model.Starttime</h3>
+                    </div>
+                    <!-- Second Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
                         <label asp-for="Starttime">
-                            <input type="datetime-local" asp-for="Starttime" value="@Model.Starttime.ToString("yyyy-MM-ddTHH:mm")" 
-                                min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+                           <br /> <input id="Date" type="datetime-local" asp-for="Starttime" value="@Model.Starttime.ToString("yyyy-MM-ddTHH:mm")"
+                                   min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
                         </label><br />
-                    </t>
-                </tr>
-                <tr>
-                    <td><h2>Booking length:</h2> <h2>@Model.Duration mins</h2></td>
-                    <td><label asp-for="Duration">
-                            <input type="number" asp-for="Duration" min="30" max="180" value="@Model.Duration" />
+                    </div>
+                </div>
+
+                @*third row*@
+                <div class="row">
+                    <!-- First Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        <h2>Booking length:</h2> <h2>@Model.Duration mins</h2>
+                    </div>
+                    <!-- Second Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                       <br /> <label asp-for="Duration">
+                            <input id="duration" type="number" asp-for="Duration" min="30" max="180" value="@Model.Duration" />
                         </label> <br />
-                        </td>
-                </tr>
-                <tr>
-                    <td><h2>Guests:</h2> <h2>@Model.Guests</h2></td>
-                    <td>
-                        <label asp-for="Guests">
-                            <input type="number" asp-for="Guests" min="1" max="100" value="@Model.Guests" />
+                    </div>
+                </div>
+
+                @*fourth row*@
+                <div class="row">
+                    <!-- First Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        <h2>Guests:</h2> <h2>@Model.Guests</h2>
+                    </div>
+                    <!-- Second Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                       <br /> <label asp-for="Guests">
+                            <input id="guests" type="number" asp-for="Guests" min="1" max="100" value="@Model.Guests" />
                         </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td><h2>Sitting at:</h2> <h2>@Model.SittingAreaName area</h2></td>
-                    <td>
-                        <label asp-for="RestaurantAreaId">
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="UserAlert" class="" role="alert" style="display: none"></div>
+
+            <div id="BookingDetails" style="display: none">
+
+                @*Sitting area row*@
+                <div class="row">
+                    <!-- First Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        <h2>Sitting at:</h2> <h2>@Model.SittingAreaName area</h2>
+                    </div>
+                    <!-- Second Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        <br /><label asp-for="RestaurantAreaId">
                             <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select>
                         </label><br />
-                    </td>
-                </tr>
-                <tr>
-                    <td><h2>Food type:</h2> <h2>@Model.SittingName</h2></td>
-                    <td>
-                        <label asp-for="SittingId">
-                            <select asp-for="SittingId" asp-items="@Model.SittingList"></select>
+                    </div>
+                </div>
+
+                @*xxx row*@
+                <div class="row">
+                    <!-- First Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        <h2>Food type:</h2> <h2>@Model.SittingName</h2>
+                    </div>
+                    <!-- Second Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        
+                        <label asp-for="SittingId">What menu?</label><br />
+                        <select asp-for="SittingId" id="MenuType">
+                            <option value="">Select One</option>
+                        </select>
+                        <div id="HourAlert" class="" role="alert" style="display: none"></div>
+                        @*<div id="BookingDetails" class="" role="alert" style="display: none"></div>*@
+                    </div>
+                </div>
+
+                @*xxx row*@
+                <div class="row">
+                    <!-- First Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                        <br /> <h2>Comments:</h2> @Model.Comments </h2>
+                    </div>
+                    <!-- Second Column -->
+                    <div class="col-6 border-bottom border-start border-end border-top">
+                       <br /> <label asp-for="Comments">
+                            <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
                         </label><br />
-                    </td>
-                </tr>
-                <tr>
-                    <td><h2>Comments:</h2> @Model.Comments </h2></td>
-                    <td>
-                        <label asp-for="Comments"> <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
-                        </label><br />
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
 
-            </tbody>
-
-        </table>
-
-
-
-        <br /><br /><input type="submit" value="Edit" class="btn btn-primary" />
-        
-
-
+            <br /><br /><input id="submit" type="submit" value="Edit" class="btn btn-primary" disabled="disabled" />
+        </div>
+                  
     </form>
 </body>
 
