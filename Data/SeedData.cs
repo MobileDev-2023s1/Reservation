@@ -55,13 +55,13 @@ namespace Group_BeanBooking.Data
                 new ResevationOrigin { Name = "Online"},
                 new ResevationOrigin { Name = "Phone"},
                 new ResevationOrigin { Name = "Email"},
-                new ResevationOrigin { Name = "Person"},  
-                
+                new ResevationOrigin { Name = "Person"},
+
             };
 
             foreach (var item in origins)
             {
-                
+
                 if (await _context.ResevationOrigins.FirstOrDefaultAsync(r => r.Name == item.Name) == null)
                 {
                     await _context.ResevationOrigins.AddAsync(item);
@@ -79,7 +79,7 @@ namespace Group_BeanBooking.Data
 
             foreach (var role in roles)
             {
-                if ( await _rolesManager.FindByNameAsync(role) == null)
+                if (await _rolesManager.FindByNameAsync(role) == null)
                 {
                     await _rolesManager.CreateAsync(new IdentityRole { Name = role });
                 }
@@ -145,9 +145,9 @@ namespace Group_BeanBooking.Data
                 new ReservationStatus {Name = "Completed"}
             };
 
-            foreach(var item in list) 
+            foreach (var item in list)
             {
-                if (await _context.ReservationStatuses.FirstOrDefaultAsync(r=>r.Name == item.Name) == null )
+                if (await _context.ReservationStatuses.FirstOrDefaultAsync(r => r.Name == item.Name) == null)
                 {
                     await _context.ReservationStatuses.AddAsync(item);
                 }
@@ -164,13 +164,13 @@ namespace Group_BeanBooking.Data
 
             };
 
-            foreach(var restaurant in list)
+            foreach (var restaurant in list)
             {
-                
-                if(await _context.Restaurants.FirstOrDefaultAsync(r=> r.Name == restaurant.Name) == null)
+
+                if (await _context.Restaurants.FirstOrDefaultAsync(r => r.Name == restaurant.Name) == null)
                 {
                     await _context.Restaurants.AddAsync(restaurant);
-                } 
+                }
             }
             await _context.SaveChangesAsync();
         }
@@ -187,16 +187,16 @@ namespace Group_BeanBooking.Data
             var restaurants = await _context.Restaurants.ToListAsync();
             var restaAreas = await _context.ResturantAreas.ToListAsync();
 
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 foreach (var restaurant in restaurants)
                 {
-                    if(restaAreas.FirstOrDefault(r=> r.RestaurantId == restaurant.Id && r.Name == item.Name) == null)
+                    if (restaAreas.FirstOrDefault(r => r.RestaurantId == restaurant.Id && r.Name == item.Name) == null)
                     {
                         item.RestaurantId = restaurant.Id;
                         await _context.ResturantAreas.AddAsync(item);
                     }
-                    
+
                 }
             }
             await _context.SaveChangesAsync();
@@ -223,71 +223,65 @@ namespace Group_BeanBooking.Data
         }
 
         public async Task SeedSittings()
-
-           // taka disabled sitting seeding. 
+        // taka disabled sitting seeding. 
         {
-            var start = "22/09/2023 7:00:00 AM";
-            List<Sitting> list = new()
-            {
-                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1, RepeatPattern="FFFFFFF"},
-                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 50, TypeId = 2,RepeatPattern="FFFFFFF"},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 50, TypeId = 3, RepeatPattern = "FFFFFFF"}
-            };
-            
-            var listrestaurants = await _context.Restaurants
-                .Include(r => r.Sittings).ToListAsync();
+            //var start = "22/09/2023 7:00:00 AM";
+            //List<Sitting> list = new()
+            //{
+            //    new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1, RepeatPattern="FFFFFFF"},
+            //    new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 50, TypeId = 2,RepeatPattern="FFFFFFF"},
+            //    new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 50, TypeId = 3, RepeatPattern = "FFFFFFF"}
+            //};
 
-            foreach(var restaurant in listrestaurants)
-            {
-                foreach (var item in list)
-                {
-                    for (int i = 0; i < 90; i++)
-                    {
-                        var rest = restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == item.Start.AddDays(i) &&
-                        r.End == item.End.AddDays(i) && r.RestaurantId == restaurant.Id);
-                        if (rest == null)
-                        { 
-                            await _context.Sittings.AddAsync(new Sitting
-                            {
-                                Name = item.Name,
-                                Closed = false,
-                                Start = item.Start.AddDays(i),
-                                End = item.End.AddDays(i),
-                                Capacity = item.Capacity,
-                                TypeId = item.TypeId,
-                                RestaurantId = restaurant.Id,
-                                RepeatPattern = item.RepeatPattern
-                                
-                            });
-                            await _context.SaveChangesAsync();
+            //var listrestaurants = await _context.Restaurants
+            //    .Include(r => r.Sittings).ToListAsync();
 
-            //            }
+            //foreach (var restaurant in listrestaurants)
+            //{
+            //    foreach (var item in list)
+            //    {
+            //        for (int i = 0; i < 90; i++)
+            //        {
+            //            var rest = restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == item.Start.AddDays(i) &&
+            //            r.End == item.End.AddDays(i) && r.RestaurantId == restaurant.Id);
+            //            if (rest == null)
+            //            {
+            //                await _context.Sittings.AddAsync(new Sitting
+            //                {
+            //                    Name = item.Name,
+            //                    Closed = false,
+            //                    Start = item.Start.AddDays(i),
+            //                    End = item.End.AddDays(i),
+            //                    Capacity = item.Capacity,
+            //                    TypeId = item.TypeId,
+            //                    RestaurantId = restaurant.Id,
+            //                    RepeatPattern = item.RepeatPattern
 
-            //        }
-            //    }
-            //}
+            //                });
+            //                await _context.SaveChangesAsync();
+
+
         }
 
-        public void SeedTables()
-        {
-            //see which areas are included in the restaurant
+         public void SeedTables()
+         {
+                            //see which areas are included in the restaurant
             var list = new List<RestaurantTable>()
             {
-                new RestaurantTable {Name = "M1" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M2" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M3" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M4" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M5" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "O1" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O2" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O3" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O4" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O5" , RestaurantAreaId = 2 },
-
-                
+            new RestaurantTable {Name = "M1" , RestaurantAreaId = 1 },
+            new RestaurantTable {Name = "M2" , RestaurantAreaId = 1 },
+            new RestaurantTable {Name = "M3" , RestaurantAreaId = 1 },
+            new RestaurantTable {Name = "M4" , RestaurantAreaId = 1 },
+            new RestaurantTable {Name = "M5" , RestaurantAreaId = 1 },
+            new RestaurantTable {Name = "O1" , RestaurantAreaId = 2 },
+            new RestaurantTable {Name = "O2" , RestaurantAreaId = 2 },
+            new RestaurantTable {Name = "O3" , RestaurantAreaId = 2 },
+            new RestaurantTable {Name = "O4" , RestaurantAreaId = 2 },
+            new RestaurantTable {Name = "O5" , RestaurantAreaId = 2 },
             };
-            
 
-        }
+         }
+
     }
+   
 }
