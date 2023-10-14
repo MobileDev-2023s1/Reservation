@@ -226,7 +226,7 @@ namespace Group_BeanBooking.Data
 
            // taka disabled sitting seeding. 
         {
-            ////var start = "22/09/2023 7:00:00 AM";
+            //var start = "22/09/2023 7:00:00 AM";
             //List<Sitting> list = new()
             //{
             //    new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Now , End = DateTime.Now.AddHours(4) , Capacity= 40, TypeId = 1 },
@@ -234,21 +234,21 @@ namespace Group_BeanBooking.Data
             //    new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Now.AddHours(12) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 3}
             //};
 
-            
-            
+
+
             //var listrestaurants = await _context.Restaurants
             //    .Include(r => r.Sittings).ToListAsync();
 
-            //foreach(var restaurant in listrestaurants)
+            //foreach (var restaurant in listrestaurants)
             //{
             //    foreach (var item in list)
             //    {
-            //        for (int i = 0; i < 90; i++) 
+            //        for (int i = 0; i < 90; i++)
             //        {
             //            var rest = restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == item.Start.AddDays(i) &&
             //            r.End == item.End.AddDays(i) && r.RestaurantId == restaurant.Id);
             //            if (rest == null)
-            //            { 
+            //            {
             //                await _context.Sittings.AddAsync(new Sitting
             //                {
             //                    Name = item.Name,

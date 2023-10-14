@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Group_BeanBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -265,7 +265,8 @@ namespace Group_BeanBooking.Migrations
                     End = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
-                    TypeId = table.Column<int>(type: "int", nullable: false)
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -454,8 +455,7 @@ namespace Group_BeanBooking.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_RestaurantAreaId",
                 table: "Reservations",
-                column: "RestaurantAreaId",
-                unique: true);
+                column: "RestaurantAreaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_SittingID",
