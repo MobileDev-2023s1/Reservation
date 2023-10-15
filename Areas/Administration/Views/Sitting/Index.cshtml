@@ -69,10 +69,12 @@
 }
     </tbody>
 </table>
+
+<div id='draggable-el' data-event='{ "title": "my event", "duration": "02:00" }'>drag me</div>
+
 @{
     string buttonColor = "#2c3e50";
     string buttonTextColor = "white";
-
 }
 
 <style>
@@ -91,6 +93,28 @@
         margin: 40px auto;
     }
 
+    #external-events {
+        position: fixed;
+        z-index: 2;
+        top: 20px;
+        left: 20px;
+        width: 150px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background: #eee;
+    }
+
+        #external-events .fc-event {
+            cursor: move;
+            margin: 3px 0;
+        }
+
+    #calendar-container {
+        position: relative;
+        z-index: 1;
+        margin-left: 200px;
+    }
+
 </style>
 
 
@@ -98,25 +122,32 @@
 
 
 
+<div id='external-events'>
+    <p>
+        <strong>Draggable Events</strong>
+    </p>
 
-<div id="searchSection" class="row">
-    <div id="searchSection" class="row">
-        <div class="col-4">
-            <label>Restaurant Name:</label>
-            <input id="name" type="text" />
-        </div>
-        <div class="col-3">
-            <label>User Email:</label>
-        </div>
-        <div class="col-4">
-            <label>Booking status:</label>
-        </div>
-        <div class="col-1">
-            <button id="search">Search</button>
-        </div>
+    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main'>My Event 1</div>
     </div>
-</div>
+    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main'>My Event 2</div>
+    </div>
+    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main'>My Event 3</div>
+    </div>
+    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main'>My Event 4</div>
+    </div>
+    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main'>My Event 5</div>
+    </div>
 
+    <p>
+        <input type='checkbox' id='drop-remove' />
+        <label for='drop-remove'>remove after drop</label>
+    </p>
+</div>
 
 <form>
     <body>
@@ -129,5 +160,6 @@
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-    <script src="/js/staff/details.js"></script>
+    <script src="/js/Administration/index.js"></script>
 }
+
