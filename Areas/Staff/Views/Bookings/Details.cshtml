@@ -1,9 +1,4 @@
-﻿@{
-    string buttonColor = "#2c3e50";
-    string buttonTextColor = "white";
-
-}
-
+﻿@model Group_BeanBooking.Areas.Staff.Models.Bookings.LoadDetails;
 <style>
 
     html, body {
@@ -11,6 +6,9 @@
         padding: 0;
         font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
         font-size: 14px;
+    }
+
+    #searchSection{ 
         max-width: 1100px;
         margin: 40px auto;
     }
@@ -23,7 +21,7 @@
 </style>
 
 
-<link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />
+@*<link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />*@
 
     
 
@@ -31,17 +29,26 @@
 <div id="searchSection" class="row">
     <div id="searchSection" class="row">
         <div class="col-4">
-            <label>Restaurant Name:</label>
-            <input id="name" type="text" />
+            <label>Restaurant:</label><br />
+            <select id="restaurantLocation" asp-for="RestaurantId" asp-items="@Model.RestaurantList" default="Select One">
+                <option itemid="0">Select One</option>
+            </select>
         </div>
         <div class="col-3">
-            <label>User Email:</label>
+            <label>User Email:</label><br />
+            <input id="userEmail" type="text" />
         </div>
         <div class="col-4">
-            <label>Booking status:</label>
+            <label>Booking Status:</label><br />
+            <select id="bookingStatus" asp-for="StatusId" asp-items="@Model.StatusesList" >
+                <option itemid="0">Select One</option>
+            </select>
+
         </div>
         <div class="col-1">
-            <button id="search">Search</button>
+            <button id="searchCustomer">Search</button> <br /><br />
+
+            <button id="clearButton">Reset</button>
         </div>
     </div>
 </div>
@@ -56,7 +63,39 @@
 
 </form>
 
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <h1 id="customerName"></h1>
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-    <script src="/js/staff/details.js"></script>
+    <script src="/js/staff/Details.js"></script>
+    <script src="~/js/site.js"></script>
 }

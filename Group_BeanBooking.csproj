@@ -52,7 +52,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Customers\Scripts\" />
-    <Folder Include="Areas\Staff\Data\" />
   </ItemGroup>
 
 </Project>

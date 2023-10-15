@@ -1,5 +1,8 @@
-﻿using Group_BeanBooking.Areas.Identity.Data;
+﻿using Group_BeanBooking.Areas.Customers.Models.Bookings;
+using Group_BeanBooking.Areas.Identity.Data;
+using Group_BeanBooking.Areas.Staff.Data;
 using Group_BeanBooking.Areas.Staff.Models.Bookings;
+
 using Group_BeanBooking.Data;
 using Group_BeanBooking.Services;
 
@@ -7,7 +10,9 @@ using Humanizer;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Framework;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 using Org.BouncyCastle.Bcpg.OpenPgp;
@@ -21,11 +26,14 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         private readonly RestaurantServices _restaurantServices;
         private readonly PersonServices _personServices;
         private readonly ReservationServices _reservationServices;
+        private readonly StatusesServices _statusesServices;
         public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager) : base(context, userManager, rolesManager)
         {
             _restaurantServices = new RestaurantServices(context, userManager, rolesManager);
             _personServices = new PersonServices(context, userManager, rolesManager);
             _reservationServices = new ReservationServices(context, userManager, rolesManager);
+            _statusesServices = new StatusesServices(context, userManager, rolesManager);
+            
         }
 
         
@@ -35,43 +43,47 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details()
+        public async Task<IActionResult> Details()
         {
 
-            //var c = new Group_BeanBooking.Areas.Staff.Models.Details();
-            return View();
+            var restaurants = await _restaurantServices.GetRestaurants();
+            var statuses = await  _statusesServices.GetListReservationStatus();
+
+            var model = new LoadDetails
+            {
+                RestaurantList = new SelectList(restaurants, "Id", "Name"),
+                StatusesList = new SelectList(statuses, "Id", "Name"),
+            };
+            
+            return View(model);
             
         }
 
+        
         [HttpGet]
-        public async Task<List<LoadDetails>> GetAllReservations()
+        public async Task<IActionResult> GetReservations(string start, string email, int location, int status)
         {
-            var model = new List<LoadDetails>();
-
-            var reservations = await _reservationServices.GetAllReservations();
-
-            foreach (var r in reservations)
-            {
-                model.Add(new LoadDetails
-                {
-                    BookingId = r.Id,
-                    Start = r.Start,
-                    Name = r.Person.FirtName.ToString() + " " + r.Person.LastName.ToString(),
-                });
-            }
-
-            return model;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetReservations(string start)
-        {
+            //transform date from calendar to DateTime format
             var current = DateTime.Parse(start);
-            //var current = DateTime.Now;
             var startDate = current.AddDays(-current.Day).AtMidnight();
             var endDate = startDate.AddDays(Days(current));
 
-            var reservations = await _reservationServices.GetActiveReservationsByMonth(startDate, endDate);
+            List<Reservation> reservations = new List<Reservation>();
+
+            //Creates an object to build the else clause
+           var whereClause = new WhereClause
+            {
+                StartDate = startDate,
+                EndDate = endDate,
+                Email = email,
+                RestaurantId = location,
+                StatusId = status
+           };
+
+            var clause = whereClause.BuildWhereClause(whereClause);
+
+            if(clause != null) {reservations = await _reservationServices.GetAllReservations(startDate, endDate, clause);}
+            else { reservations = await _reservationServices.GetActiveReservationsByMonth(startDate, endDate);}
 
             var result = reservations.Select(r => new
             {
@@ -87,6 +99,23 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetReservationById(int bookingID)
+        {
+            var model = new CompleteDetails();
+            var clause = new WhereClause
+            {
+                BookingId = bookingID,
+            }
+
+            var reservation = _reservationServices.GetAllReservations(clause)
+
+            return View();
+        }
+
+
+
+        #region Includes format information for events on the calendar
         public int Days(DateTime date)
         {
             switch (date.Month)
@@ -152,6 +181,8 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
 
             }
         }
+
+        #endregion
 
 
 

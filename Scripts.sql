@@ -12,7 +12,20 @@ where Id >= 1;
 select * from People;
 select * from Reservations;
 select * from sittings
-where RestaurantId = 1 and Start >= '2023-10-13 7:00:00 AM' and [End] <= '2023-10-13 11:00:00 PM';
+where RestaurantId = 1 and Start >= '2023-10-01 7:00:00 AM' and [End] <= '2023-10-31 11:00:00 PM';
+
+select * from Reservations
+where Start >= GETDATE()
+
+select count(*) from Reservations
+where PersonId = 1 and Start >= '2023-10-01 7:00:00 AM' and Start <= '2023-10-31 11:00:00 PM';
+
+update Reservations 
+set ReservationStatusID = 4
+where Id = 1022;
+
+select COUNT(*) from Reservations
+where Start >= '2023-10-01 7:00:00 AM' and Start <= '2023-10-31 11:00:00 PM'
 
 Select * from Sittings
 where name = 'Continental Lunch' and RestaurantId = 1;
@@ -46,6 +59,7 @@ where Id = 11;
 
 
 select * from ReservationStatuses;
+
 select * from ResevationOrigins;
 
 

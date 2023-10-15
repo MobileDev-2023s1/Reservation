@@ -34,7 +34,7 @@ namespace Group_BeanBooking.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //await _seedData.SeedDataMain();
+            await _seedData.SeedDataMain();
             var restaurants = await _context.Restaurants.ToListAsync();
             var c = new RestaurantList();
             c.RestList = new SelectList(restaurants, "Id", "Name");

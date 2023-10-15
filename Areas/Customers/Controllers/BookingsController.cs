@@ -229,7 +229,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
 
             //add sitting services and add a function for this... 
             var sitting = await _context.Sittings
-                .Include(r => r.Restaurant)
+                //.Include(r => r.Restaurant)
                 .Where(r => r.RestaurantId == Id)
                 .Where(s => s.Start >= start && s.End <= end)
                 .Include(r => r.Reservations)
