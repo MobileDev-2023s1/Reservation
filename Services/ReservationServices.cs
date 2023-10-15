@@ -27,7 +27,7 @@ namespace Group_BeanBooking.Services
             return await _context.ResevationOrigins.FirstOrDefaultAsync(r => r.Name == reservationOriginName);
         }
 
-        public async Task<List<Reservation>> GetAllReservations(DateTime start, DateTime end , Expression<Func<Reservation, bool>> clause)
+        public async Task<List<Reservation>> GetAllReservations(Expression<Func<Reservation, bool>> clause)
         {
             var reservations = await _context.Reservations
                 .Include(r => r.Person) //eager loading
@@ -35,12 +35,23 @@ namespace Group_BeanBooking.Services
                     .ThenInclude(s => s.Restaurant)
                 .Include(r => r.ResevationOrigin)
                 .Include(r => r.ReservationStatus)
-                .Where(r => r.Start >= start && r.Start <= end)
                 .Where(clause)
                 .OrderBy(r => r.Start)
                 .ToListAsync();
 
             return reservations;
+        }
+
+        public async Task<Reservation> GetSingelReservationById(Expression<Func<Reservation, bool>> clause)
+        {
+            var reservation = await _context.Reservations
+                .Include(r => r.Person) //eager loading
+                .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
+                .Include(r => r.ReservationStatus)
+                .SingleOrDefaultAsync(clause);
+                
+
+            return reservation ;
         }
 
 
@@ -49,14 +60,14 @@ namespace Group_BeanBooking.Services
         /// Gets all the reservation that are not cancelled and are 
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Reservation>> GetActiveReservationsByMonth(DateTime start, DateTime end)
+        public async Task<List<Reservation>> GetActiveReservationsByMonth(Expression<Func<Reservation, bool>> clause)
         {
             var reservations = await _context.Reservations
                 .Include(r => r.Person) //eager loading
                 .Include(a => a.RestaurantArea)
                 /*.Include(r => r.ReservationStatus)*/ //185 read without - 437 with this
                 .Where(r=>r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
-                .Where(r => r.Start >= start && r.Start <= end)
+                .Where(clause)
                 .OrderBy(r => r.Start)
                 .ToListAsync();
 

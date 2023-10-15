@@ -86,7 +86,7 @@ async function LoadSearchVariables(bookingID) {
 
         try {
             const baseUrl = baseURL()
-            const url = new URL("/Staff/Bookings/GetReservationById?Id=" + bookingID, baseUrl);
+            const url = new URL("/Staff/Bookings/GetReservationById?bookingID=" + bookingID, baseUrl);
             const response = await fetch(url);
 
             if (!response.ok) {

@@ -1,4 +1,8 @@
-﻿using Group_BeanBooking.Areas.Customers.Models.Bookings;
+﻿using System.Linq.Expressions;
+
+using Google.Protobuf.WellKnownTypes;
+
+using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Group_BeanBooking.Areas.Identity.Data;
 using Group_BeanBooking.Areas.Staff.Data;
 using Group_BeanBooking.Areas.Staff.Models.Bookings;
@@ -14,6 +18,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+
+using NuGet.Packaging.Signing;
 
 using Org.BouncyCastle.Bcpg.OpenPgp;
 
@@ -45,7 +51,6 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         [HttpGet]
         public async Task<IActionResult> Details()
         {
-
             var restaurants = await _restaurantServices.GetRestaurants();
             var statuses = await  _statusesServices.GetListReservationStatus();
 
@@ -54,9 +59,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 RestaurantList = new SelectList(restaurants, "Id", "Name"),
                 StatusesList = new SelectList(statuses, "Id", "Name"),
             };
-            
             return View(model);
-            
         }
 
         
@@ -71,7 +74,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             List<Reservation> reservations = new List<Reservation>();
 
             //Creates an object to build the else clause
-           var whereClause = new WhereClause
+           var whereClause = new WhereClauseCalendarView
             {
                 StartDate = startDate,
                 EndDate = endDate,
@@ -82,8 +85,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
 
             var clause = whereClause.BuildWhereClause(whereClause);
 
-            if(clause != null) {reservations = await _reservationServices.GetAllReservations(startDate, endDate, clause);}
-            else { reservations = await _reservationServices.GetActiveReservationsByMonth(startDate, endDate);}
+            reservations = await _reservationServices.GetActiveReservationsByMonth(clause);
 
             var result = reservations.Select(r => new
             {
@@ -102,15 +104,31 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReservationById(int bookingID)
         {
-            var model = new CompleteDetails();
-            var clause = new WhereClause
+            var whereClause = new WhereClauseCalendarView
             {
                 BookingId = bookingID,
-            }
+            };
+            var clause = whereClause.BuildWhereClause(whereClause);
+            var r = await _reservationServices.GetSingelReservationById(clause);
 
-            var reservation = _reservationServices.GetAllReservations(clause)
-
-            return View();
+            var model = new CompleteDetails()
+            {
+                BookingId = r.Id,
+                RestaurantID = r.Sitting.RestaurantId,
+                Duration = r.Duration,
+                SittingId = r.Sitting.Id,
+                StartTime = r.Start,
+                EndTime = r.End,
+                AssignedTable = r.RestaurantTables,
+                Guest = r.Guests,
+                PersonId = r.Person.Id,
+                PersonName = string.Concat(r.Person.FirtName," ",r.Person.LastName),
+                RestaurantAreaId = r.RestaurantAreaId,
+                ReservationStatusId = r.ReservationStatus.Id,
+                Comments = r.Comments
+            };
+            
+            return Ok(model);
         }
 
 
