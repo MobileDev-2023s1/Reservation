@@ -1,0 +1,25 @@
+﻿.fc .fc-button-group {
+    display: inline-flex;
+    position: relative;
+    vertical-align: middle;
+}
+
+.fc, .fc *, .fc ::after, .fc ::before {
+    box-sizing: border-box;
+}
+
+.fc-direction-ltr {
+    direction: ltr;
+    text-align: left;
+}
+
+.fc .fc-button-group > .fc-button {
+    flex: 1 1 auto;
+    position: relative;
+}
+
+.fc .fc-button-primary {
+    background-color: var(--fc-button-bg-color);
+    border-color: var(--fc-button-border-color);
+    color: var(--fc-button-text-color);
+}
