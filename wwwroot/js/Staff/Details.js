@@ -8,8 +8,6 @@
  * https://fullcalendar.io/docs/v4/events-json-feed
  */
 
-
-
 /**Variables that are loaded inclided in the HTML */
 var restaurantLocation = document.getElementById('restaurantLocation');
 var bookingEmail = document.getElementById('userEmail')
@@ -60,10 +58,15 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
                 status: bookingStatus.options[bookingStatus.selectedIndex].value
             }
         },  
-        eventClick: (info) => {
+        eventClick: async (info) => {
             $('#exampleModalCenter').modal('show');
-            document.getElementById('customerName').innerHTML = info.event.id;
-            LoadSearchVariables(info.event.id)
+            var data = await LoadSearchVariables(info.event.id)
+            document.getElementById('RestaurantId').value = data.restaurantID;
+            document.getElementById('bookingDetails').innerHTML = "Booking: "+ data.bookingId;
+            document.getElementById('Date').value = data.startTime; 
+            document.getElementById('duration').value = data.duration
+            document.getElementById('guests').value = data.guest
+            document.getElementById('comments').value = data.comments
             
         },
         headerToolbar: {
@@ -79,11 +82,8 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
 }
 
 async function LoadSearchVariables(bookingID) {
-
     if (bookingID == undefined) {
-
     } else {
-
         try {
             const baseUrl = baseURL()
             const url = new URL("/Staff/Bookings/GetReservationById?bookingID=" + bookingID, baseUrl);
@@ -99,13 +99,7 @@ async function LoadSearchVariables(bookingID) {
         } catch (error) {
             alert(error)
         }
-
     }
-
-
-
-
-    
 }
 
 

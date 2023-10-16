@@ -23,9 +23,6 @@
 
 @*<link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />*@
 
-    
-
-
 <div id="searchSection" class="row">
     <div id="searchSection" class="row">
         <div class="col-4">
@@ -53,7 +50,6 @@
     </div>
 </div>
 
-
 <form>
     <body>
 
@@ -75,21 +71,59 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h4 class="modal-title" id="bookingDetails">Modal title</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-          <h1 id="customerName"></h1>
-        ...
+        <div id="bookingInformation" class="container-fluid alert alert-primary">
+
+            <div id="BookingVariables">
+                <label >Booking time</label>
+                <input id="Date" asp-for="UpdateDails.Starttime" type="datetime-local" value="" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+
+                <label>Booking length</label>
+                <input id="duration" asp-for="UpdateDails.Duration" type="number" min="30" max="180" value="" /><br /><br />
+
+                <label >Guests</label>
+                <input id="guests" asp-for="UpdateDails.Guests" type="number" min="1" max="100" value="" /> <br /><br />
+
+                <input id="RestaurantId" type="hidden" value="" />
+                </div>
+
+
+            <label asp-for="UpdateDails.SittingId">What menu?</label><br />
+            <select asp-for="SittingId" id="MenuType">
+                <option value=""></option> @*investigate how to pass the value chosen as default*@
+            </select><br /> <br />
+
+
+            <label asp-for="UpdateDails.RestaurantAreaId">Where to sit?</label><br />@*investigate how to pass the value chosen as default*@
+            <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
+
+            <label asp-for="UpdateDails.Comments">Comments</label><br />
+            <input id="comments" asp-for="UpdateDails.Comments" type="text" width="150" height="300" maxlength="200" value=""/> <br /> <br />
+
+            <label>Booking Status:</label><br />
+            <select id="bookingStatus" asp-for="StatusId" asp-items="@Model.StatusesList">
+                <option itemid="0"></option>
+            </select>
+
+        </div>
       </div>
+            <div id="UserAlert" class="" role="alert" style="display: none"></div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button id="submit" type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
+</div>
+
+<div id="BookingDetails" style="display: none">
+
 </div>
 
 
@@ -98,4 +132,5 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
     <script src="/js/staff/Details.js"></script>
     <script src="~/js/site.js"></script>
+    <script src="/js/customers/customercreate.js"></script>
 }

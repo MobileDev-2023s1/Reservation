@@ -9,14 +9,12 @@
 
 }
 
-<head>
-    <script src="~/js/customers/customercreate.js"></script>
-    <input id="RestaurantId" type="hidden" asp-for="RestaurantId" value="@Model.RestaurantId"/> 
+@*<script src="~/js/customers/customercreate.js"></script>*@
+<input id="RestaurantId" type="hidden" asp-for="RestaurantId" value="@Model.RestaurantId"/> 
     
-</head>
 
-<body>
-    <form method="post">
+
+<form method="post">
         <div>
 
             <h1>Welcome to @Model.RestaurantName</h1>
@@ -96,11 +94,12 @@
 
         <br /><br /><input id="submit" type="submit" value="Create" class="btn btn-primary" disabled="disabled"/>
 
-    </form>
 
-</body>
+</form>
 
-
-
+@section Scripts{
+    <script src="~/js/site.js"></script>
+    <script src="/js/customers/customercreate.js"></script>
+}
 
 
