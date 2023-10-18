@@ -88,7 +88,7 @@
 
             <label asp-for="SittingId">What menu?</label><br />
             <select asp-for="SittingId" id="MenuType">
-               <option id="currentSittingSelection"></option> @*investigate how to pass the value chosen as default*@
+               <option id="currentSittingSelection" value=""></option> @*investigate how to pass the value chosen as default*@
             </select><br /> <br />
 
             
@@ -103,13 +103,15 @@
             <label>Booking Status:</label><br />
             <select asp-for="NewReservationStatusId" asp-items="@Model.StatusesList"></select>
 
+             <input id="PersonId" type="hidden" value="" />
+
         </div>
       </div>
             <div id="UserAlert" class="" role="alert" style="display: none"></div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="saveChanges" type="button" class="btn btn-primary">Save changes</button>
+        <button id="submit" type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

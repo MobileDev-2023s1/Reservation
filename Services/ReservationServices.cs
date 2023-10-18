@@ -107,10 +107,6 @@ namespace Group_BeanBooking.Services
             return reservations;
         }
 
-        
-
-
-
         #endregion
 
 

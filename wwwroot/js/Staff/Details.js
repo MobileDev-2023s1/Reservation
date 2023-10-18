@@ -22,6 +22,8 @@ var bookingGuests = document.getElementById('guests')
 var bookingCommnets = document.getElementById('comments')
 var newReservationStatusId = document.getElementById('NewReservationStatusId')
 var currentSittingSelection = document.getElementById('currentSittingSelection')
+var sittingId = document.getElementById('MenuType')
+var currentPersonId = document.getElementById("PersonId")
 
 
 /**Function load when Dom is loaded */
@@ -45,11 +47,9 @@ $(() => {
         }
     })
 
-    document.getElementById('saveChanges').addEventListener('click', () => {
-        
-    })
-
-    
+    document.getElementById('submit').addEventListener('click', (data) => {
+        UpdateDetails(data)
+    })    
 
     document.querySelector(".btn-primary");
 
@@ -88,6 +88,8 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
             bookingCommnets.value = data.comments
             newReservationStatusId.selectedIndex = data.reservationStatusId - 1
             currentSittingSelection.innerHTML = data.sittingName
+            currentSittingSelection.value = data.sittingId
+            currentPersonId.value = data.personId 
         },
         headerToolbar: {
             left: 'prev,next today',
@@ -163,6 +165,7 @@ async function LoadSearchVariables(bookingID) {
                 throw alert(new Error("HTTP error " + response.status));
             }
             const data = await response.json();
+            console.log(data)
             return await data;
 
         } catch (error) {
@@ -172,5 +175,21 @@ async function LoadSearchVariables(bookingID) {
 }
 
 async function UpdateDetails(data) {
+
+    var c = {
+        Start: date.value,
+        Duration: bookingLength.value,
+        Guests: bookingGuests.value,
+        SittingId: sittingId.value,
+        PersonId: currentPersonId.value,
+        RestaurantAreaId: RestaurantAreaList.value,
+        Comments: bookingCommnets.value
+
+    }
+
+    console.log(c)
+
+    
+    
 
 }
