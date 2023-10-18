@@ -8,10 +8,21 @@
  * https://fullcalendar.io/docs/v4/events-json-feed
  */
 
-/**Variables that are loaded inclided in the HTML */
+/**Variables that are loaded in the HTML */
 var restaurantLocation = document.getElementById('restaurantLocation');
 var bookingEmail = document.getElementById('userEmail')
 var bookingStatus = document.getElementById('bookingStatus')
+
+/**Variables that are related to the pop up window for updating details of the booking*/
+var restaurantId = document.getElementById('RestaurantId')
+var bookingTitle = document.getElementById('bookingTitle')
+var date = document.getElementById('Date')
+var bookingLength = document.getElementById('duration')
+var bookingGuests = document.getElementById('guests')
+var bookingCommnets = document.getElementById('comments')
+var newReservationStatusId = document.getElementById('NewReservationStatusId')
+var currentSittingSelection = document.getElementById('currentSittingSelection')
+
 
 /**Function load when Dom is loaded */
 $(() => {
@@ -33,6 +44,12 @@ $(() => {
             LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
         }
     })
+
+    document.getElementById('saveChanges').addEventListener('click', () => {
+        
+    })
+
+    
 
     document.querySelector(".btn-primary");
 
@@ -61,13 +78,16 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
         eventClick: async (info) => {
             $('#exampleModalCenter').modal('show');
             var data = await LoadSearchVariables(info.event.id)
-            document.getElementById('RestaurantId').value = data.restaurantID;
-            document.getElementById('bookingDetails').innerHTML = "Booking: "+ data.bookingId;
-            document.getElementById('Date').value = data.startTime; 
-            document.getElementById('duration').value = data.duration
-            document.getElementById('guests').value = data.guest
-            document.getElementById('comments').value = data.comments
-            
+            PopulateList(await GetAvailableAreas(data.restaurantID), data);
+
+            restaurantId.value = data.restaurantID;
+            bookingTitle.innerHTML = "Booking: "+ data.bookingId;
+            date.value = data.startTime; 
+            bookingLength.value = data.duration
+            bookingGuests.value = data.guest
+            bookingCommnets.value = data.comments
+            newReservationStatusId.selectedIndex = data.reservationStatusId - 1
+            currentSittingSelection.innerHTML = data.sittingName
         },
         headerToolbar: {
             left: 'prev,next today',
@@ -81,8 +101,58 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
 
 }
 
+/**
+ * Cleans values in the list and creates new options where required. 
+ * @param {any} areas
+ */
+async function PopulateList(areas, data) {
+    while (RestaurantAreaList.childElementCount > 0) {
+        RestaurantAreaList.removeChild(RestaurantAreaList.firstChild);
+    }
+
+    areas.forEach(areaItem => {
+        const option = document.createElement("option");
+        option.value = areaItem.id;
+        option.textContent = areaItem.name;
+        if (areaItem.id == data.restaurantAreaId) {
+            option.selected = true
+        } else {
+            option.selected = false
+        }
+        restaurantAreas.appendChild(option);
+    })
+}
+
+/**
+ * Gets Areas by restaurant Id
+ * @param {any} restaurantId
+ * @returns
+ */
+async function GetAvailableAreas(restaurantId) {
+    try {
+        const listAreas = new URL("/Customers/Bookings/GetListAreas?restuarantId=" + restaurantId, baseURL());
+        areasResponse = await fetch(listAreas)
+
+        if (!areasResponse.ok) {
+            throw new Error("HTTP error " + areasResponse.status);
+        }
+        const areasFinal = await areasResponse.json();
+        return await areasFinal;
+
+    } catch (error) {
+        console.error(error);
+    }
+
+}
+
+/**
+ * 
+ * @param {any} bookingID
+ * @returns
+ */
 async function LoadSearchVariables(bookingID) {
-    if (bookingID == undefined) {
+    if (bookingID === undefined) {
+        return null;
     } else {
         try {
             const baseUrl = baseURL()
@@ -93,7 +163,6 @@ async function LoadSearchVariables(bookingID) {
                 throw alert(new Error("HTTP error " + response.status));
             }
             const data = await response.json();
-            console.log(data);
             return await data;
 
         } catch (error) {
@@ -102,8 +171,6 @@ async function LoadSearchVariables(bookingID) {
     }
 }
 
+async function UpdateDetails(data) {
 
-
-
-
-
+}

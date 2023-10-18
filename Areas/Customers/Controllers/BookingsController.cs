@@ -48,7 +48,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
                 RestaurantId = id,
                 RestaurantName = restaurant.Name,
                 SittingAreaList = new SelectList(restaurant.RestaurantAreas, "Id", "Name"),
-                SittingList = new SelectList(restaurant.Sittings, "Id", "Name")
+                //SittingList = new SelectList(restaurant.Sittings, "Id", "Name")
             };
             
             return View(c);
@@ -230,6 +230,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             //add sitting services and add a function for this... 
             var sitting = await _context.Sittings
                 //.Include(r => r.Restaurant)
+                //    .ThenInclude(a=> a.RestaurantAreas) //with these properties it does 497 reads
                 .Where(r => r.RestaurantId == Id)
                 .Where(s => s.Start >= start && s.End <= end)
                 .Include(r => r.Reservations)
@@ -237,6 +238,12 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
                 .ToListAsync();
 
             return sitting;
+        }
+
+
+        public async Task<List<RestaurantArea>> GetListAreas(int restuarantId)
+        {
+            return await _restaurantServices.GetRestaurantAreaByRestaurantId(restuarantId);
         }
 
         [HttpGet]

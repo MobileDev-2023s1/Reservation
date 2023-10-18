@@ -7,6 +7,9 @@ const duration = document.getElementById("duration")
 const id = document.getElementById("RestaurantId");
 /**Gets the type of menu selected for the booking*/
 const menu = document.getElementById("MenuType");
+
+/**Gets the area of the restuartant where this menu is being offered*/
+const restaurantAreas = document.getElementById('RestaurantAreaList');
 /**It is the user alert element that can be updated as required. Receives text and displays it on the screen*/
 const userMessage = document.getElementById("UserAlert");
 /**It is the id of a section of the page. Depending of the stage, this is displayed on the screen */
@@ -49,6 +52,7 @@ $(() => {
 
                 //retrieves sittings and bookings at the time selected
                 const menuData = await GetAvailableSittings(id.value, timeFrame);
+                
 
                 if (menuData != undefined) {
                     //define and validate the total capacity for the restaurant at that the chosen time
@@ -62,7 +66,9 @@ $(() => {
                     if (remainder >= guests.value) {
                         while (menu.childElementCount > 0) {
                             menu.removeChild(menu.firstChild);
+                            /*restaurantAreas.removeChild(restaurantAreas.firstChild);*/
                         }
+
                         menuData.forEach(menuItem => {
                             const option = document.createElement("option");
                             option.value = menuItem.id;
@@ -90,6 +96,8 @@ $(() => {
 
     });
 
+    
+
     /**Get the type of food that is going to be offered by the restaurant, based on the time of the booking and the date
      * @param {any} restaurantId
      * @param {any} selectedDate
@@ -102,13 +110,13 @@ $(() => {
             const result = TimeValidation(selectedDate.value);
             /*const capacityValidation */
             if (result) {                
-                const url = new URL("/Customers/Bookings/GetAvailableSittings?Id=" + restaurantId + "&begin=" + timeFrame[0] + "&final=" + timeFrame[1], baseURL());
-                const response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error("HTTP error " + response.status);
+                const listSittings = new URL("/Customers/Bookings/GetAvailableSittings?Id=" + restaurantId + "&begin=" + timeFrame[0] + "&final=" + timeFrame[1], baseURL());
+                const sittingsResponse = await fetch(listSittings);
+                
+                if (!sittingsResponse.ok) {
+                    throw new Error("HTTP error " + sittingsResponse.status);
                 }
-                const data = await response.json();
+                const data = await sittingsResponse.json();
                 console.log(data);
                 return await data;
             } 

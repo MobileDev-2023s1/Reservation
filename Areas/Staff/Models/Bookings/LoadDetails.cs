@@ -8,22 +8,19 @@ using Org.BouncyCastle.Bcpg;
 
 namespace Group_BeanBooking.Areas.Staff.Models.Bookings
 {
-    public class LoadDetails
+    public class LoadDetails : CompleteDetails
     {
-        public int RestaurantId { get; set; }
+        public string CustomerEmail { get; set; }
+        
         public SelectList RestaurantList { get; set; }
 
-        public string CustomerEmail { get; set; }
-        public string StatusId { get; set; }
         public SelectList StatusesList { get; set;}
 
-        public int RestaurantAreaId { get; set; }
-        public SelectList SittingAreaList { get; set; }
+       public SelectList NewReservationStatusList { get; set; }
 
-        public int SittingId { get; set; }
-        public SelectList SittingList { get; set; }
+        public int NewReservationStatusId { get; set; } 
 
-        public Create UpdateDails { get; set; }
+        //public CompleteDetails UpdateDails { get; set; }
 
 
     }

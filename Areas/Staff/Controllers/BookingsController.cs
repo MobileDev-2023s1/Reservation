@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
 
 using Google.Protobuf.WellKnownTypes;
 
@@ -62,7 +63,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             return View(model);
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> GetReservations(string start, string email, int location, int status)
         {
@@ -110,8 +111,9 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             };
             var clause = whereClause.BuildWhereClause(whereClause);
             var r = await _reservationServices.GetSingelReservationById(clause);
-
-            var model = new CompleteDetails()
+            
+            
+            var model = new LoadDetails()
             {
                 BookingId = r.Id,
                 RestaurantID = r.Sitting.RestaurantId,
@@ -122,10 +124,14 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 AssignedTable = r.RestaurantTables,
                 Guest = r.Guests,
                 PersonId = r.Person.Id,
-                PersonName = string.Concat(r.Person.FirtName," ",r.Person.LastName),
+                PersonName = string.Concat(r.Person.FirtName, " ", r.Person.LastName),
                 RestaurantAreaId = r.RestaurantAreaId,
                 ReservationStatusId = r.ReservationStatus.Id,
-                Comments = r.Comments
+                Comments = r.Comments,
+                SittingName = r.Sitting.Name,
+                RestaurantAreaName = r.RestaurantArea.Name,
+                //SittingAreaList = new SelectList(sittingAreaList, "Id", "Name")
+
             };
             
             return Ok(model);

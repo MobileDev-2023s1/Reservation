@@ -27,7 +27,7 @@
     <div id="searchSection" class="row">
         <div class="col-4">
             <label>Restaurant:</label><br />
-            <select id="restaurantLocation" asp-for="RestaurantId" asp-items="@Model.RestaurantList" default="Select One">
+            <select id="restaurantLocation" asp-for="RestaurantID" asp-items="@Model.RestaurantList" default="Select One">
                 <option itemid="0">Select One</option>
             </select>
         </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="col-4">
             <label>Booking Status:</label><br />
-            <select id="bookingStatus" asp-for="StatusId" asp-items="@Model.StatusesList" >
+            <select id="bookingStatus" asp-for="ReservationStatusId" asp-items="@Model.StatusesList" >
                 <option itemid="0">Select One</option>
             </select>
 
@@ -59,19 +59,12 @@
 
 </form>
 
-
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Launch demo modal
-</button>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="bookingDetails">Modal title</h4>
+        <h4 class="modal-title" id="bookingTitle">Modal title</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -81,34 +74,34 @@
 
             <div id="BookingVariables">
                 <label >Booking time</label>
-                <input id="Date" asp-for="UpdateDails.Starttime" type="datetime-local" value="" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+                <input id="Date" asp-for="StartTime" type="datetime-local" value="" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
 
                 <label>Booking length</label>
-                <input id="duration" asp-for="UpdateDails.Duration" type="number" min="30" max="180" value="" /><br /><br />
+                <input id="duration" asp-for="Duration" type="number" min="30" max="180" value="" /><br /><br />
 
                 <label >Guests</label>
-                <input id="guests" asp-for="UpdateDails.Guests" type="number" min="1" max="100" value="" /> <br /><br />
+                <input id="guests" asp-for="Guest" type="number" min="1" max="100" value="" /> <br /><br />
 
                 <input id="RestaurantId" type="hidden" value="" />
-                </div>
+            </div>
 
 
-            <label asp-for="UpdateDails.SittingId">What menu?</label><br />
+            <label asp-for="SittingId">What menu?</label><br />
             <select asp-for="SittingId" id="MenuType">
-                <option value=""></option> @*investigate how to pass the value chosen as default*@
+               <option id="currentSittingSelection"></option> @*investigate how to pass the value chosen as default*@
             </select><br /> <br />
 
+            
+            <label asp-for="RestaurantAreaId">Where to sit?</label><br />@*investigate how to pass the value chosen as default*@
+            <select id="RestaurantAreaList" asp-for="RestaurantAreaId">
+               <option value=""></option>
+            </select><br /> <br />
 
-            <label asp-for="UpdateDails.RestaurantAreaId">Where to sit?</label><br />@*investigate how to pass the value chosen as default*@
-            <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
-
-            <label asp-for="UpdateDails.Comments">Comments</label><br />
-            <input id="comments" asp-for="UpdateDails.Comments" type="text" width="150" height="300" maxlength="200" value=""/> <br /> <br />
+            <label asp-for="Comments">Comments</label><br />
+            <input id="comments" asp-for="Comments" type="text" width="150" height="300" maxlength="200" value=""/> <br /> <br />
 
             <label>Booking Status:</label><br />
-            <select id="bookingStatus" asp-for="StatusId" asp-items="@Model.StatusesList">
-                <option itemid="0"></option>
-            </select>
+            <select asp-for="NewReservationStatusId" asp-items="@Model.StatusesList"></select>
 
         </div>
       </div>
@@ -116,7 +109,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="submit" type="button" class="btn btn-primary">Save changes</button>
+        <button id="saveChanges" type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

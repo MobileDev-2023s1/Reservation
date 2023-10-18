@@ -48,6 +48,7 @@ namespace Group_BeanBooking.Services
                 .Include(r => r.Person) //eager loading
                 .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
                 .Include(r => r.ReservationStatus)
+                .Include(r => r.RestaurantArea)
                 .SingleOrDefaultAsync(clause);
                 
 

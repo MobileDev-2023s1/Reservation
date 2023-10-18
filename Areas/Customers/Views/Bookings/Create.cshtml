@@ -81,7 +81,7 @@
                 <br /><br />
             
                 <label asp-for="RestaurantAreaId">Where to sit?</label><br />
-                <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
+                <select id="RestaurantAreaList" asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
 
                 <label asp-for="Comments">Comments</label><br />
                 <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
