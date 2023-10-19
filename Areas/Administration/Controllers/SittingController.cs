@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto;
-
+using ZstdSharp.Unsafe;
 
 namespace Group_BeanBooking.Areas.Administration.Controllers
 {
@@ -62,9 +62,9 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
             {
                 SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name"),
                 Start = start,
-                End = start.AddHours(4)
-            };
+                End = start.AddHours(4),
 
+            };
             return View(m);
         }
 
@@ -75,47 +75,92 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
         {
             if (ModelState.IsValid)
             {
-              m.RepeatPattern =
-              m.Monday.ToString().Substring(0, 1) +
-              m.Tuesday.ToString().Substring(0, 1) +
-              m.Wednesday.ToString().Substring(0, 1) +
-              m.Thursday.ToString().Substring(0, 1) +
-              m.Friday.ToString().Substring(0, 1) +
-              m.Saturday.ToString().Substring(0, 1) +
-              m.Sunday.ToString().Substring(0, 1);
-
-                for (int i = 0; i <m.Repeats; i++)
+                var sitting = new Sitting
                 {
-                    //think
-                
-                
-                    var sitting = new Sitting
-                    {
-                        Name = m.Name,
-                        Start = m.Start,
-                        End = m.End,
-                        Capacity = m.Capacity,
-                        Closed = m.Closed,
-                        TypeId = m.TypeId,
-                        RestaurantId = 1,
-                    };
-                    //= _mapper.Map<Data.Sitting>(m);
+                    Name = m.Name,
+                    Start = m.Start,
+                    End = m.End,
+                    Capacity = m.Capacity,
+                    Closed = m.Closed,
+                    TypeId = m.TypeId,
+                    RestaurantId = 1
+                };
+
+                if (m.Repeats == 0)
+                {
                     _context.Sittings.Add(sitting);
+                    await _context.SaveChangesAsync();
                 }
-  
-                
-                
-                
-                
-                
-                
-                await _context.SaveChangesAsync();
+
+                else
+                {
+
+                    sitting.Guid = Guid.NewGuid();
+                    var sittings = new List<Sitting> { sitting };
+                    DateTime additionalStart = new();
+                    DateTime additionalEnd = new();
+                    bool[] RepeatPattern =
+                        {m.Sunday,m.Monday,m.Tuesday,m.Wednesday,m.Thursday,m.Friday,m.Saturday};
+                    double days = 0;
+
+
+                    for (int j = 0; j < 7; j++)
+                    {
+                        if (RepeatPattern[j] == true)
+                        {
+                            for (int i = 1; i <= m.Repeats; i++)
+                            {
+                                if (j == (int)m.Start.DayOfWeek)
+                                {
+                                    days = i * 7 * m.Interval;
+                                    additionalStart = m.Start.AddDays(days);
+                                    additionalEnd = m.End.AddDays(days);
+                                }
+                                else
+                                {
+                                    if (j> (int)m.Start.DayOfWeek)
+                                    {
+                                        days = ((j - (int)m.Start.DayOfWeek) % 7);
+
+                                    }
+                                    else
+                                    {
+                                        days = ((j - (int)m.Start.DayOfWeek) % 7) + (i * 7 * m.Interval);
+                                    }
+                                    
+                                    additionalStart = m.Start.AddDays(days);
+                                    additionalEnd = m.End.AddDays(days);
+                                }
+                                var additionalSitting = new Sitting
+                                {
+                                    Guid = sitting.Guid,
+                                    Name = m.Name,
+                                    Start = additionalStart,
+                                    End = additionalEnd,
+                                    Capacity = m.Capacity,
+                                    Closed = m.Closed,
+                                    TypeId = m.TypeId,
+                                    RestaurantId = 1
+                                };
+                                sittings.Add(additionalSitting);
+
+                            }
+                        }
+                    }
+
+                    _context.Sittings.AddRange(sittings);
+                    await _context.SaveChangesAsync();
+
+
+
+                }
                 return RedirectToAction("Index");
             }
 
             m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
             return View(m);
         }
+
 
         // GET: Administration/Sitting/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -126,10 +171,14 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
             }
 
             var sitting = await _context.Sittings.FindAsync(id);
+
+
             if (sitting == null)
             {
                 return NotFound();
             }
+
+
 
             var m = new Models.Sitting.Edit
             {
@@ -140,12 +189,8 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                 Closed = sitting.Closed,
                 TypeId = sitting.TypeId,
             };
-     
-            //_mapper.Map<Models.Sitting.Edit>(sitting);
-
-           m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
-
-
+            m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
+            ViewData["guid"] = sitting.Guid;
             return View(m);
         }
 
@@ -155,84 +200,122 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
         public async Task<IActionResult> Edit(Models.Sitting.Edit m)
         {
             var sitting = _context.Sittings.FirstOrDefault(s => s.Id == m.Id);
-
             if (sitting == null)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
-                {   sitting.Start = m.Start;
-                    sitting.End = m.End;
-                    sitting.Capacity = m.Capacity;
-                    sitting.Closed = m.Closed;
-                    sitting.Name = m.Name;
-                    sitting.TypeId = m.TypeId;
-                    //_mapper.Map(m, sitting);
-                  
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
                 {
-                    if (!SittingExists(sitting.Id))
+                    var NewSitting = new Sitting 
+                {   Id= m.Id,
+                    Start = m.Start,
+                    End = m.End,
+                    Capacity = m.Capacity,
+                    Closed = m.Closed,
+                    Name = m.Name,
+                    Guid=sitting.Guid                 
+                };
+                if (sitting.Guid == null)
+                {
+                    sitting = NewSitting;                  
+                }
+                else
+                {
+                    var sittings = _context.Sittings.Where(s => s.Guid == sitting.Guid).OrderBy(s => s.Start).ToList();
+                    if (m.Range=="This")
                     {
-                        return NotFound();
+                        //_context.Sittings.Remove(sitting);
+                        sittings.Remove(sitting);
+                        if (m.End < sittings.First().End || sittings.Last().End < m.Start)
+                        {
+                            sitting = NewSitting;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < sittings.Count - 1; i++)
+                            {
+                                if (sittings[i].End < m.Start && m.End < sittings[i + 1].Start)
+                                {
+                                    sitting = NewSitting;
+                                }
+                            }
+                        }
+                        //sittings.Add(sitting);
                     }
                     else
                     {
-                        throw;
+                        var sittingsToRemove = sittings;
+                        if (m.Range=="ThisAndAfter")
+                            foreach (Sitting s in sittingsToRemove)
+                            {
+                                if (s.Start < m.Start)
+                                {
+                                    sittingsToRemove.Remove(s);
+                                }
+                            }
+                        _context.Sittings.RemoveRange(sittingsToRemove);
+                        await Create(m);                    
+                     }                          
+                } 
+                
+                await _context.SaveChangesAsync();}
+                catch (DbUpdateConcurrencyException)
+                    {
+                    if (!SittingExists(sitting.Id)){return NotFound();}
+                    else{throw;}
                     }
-                }
                 return RedirectToAction(nameof(Index));
             }
             m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
             return View(m);
+           
         }
 
-        //GET: Administration/Sitting/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Sittings == null)
+            //GET: Administration/Sitting/Delete/5
+            public async Task<IActionResult> Delete(int? id)
             {
-                return NotFound();
+                if (id == null || _context.Sittings == null)
+                {
+                    return NotFound();
+                }
+
+                var sitting = await _context.Sittings
+                    .Include(s => s.Restaurant)
+                    .Include(s => s.Type)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (sitting == null)
+                {
+                    return NotFound();
+                }
+
+                return View(sitting);
             }
 
-            var sitting = await _context.Sittings
-                .Include(s => s.Restaurant)
-                .Include(s => s.Type)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sitting == null)
+            // POST: Administration/Sitting/Delete/5
+            [HttpPost, ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> DeleteConfirmed(int id)
             {
-                return NotFound();
+                if (_context.Sittings == null)
+                {
+                    return Problem("Entity set 'ApplicationDb_context.Sittings'  is null.");
+                }
+                var sitting = await _context.Sittings.FindAsync(id);
+                if (sitting != null)
+                {
+                    _context.Sittings.Remove(sitting);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(sitting);
-        }
-
-        // POST: Administration/Sitting/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Sittings == null)
+            private bool SittingExists(int id)
             {
-                return Problem("Entity set 'ApplicationDb_context.Sittings'  is null.");
+                return (_context.Sittings?.Any(e => e.Id == id)).GetValueOrDefault();
             }
-            var sitting = await _context.Sittings.FindAsync(id);
-            if (sitting != null)
-            {
-                _context.Sittings.Remove(sitting);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool SittingExists(int id)
-        {
-            return (_context.Sittings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
-}
+

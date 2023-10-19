@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Group_BeanBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -266,10 +266,14 @@ namespace Group_BeanBooking.Migrations
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
                     TypeId = table.Column<int>(type: "int", nullable: false),
+<<<<<<<< HEAD:Migrations/20230922231500_initial.cs
                     Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RepeatPattern = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Interval = table.Column<int>(type: "int", nullable: false),
                     Repeats = table.Column<int>(type: "int", nullable: false)
+========
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+>>>>>>>> 6899f265b27feb30ecdfdab09a0492505008cc45:Migrations/20231014045004_init.cs
                 },
                 constraints: table =>
                 {

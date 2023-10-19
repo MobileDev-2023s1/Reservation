@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Group_BeanBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Migrations/20230922231500_initial.Designer.cs
     [Migration("20230922231500_initial")]
     partial class initial
+========
+    [Migration("20231014045004_init")]
+    partial class init
+>>>>>>>> 6899f265b27feb30ecdfdab09a0492505008cc45:Migrations/20231014045004_init.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -309,9 +314,12 @@ namespace Group_BeanBooking.Migrations
                     b.Property<Guid?>("Guid")
                         .HasColumnType("uniqueidentifier");
 
+<<<<<<<< HEAD:Migrations/20230922231500_initial.Designer.cs
                     b.Property<int>("Interval")
                         .HasColumnType("int");
 
+========
+>>>>>>>> 6899f265b27feb30ecdfdab09a0492505008cc45:Migrations/20231014045004_init.Designer.cs
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

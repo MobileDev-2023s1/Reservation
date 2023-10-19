@@ -223,6 +223,8 @@ namespace Group_BeanBooking.Data
         }
 
         public async Task SeedSittings()
+
+           // taka disabled sitting seeding. 
         {
             var start = "22/09/2023 7:00:00 AM";
             List<Sitting> list = new()
@@ -259,11 +261,11 @@ namespace Group_BeanBooking.Data
                             });
                             await _context.SaveChangesAsync();
 
-                        }
+            //            }
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
         }
 
         public void SeedTables()

@@ -44,7 +44,52 @@
                 <select asp-for="TypeId" class="form-control" asp-items="Model.SittingTypes"></select>
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
+
+           
+
             <div class="form-group">
+                @if (ViewData["guid"]!= null)
+                {
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input  type="radio" name="Range" asp-for="Range" value="This" checked="checked"> This event only<br>
+                            <input  type="radio" name="Range" asp-for="Range" value="ThisAndAfter"> This and following events<br>
+                            <input  type="radio" name="Range" asp-for="Range" value="All"> All events<br>
+                        </label>            
+                    </div>
+                 
+                    <div class="form-group form-check">
+                         <label class="form-check-label">
+                            Mon
+                            <input type="checkbox" asp-for="Monday" />
+                         </label>
+                         <label class="form-check-label">
+                            Tue
+                            <input type="checkbox" asp-for="Tuesday" />
+                         </label>
+                         <label class="form-check-label">
+                            Wed
+                            <input type="checkbox" asp-for="Wednesday" />
+                         </label>
+                         <label class="form-check-label">
+                            Thu
+                            <input type="checkbox" asp-for="Thursday" />
+                         </label>
+                         <label class="form-check-label">
+                            Fri
+                            <input type="checkbox" asp-for="Friday" />
+                            </label>
+                         <label class="form-check-label">
+                            Sat
+                            <input type="checkbox" asp-for="Saturday" />
+                         </label>
+                         <label class="form-check-label">
+                            Sun
+                            <input type="checkbox" asp-for="Sunday" />
+                         </label>
+                    </div>
+           
+                }
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -54,4 +99,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-

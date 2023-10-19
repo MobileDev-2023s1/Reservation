@@ -306,19 +306,9 @@ namespace Group_BeanBooking.Migrations
                     b.Property<Guid?>("Guid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Interval")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepeatPattern")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Repeats")
-                        .HasColumnType("int");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
