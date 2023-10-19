@@ -135,6 +135,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
                 Duration = reservation.Duration,
                 SittingId = reservation.SittingID,
                 RestaurantAreaId = reservation.RestaurantAreaId,
+                ReservationStatusId = reservation.ReservationStatusID,
                 SittingAreaName = areas.Single(a => a.Id == reservation.RestaurantAreaId).Name,
                 SittingName = sittings.Single(a => a.Id == reservation.SittingID).Name,
                 SittingAreaList = new SelectList(areas, "Id", "Name", new { CurrentId = reservation.RestaurantAreaId }),

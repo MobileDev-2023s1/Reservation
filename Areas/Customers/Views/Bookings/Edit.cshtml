@@ -25,6 +25,8 @@
 <form method="post">
     <h2>Booking under: <br /> @Model.FirstName @Model.LastName</h2> <br />
     <input asp-for="ReservationId" type="hidden" />
+    <input asp-for="ReservationStatusId" type="hidden" />
+    <input asp-for="PersonId" type="hidden" />
 
     <div class="container">
         <div id="BookingVariables">

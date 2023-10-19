@@ -55,6 +55,19 @@ namespace Group_BeanBooking.Services
             return reservation ;
         }
 
+        public async Task<List<Reservation>> GetReservationByStatusID(Expression<Func<Reservation, bool>> clause)
+        {
+            var reservations = await _context.Reservations
+                .Include(r => r.Person) //eager loading
+                .Include(a => a.RestaurantArea)
+                .Where(clause)
+                .OrderBy(r => r.Start)
+                .ToListAsync();
+
+            return reservations;
+
+        }
+
 
 
         /// <summary>
@@ -67,7 +80,7 @@ namespace Group_BeanBooking.Services
                 .Include(r => r.Person) //eager loading
                 .Include(a => a.RestaurantArea)
                 /*.Include(r => r.ReservationStatus)*/ //185 read without - 437 with this
-                .Where(r=>r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .Where(r => r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
                 .Where(clause)
                 .OrderBy(r => r.Start)
                 .ToListAsync();
@@ -136,7 +149,7 @@ namespace Group_BeanBooking.Services
 
         public async Task EditReservation(Edit c)
         {
-            var currentRes = await GetReservationsByReservationId(c.ReservationId);
+            //var currentRes = await GetReservationsByReservationId(c.ReservationId);
            
             await _context.Reservations
                     .Where(b => b.Id == c.ReservationId)
@@ -145,9 +158,10 @@ namespace Group_BeanBooking.Services
                         .SetProperty(b => b.Duration, c.Duration)
                         .SetProperty(b => b.Guests, c.Guests)
                         .SetProperty(b => b.SittingID, c.SittingId)
-                        .SetProperty(b => b.PersonId, currentRes.PersonId)
+                        .SetProperty(b => b.PersonId, c.PersonId)
                         .SetProperty(b => b.RestaurantAreaId, c.RestaurantAreaId)
-                        .SetProperty(b => b.Comments, c.Comments)                        
+                        .SetProperty(b => b.Comments, c.Comments)  
+                        .SetProperty(b=>b.ReservationStatusID, c.ReservationStatusId)
                         );
                        
         }

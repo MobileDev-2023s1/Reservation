@@ -24,6 +24,7 @@ var newReservationStatusId = document.getElementById('NewReservationStatusId')
 var currentSittingSelection = document.getElementById('currentSittingSelection')
 var sittingId = document.getElementById('MenuType')
 var currentPersonId = document.getElementById("PersonId")
+var currentBookingId = document.getElementById('BookingId')
 
 
 /**Function load when Dom is loaded */
@@ -49,6 +50,8 @@ $(() => {
 
     document.getElementById('submit').addEventListener('click', (data) => {
         UpdateDetails(data)
+        LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
+        $('#exampleModalCenter').modal('hide');
     })    
 
     document.querySelector(".btn-primary");
@@ -69,6 +72,8 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
         showNonCurrentDates: false,
         events: {
             url: '/Staff/Bookings/GetReservations',
+            display: {
+            },
             extraParams: {
                 location: restaurantLocation.options[restaurantLocation.selectedIndex].value,
                 email: bookingEmail.value,
@@ -90,6 +95,8 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
             currentSittingSelection.innerHTML = data.sittingName
             currentSittingSelection.value = data.sittingId
             currentPersonId.value = data.personId 
+            currentBookingId.value = data.bookingId
+            
         },
         headerToolbar: {
             left: 'prev,next today',
@@ -176,41 +183,43 @@ async function LoadSearchVariables(bookingID) {
 async function UpdateDetails(data) {
 
     var c = {
-        Start: date.value,
+        StartTime: new Date(date.value),
         Duration: bookingLength.value,
         Guests: bookingGuests.value,
         SittingId: sittingId.value,
         PersonId: currentPersonId.value,
         RestaurantAreaId: RestaurantAreaList.value,
-        Comments: bookingCommnets.value
+        Comments: bookingCommnets.value,
+        ReservationId: currentBookingId.value,
+        ReservationStatusId: newReservationStatusId.value
 
     }
 
     try {
         const baseUrl = baseURL()
-        const url = new URL("/Customer/Bookings/Index"
-
-
-            , baseUrl);
+        const url = new URL("/Staff/Bookings/NewBookingDetails?c="+ c, baseUrl);
         const response = await fetch(url, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(c), // Send the 'c' object as a JSON payload
+            body: JSON.stringify(c)
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            return data;
+        if (!response.ok) {
+            console.log(response.error)
+            
         } else {
-            console.error("Failed to update booking:", response.status, response.statusText);
-        }     
+            const result = await response.text();
+            console.log(result)
+           
+        }
 
-        return await data;
+        
         
     } catch (error) {
 
-    }/*console.log(c)*/
+    }
 }
+        

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.Windows.Markup;
 
 namespace Group_BeanBooking.Areas.Customers.Models.Bookings
 {
@@ -12,7 +13,9 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
         [ValidateNever] public string SittingAreaName { get; set; }
 
         [ValidateNever] public string SittingName { get; set; }
-       
+
+        [ValidateNever] public int ReservationStatusId { get; set; }
+
 
     }
 }

@@ -83,10 +83,22 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 RestaurantId = location,
                 StatusId = status
            };
-
+            
             var clause = whereClause.BuildWhereClause(whereClause);
 
-            reservations = await _reservationServices.GetActiveReservationsByMonth(clause);
+            //if status id = null // load all and exclude 3 and 5 
+            if(whereClause.StatusId == 0)
+            {
+                reservations = await _reservationServices.GetActiveReservationsByMonth(clause);
+
+            }
+            else
+            {
+                reservations = await _reservationServices.GetReservationByStatusID(clause);
+            }
+            //else, include 
+
+
 
             var result = reservations.Select(r => new
             {
@@ -137,7 +149,20 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             return Ok(model);
         }
 
+        //[HttpPost("UpdateBookingDetails", Name = "UpdateBooking")]
+        [HttpPost]
+        public async Task<IActionResult> NewBookingDetails([FromBody]Edit c)
+        {
+            if (ModelState.IsValid)
+            {
+                c.Starttime = c.Starttime.AddHours(11);
+                await _reservationServices.EditReservation(c);
+                await _context.SaveChangesAsync();
+                TempData["AlertMessage"] = "Booking modified successfully";
+            }
 
+            return Ok();
+        }
 
         #region Includes format information for events on the calendar
         public int Days(DateTime date)
