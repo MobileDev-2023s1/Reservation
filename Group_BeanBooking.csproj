@@ -53,7 +53,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Customers\Scripts\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
