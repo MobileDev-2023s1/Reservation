@@ -35,9 +35,6 @@ $(() => {
     BookingVariables.addEventListener("change", async () => {
         try {
 
-            console.log(DateNotInPast())
-            console.log(BookingBeforeClosing())
-            
             if (duration.value < 30) {
                 DisplayDangerAlert("Booking duration cannot be less thant 30 min. Please change the value");
             } else if (duration.value > 180) {
@@ -117,7 +114,6 @@ $(() => {
                     throw new Error("HTTP error " + sittingsResponse.status);
                 }
                 const data = await sittingsResponse.json();
-                console.log(data);
                 return await data;
             } 
         } catch (error) {

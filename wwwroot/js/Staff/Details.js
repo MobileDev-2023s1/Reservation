@@ -165,7 +165,6 @@ async function LoadSearchVariables(bookingID) {
                 throw alert(new Error("HTTP error " + response.status));
             }
             const data = await response.json();
-            console.log(data)
             return await data;
 
         } catch (error) {
@@ -187,9 +186,31 @@ async function UpdateDetails(data) {
 
     }
 
-    console.log(c)
+    try {
+        const baseUrl = baseURL()
+        const url = new URL("/Customer/Bookings/Index"
 
-    
-    
 
+            , baseUrl);
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(c), // Send the 'c' object as a JSON payload
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            return data;
+        } else {
+            console.error("Failed to update booking:", response.status, response.statusText);
+        }     
+
+        return await data;
+        
+    } catch (error) {
+
+    }/*console.log(c)*/
 }
