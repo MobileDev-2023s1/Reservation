@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1 >Create</h1>
 
 <h4>Sitting</h4>
 <hr />
@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input id="sittingName"  asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -22,33 +22,34 @@
                     <input class="form-check-input" asp-for="Closed" /> @Html.DisplayNameFor(model => model.Closed)
                 </label>
             </div>
-            <div class="form-group">
-                <label asp-for="Start" class="control-label"></label>
-                <input asp-for="Start" class="form-control" />
-                <span asp-validation-for="Start" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="End" class="control-label"></label>
-                <input asp-for="End" class="form-control" />
-                <span asp-validation-for="End" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="Capacity" class="control-label"></label>
-                <input asp-for="Capacity" class="form-control" />
+                <input id="capacity" asp-for="Capacity" class="form-control" />
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
                 <label asp-for="TypeId" class="control-label"></label>
-                <select asp-for="TypeId" class ="form-control" asp-items="Model.SittingTypes"></select>
+                <select id="typeid" asp-for="TypeId" class="form-control" asp-items="Model.SittingTypes"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Interval" class="control-label"></label>
-                <input asp-for="Interval" class="form-control" min="1" value="1"/>
-                <span asp-validation-for="Interval" class="text-danger"></span>
+                <label asp-for="StartTime" class="control-label"></label>
+                <input id="StartTime"  type="time" asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
-           
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input min="1" max="5"  value="1" asp-for="Duration" class="form-control" />Hours
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Repeats" class="control-label"></label>
+                <input asp-for="Repeats" class="form-control" />
+                <span asp-validation-for="Repeats" class="text-danger"></span>
+            </div>
             
+                     
             <div class="form-group form-check">
                 <label class="form-check-label">
                     Sun
@@ -77,19 +78,14 @@
                 <label class="form-check-label">
                     Sat
                     <input type="checkbox" asp-for="Saturday" />
-                </label>
-              
+                </label>              
             </div>
-           
-            
-
 
             <div class="form-group">
-                <label asp-for="Repeats" class="control-label"></label>
-                <input asp-for="Repeats" class="form-control" />
-                <span asp-validation-for="Repeats" class="text-danger"></span>
+                <label asp-for="Interval" class="control-label"></label>
+                <input asp-for="Interval" class="form-control" min="1" value="1" />
+                <span asp-validation-for="Interval" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -100,5 +96,86 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+@{
+    string buttonColor = "#2c3e50";
+    string buttonTextColor = "white";
+}
+
+<style>
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+        max-width: 1100px;
+        margin: 40px auto;
+    }
+
+    #calendar {
+        max-width: 1100px;
+        margin: 40px auto;
+    }
+
+    #external-events {
+        position: fixed;
+        z-index: 2;
+        top: 20px;
+        left: 20px;
+        width: 150px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background: #eee;
+    }
+
+        #external-events .fc-event {
+            cursor: move;
+            margin: 3px 0;
+        }
+
+    #calendar-container {
+        position: relative;
+        z-index: 1;
+        margin-left: 200px;
+    }
+
+</style>
+
+
+<link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />
+
+
+
+<div id='external-events'>
+    <p>
+        <strong >Create Sitting</strong>
+    </p>
+
+    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div id="newSitting" class='fc-event-main'>Sitting Name</div>
+    </div>
+  
+    
+    <p>
+        <input type='checkbox' id='drop-remove' />
+        <label for='drop-remove'>remove after drop</label>
+    </p>
+</div>
+
+<form>
+    <body>
+
+        <div id="calendar"></div>
+
+    </body>
+
+</form>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="/js/Administration/SittingCreate.js"></script>
+}
 
 

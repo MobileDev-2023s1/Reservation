@@ -12,6 +12,9 @@ namespace Group_BeanBooking.Areas.Administration.Models.Sitting
         public bool Closed { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public TimeOnly StartTime { get; set; }
+        public int Duration { get; set; }
+
 
         public int Capacity { get; set; }
 
