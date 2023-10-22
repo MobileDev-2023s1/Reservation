@@ -3,6 +3,7 @@ using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Group_BeanBooking.Data;
+using Group_BeanBooking.Areas.Staff.Data;
 
 namespace Group_BeanBooking.Services
 {
@@ -15,35 +16,47 @@ namespace Group_BeanBooking.Services
         }
 
         #region Contains DB queries for Restaurants
-            public async Task<Restaurant> GetRestaurantByID(int id)
-            {
-                return await _context.Restaurants.FirstOrDefaultAsync(r => r.Id == id);
-            }
+        public async Task<Restaurant> GetRestaurantByID(int id)
+        {
+            return await _context.Restaurants.FirstOrDefaultAsync(r => r.Id == id);
+        }
 
-            public async Task<List<RestaurantArea>> GetRestaurantAreaByRestaurantId(int restaurantId)
-            {
-                return await _context.ResturantAreas.Where(r => r.RestaurantId == restaurantId).ToListAsync();
-            }
+        public async Task<List<RestaurantArea>> GetRestaurantAreaByRestaurantId(int restaurantId)
+        {
+            return await _context.ResturantAreas.Where(r => r.RestaurantId == restaurantId).ToListAsync();
+        }
 
-            public async Task<List<Sitting>> GetSittingsByRestaurantId(int id)
-            {
-                return await _context.Sittings.Where(r => r.RestaurantId == id).ToListAsync();
-            }
+        public async Task<List<Sitting>> GetSittingsByRestaurantId(int id)
+        {
+            return await _context.Sittings.Where(r => r.RestaurantId == id).ToListAsync();
+        }
 
-            public async Task<List<Restaurant>> GetRestaurants()
-            {
-                return await _context.Restaurants.ToListAsync();
-            }
+        public async Task<List<Restaurant>> GetRestaurants()
+        {
+            return await _context.Restaurants.ToListAsync();
+        }
 
-            public async Task<List<RestaurantArea>> GetRestaurantAreas()
+        public async Task<List<RestaurantTable>> GetListofTables(int areaID)
+        {
+            var clause = new WhereClauseCalendarView
             {
-                return await _context.ResturantAreas.ToListAsync();
-            }
+                RestaurantAreaId = areaID,
+            };
 
-            public async Task<List<Sitting>> GetSittings()
-            {
-                return await _context.Sittings.ToListAsync();
-            }
+            return await _context.RestaurantTables
+                .Where(clause.BuildRestaurantTableClause(clause))
+                .ToListAsync();
+        }
+
+        public async Task<List<RestaurantArea>> GetRestaurantAreas()
+        {
+            return await _context.ResturantAreas.ToListAsync();
+        }
+
+        public async Task<List<Sitting>> GetSittings()
+        {
+            return await _context.Sittings.ToListAsync();
+        }
 
         #endregion
     }

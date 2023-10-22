@@ -14,11 +14,19 @@ select * from Reservations;
 select * from sittings
 where RestaurantId = 1 and Start >= '2023-10-01 7:00:00 AM' and [End] <= '2023-10-31 11:00:00 PM';
 
+select * from Sittings
+where Id = 4536;
+
 select * from Reservations
 where Start >= GETDATE()
 
+select * from RestaurantTables
 select * from Reservations
 where Id = 1035;
+
+
+update RestaurantTables
+set Name = 'M1', RestaurantAreaId=4;
 
 select * from Reservations
 where Start >= '2023-09-30' and Start <= '2023-10-31 11:00:00 PM';

@@ -1,0 +1,56 @@
+﻿@model Group_BeanBooking.Areas.Staff.Models.Bookings.LoadDetails;
+
+<div id="BookingVariables">
+    <label>Booking time</label>
+    <input id="Date" asp-for="StartTime" type="datetime-local" value="" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+
+    <label>Booking length</label>
+    <input id="duration" asp-for="Duration" type="number" min="30" max="180" value="" /><br /><br />
+
+    <label>Guests</label>
+    <input id="guests" asp-for="Guest" type="number" min="1" max="100" value="" /> <br /><br />
+
+    <input id="RestaurantId" type="hidden" value="" />
+    <input id="BookingId" type="hidden" value="" />
+    <input id="PersonId" type="hidden" value="" />
+    <input id="CurrentRestaurantArea" type="hidden" value="" />
+</div>
+
+<div>
+    <label asp-for="SittingId">What menu?</label><br />
+    <select asp-for="SittingId" id="MenuType">
+        <option id="currentSittingSelection" value=""></option> 
+    </select><br /><br />
+
+    <label asp-for="RestaurantAreaId">Where to sit?</label> <br />
+    <select id="RestaurantAreaList" asp-for="RestaurantAreaId">
+        <option value=""></option>
+    </select><br /><br />
+
+    <label asp-for="Comments">Comments</label><br />
+    <input id="comments" asp-for="Comments" type="text" width="150" height="300" maxlength="200" value="" /><br /><br />
+
+    <label>Booking Status:</label><br />
+    <select asp-for="NewReservationStatusId" asp-items="@Model.StatusesList"></select>
+
+</div>
+
+    @*Add a filter per area
+        
+    add graphics for 
+    when one day is selected:
+        --> number of bookings during the day
+          Number of bookings per category: 
+          --> number of bookings pending for confirmation
+          --> number of bookings pending confirmed
+          --> number of bookings pending cancelled
+        --> current capacity
+        --> projected capacity
+        --> number of bookings confirmed and pending to assing table
+
+        --> add breakdown of parties by size....
+        as in 1 party of 10
+
+
+    --> when nho date is selected:
+        --> total number of bookings*@

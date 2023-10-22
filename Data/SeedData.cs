@@ -45,6 +45,7 @@ namespace Group_BeanBooking.Data
             //await SeedUsersinRoles();
             await SeedReservationStatuses();
             await SeedReservationsOrigin();
+            //await SeedTables();
 
         }
 
@@ -268,25 +269,28 @@ namespace Group_BeanBooking.Data
             }
         }
 
-        public void SeedTables()
+        public async Task SeedTables()
         {
-            //see which areas are included in the restaurant
-            var list = new List<RestaurantTable>()
-            {
-                new RestaurantTable {Name = "M1" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M2" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M3" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M4" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M5" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "O1" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O2" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O3" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O4" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O5" , RestaurantAreaId = 2 },
+            var restaurants = await _context.Restaurants.ToListAsync();
 
-                
-            };
-            
+            foreach(var restaurant in restaurants)
+            {
+                foreach(var area in restaurant.RestaurantAreas)
+                {
+                    for (int i = 1; i < 11; i++)
+                    {
+                        area.restaurantTables.Add(
+                        new RestaurantTable { Name = area.Name.Substring(0, 1) + i, RestaurantAreaId = area.Id }
+                        );
+                    };
+                }
+            }
+
+            var resutl = restaurants;
+
+
+            await _context.SaveChangesAsync();
+
 
         }
     }

@@ -42,7 +42,6 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             _statusesServices = new StatusesServices(context, userManager, rolesManager);
             
         }
-
         
         public IActionResult Index()
         {
@@ -75,7 +74,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             List<Reservation> reservations = new List<Reservation>();
 
             //Creates an object to build the else clause
-           var whereClause = new WhereClauseCalendarView
+            var whereClause = new WhereClauseCalendarView
             {
                 StartDate = startDate,
                 EndDate = endDate,
@@ -84,21 +83,17 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 StatusId = status
            };
             
-            var clause = whereClause.BuildWhereClause(whereClause);
+            var clause = whereClause.BuildReservationWhereClause(whereClause);
 
             //if status id = null // load all and exclude 3 and 5 
             if(whereClause.StatusId == 0)
             {
                 reservations = await _reservationServices.GetActiveReservationsByMonth(clause);
-
             }
             else
             {
                 reservations = await _reservationServices.GetReservationByStatusID(clause);
             }
-            //else, include 
-
-
 
             var result = reservations.Select(r => new
             {
@@ -121,7 +116,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             {
                 BookingId = bookingID,
             };
-            var clause = whereClause.BuildWhereClause(whereClause);
+            var clause = whereClause.BuildReservationWhereClause(whereClause);
             var r = await _reservationServices.GetSingelReservationById(clause);
             
             
@@ -160,8 +155,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 await _context.SaveChangesAsync();
                 TempData["AlertMessage"] = "Booking modified successfully";
             }
-
-            return Ok();
+            return Ok($"Booking id {c.ReservationId} updated");
         }
 
         #region Includes format information for events on the calendar
@@ -196,8 +190,6 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 //seated
                 case 4: return "#cfe2ff"; break;
                 default: return null;
-
-
             }
         }
 

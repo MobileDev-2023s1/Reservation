@@ -20,13 +20,15 @@ namespace Group_BeanBooking.Areas.Staff.Data
 
         public DateTime EndDate { get; set; }
 
+        public int RestaurantAreaId { get; set; }
+
         //public WhereClauseCalendarView(int bookingId)
         //{
         //    BookingId = bookingId;
         //}
 
 
-        public Expression<Func<Reservation, bool>> BuildWhereClause(WhereClauseCalendarView clause)
+        public Expression<Func<Reservation, bool>> BuildReservationWhereClause(WhereClauseCalendarView clause)
         {
             /*
              * Expression<Func<Reservation, bool>>: This is a data type declaration. It specifies that whereClause is a variable 
@@ -77,7 +79,20 @@ namespace Group_BeanBooking.Areas.Staff.Data
             #endregion 
         }
 
-        
+        public Expression<Func<RestaurantTable, bool>> BuildRestaurantTableClause(WhereClauseCalendarView clause)
+        {
+            var whereClause = PredicateBuilder.New<RestaurantTable>(true);
+            Expression<Func<RestaurantTable,bool>> restaurantAreaId = clause.RestaurantAreaId != 0 ? 
+                t=> t.RestaurantAreaId == clause.RestaurantAreaId : null;
+
+            if(restaurantAreaId!= null)
+            {
+                whereClause = whereClause.And(restaurantAreaId);
+            }
+
+            return whereClause;
+
+        }
 
     }
 }

@@ -20,31 +20,26 @@
 
 </style>
 
-
 @*<link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />*@
 
 <div id="searchSection" class="row">
     <div id="searchSection" class="row">
-        <div class="col-4">
+        <div class="col-5">
             <label>Restaurant:</label><br />
             <select id="restaurantLocation" asp-for="RestaurantID" asp-items="@Model.RestaurantList" default="Select One">
                 <option itemid="0">Select One</option>
             </select>
-        </div>
-        <div class="col-3">
-            <label>User Email:</label><br />
-            <input id="userEmail" type="text" />
-        </div>
-        <div class="col-4">
-            <label>Booking Status:</label><br />
+            <label>Booking Status:</label>
             <select id="bookingStatus" asp-for="ReservationStatusId" asp-items="@Model.StatusesList" >
                 <option itemid="0">Select One</option>
             </select>
-
         </div>
-        <div class="col-1">
+        <div class="col-5">
+            <label>User Email:</label><br />
+            <input id="userEmail" type="text" />
+        </div>
+        <div class="col-2">
             <button id="searchCustomer">Search</button> <br /><br />
-
             <button id="clearButton">Reset</button>
         </div>
     </div>
@@ -52,66 +47,38 @@
 
 <form>
     <body>
-
         <div id="calendar"></div>
-
     </body>
-
 </form>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" >
         <h4 class="modal-title" id="bookingTitle">Modal title</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body">
         <div id="bookingInformation" class="container-fluid alert alert-primary">
+            <div>
+                <partial name="../bookings/modalcomponent.cshtml" /> 
+            </div>
+        </div >
+        <div id="assingTableOption" class="container-fluid alert alert-primary">
+            <lable>Assing table:</lable>
+            <input id="assignTable" type="checkbox" />
 
-            <div id="BookingVariables">
-                <label >Booking time</label>
-                <input id="Date" asp-for="StartTime" type="datetime-local" value="" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
-
-                <label>Booking length</label>
-                <input id="duration" asp-for="Duration" type="number" min="30" max="180" value="" /><br /><br />
-
-                <label >Guests</label>
-                <input id="guests" asp-for="Guest" type="number" min="1" max="100" value="" /> <br /><br />
-
-                <input id="RestaurantId" type="hidden" value="" />
-                <input id="BookingId" type="hidden" value="" />
+            <div id="assignTableSection" class="container-fluid alert alert-primary" style="display: none">
+                <partial name="../bookings/restauranttables.cshtml" />
             </div>
 
-
-            <label asp-for="SittingId">What menu?</label><br />
-            <select asp-for="SittingId" id="MenuType">
-               <option id="currentSittingSelection" value=""></option> @*investigate how to pass the value chosen as default*@
-            </select><br /> <br />
-
-            
-            <label asp-for="RestaurantAreaId">Where to sit?</label><br />@*investigate how to pass the value chosen as default*@
-            <select id="RestaurantAreaList" asp-for="RestaurantAreaId">
-               <option value=""></option>
-            </select><br /> <br />
-
-            <label asp-for="Comments">Comments</label><br />
-            <input id="comments" asp-for="Comments" type="text" width="150" height="300" maxlength="200" value=""/> <br /> <br />
-
-            <label>Booking Status:</label><br />
-            <select asp-for="NewReservationStatusId" asp-items="@Model.StatusesList"></select>
-
-             <input id="PersonId" type="hidden" value="" />
-
         </div>
+
       </div>
             <div id="UserAlert" class="" role="alert" style="display: none"></div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="closeButton" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button id="submit" type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
@@ -119,6 +86,7 @@
 </div>
 
 <div id="BookingDetails" style="display: none">
+             
 
 </div>
 
@@ -129,4 +97,5 @@
     <script src="/js/staff/Details.js"></script>
     <script src="~/js/site.js"></script>
     <script src="/js/customers/customercreate.js"></script>
+    <script src="/js/staff/sittingtables.js"></script>
 }

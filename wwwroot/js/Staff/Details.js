@@ -12,6 +12,7 @@
 var restaurantLocation = document.getElementById('restaurantLocation');
 var bookingEmail = document.getElementById('userEmail')
 var bookingStatus = document.getElementById('bookingStatus')
+var tableSection = document.getElementById('assignTableSection')
 
 /**Variables that are related to the pop up window for updating details of the booking*/
 var restaurantId = document.getElementById('RestaurantId')
@@ -25,38 +26,68 @@ var currentSittingSelection = document.getElementById('currentSittingSelection')
 var sittingId = document.getElementById('MenuType')
 var currentPersonId = document.getElementById("PersonId")
 var currentBookingId = document.getElementById('BookingId')
-
+var currentRestaurantArea = document.getElementById('CurrentRestaurantArea')
 
 /**Function load when Dom is loaded */
 $(() => {
-
     LoadSearchVariables();
-
     LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
 
     document.getElementById('searchCustomer').addEventListener('click', () => {
-            LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
+        LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
     })
 
     document.getElementById('clearButton').addEventListener('click', () => {
         if (restaurantLocation.selectedIndex != 0 || bookingEmail.value != null || bookingStatus.selectedIndex != 0) {
-            restaurantLocation.selectedIndex = 0
-            bookingStatus.selectedIndex = 0
-            bookingEmail.value = null;
-
+            ClearSearchParameters();
             LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
         }
     })
 
-    document.getElementById('submit').addEventListener('click', (data) => {
-        UpdateDetails(data)
+    document.getElementById('submit').addEventListener('click', async () => {
+        await UpdateDetails()
         LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
         $('#exampleModalCenter').modal('hide');
-    })    
+    })
 
-    document.querySelector(".btn-primary");
+    document.getElementById('closeButton').addEventListener('click', () => {
+        $('#exampleModalCenter').modal('hide');
+    })
+
+    document.getElementById('assignTable').addEventListener('click', async () => {
+        //booking needs to be confirmed before assigning a table
+        if (tableSection.style.display == "block") {
+            tableSection.style.display = "none"
+        } else {
+            tableSection.style.display = "block"
+            await GetTablesByAreaId(currentRestaurantArea)
+        }
+    })
+
+    document.getElementById('NewReservationStatusId').addEventListener('change', async () => {
+        if (newReservationStatusId.selectedIndex != 1 && newReservationStatusId.selectedIndex != 3) {
+            console.log(newReservationStatusId.selectedIndex)
+            document.getElementById('assingTableOption').style.display = 'none';
+            document.getElementById('assignTable').checked = false;
+            document.getElementById('assignTableSection').style.display = 'none';
+        } else {
+            document.getElementById('assingTableOption').style.display = 'block';
+        }
+    })
+
 
 });
+
+/**Event Listeners*/
+
+
+
+
+function ClearSearchParameters() {
+    restaurantLocation.selectedIndex = 0
+    bookingStatus.selectedIndex = 0
+    bookingEmail.value = null;
+}
 
 /**
  * Loads the calendar
@@ -95,7 +126,14 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
             currentSittingSelection.innerHTML = data.sittingName
             currentSittingSelection.value = data.sittingId
             currentPersonId.value = data.personId 
-            currentBookingId.value = data.bookingId
+            currentBookingId.value = data.bookingId     
+            currentRestaurantArea = data.restaurantAreaId
+
+            if (newReservationStatusId.selectedIndex != 1 && newReservationStatusId.selectedIndex != 3) {
+                document.getElementById('assingTableOption').style.display = 'none';
+            } else {
+                document.getElementById('assingTableOption').style.display = 'block';
+            }
             
         },
         headerToolbar: {
@@ -180,7 +218,7 @@ async function LoadSearchVariables(bookingID) {
     }
 }
 
-async function UpdateDetails(data) {
+async function UpdateDetails() {
 
     var c = {
         StartTime: new Date(date.value),
