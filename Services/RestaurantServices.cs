@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Group_BeanBooking.Data;
 using Group_BeanBooking.Areas.Staff.Data;
+using System.Linq.Expressions;
 
 namespace Group_BeanBooking.Services
 {
@@ -36,15 +37,11 @@ namespace Group_BeanBooking.Services
             return await _context.Restaurants.ToListAsync();
         }
 
-        public async Task<List<RestaurantTable>> GetListofTables(int areaID)
+        public async Task<List<RestaurantTable>> GetListofTables(Expression<Func<RestaurantTable, bool>> clause)
         {
-            var clause = new WhereClauseCalendarView
-            {
-                RestaurantAreaId = areaID,
-            };
 
             return await _context.RestaurantTables
-                .Where(clause.BuildRestaurantTableClause(clause))
+                .Where(clause)
                 .ToListAsync();
         }
 

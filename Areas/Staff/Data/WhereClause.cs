@@ -9,7 +9,7 @@ using LinqKit;
 
 namespace Group_BeanBooking.Areas.Staff.Data
 {
-    public class WhereClauseCalendarView
+    public class WhereClause
     {
         public string Email { get; set; }
         public int RestaurantId { get; set; }
@@ -22,13 +22,15 @@ namespace Group_BeanBooking.Areas.Staff.Data
 
         public int RestaurantAreaId { get; set; }
 
+        public int Duration { get; set; }
+
         //public WhereClauseCalendarView(int bookingId)
         //{
         //    BookingId = bookingId;
         //}
 
 
-        public Expression<Func<Reservation, bool>> BuildReservationWhereClause(WhereClauseCalendarView clause)
+        public Expression<Func<Reservation, bool>> BuildCalendarViewReservationClause(WhereClause clause)
         {
             /*
              * Expression<Func<Reservation, bool>>: This is a data type declaration. It specifies that whereClause is a variable 
@@ -79,11 +81,41 @@ namespace Group_BeanBooking.Areas.Staff.Data
             #endregion 
         }
 
-        public Expression<Func<RestaurantTable, bool>> BuildRestaurantTableClause(WhereClauseCalendarView clause)
+        public Expression<Func<Reservation,bool>> BuildListOfBookings(Reservation clause)
+        {
+            var whereClause = PredicateBuilder.New<Reservation>(true);
+            Expression<Func<Reservation, bool>> restaurantAreaId = clause.RestaurantAreaId != null ? r => r.RestaurantAreaId == clause.RestaurantAreaId : null;
+            Expression<Func<Reservation, bool>> startTime = clause.Start.ToString() != "1/01/0001 12:00:00 AM" ? r => r.Start <= clause.Start : null;
+            Expression<Func<Reservation, bool>> endTime = clause.End.ToString() != "1/01/0001 12:00:00 AM" ? r => r.Start.AddMinutes(clause.Duration) >= clause.Start : null;
+            Expression<Func<Reservation, bool>> statusId = clause.ReservationStatusID != 0 ? r => r.ReservationStatusID != 3 && r.ReservationStatusID != 5 : null;
+            
+
+            if (restaurantAreaId != null)
+            {
+                whereClause = whereClause.And(restaurantAreaId);
+            }
+
+            if (startTime != null)
+            {
+                whereClause = whereClause.And(startTime);
+            }
+            if (endTime != null)
+            {
+                whereClause = whereClause.And(endTime);
+            }
+            //if (statusId != null)
+            //{
+            //    whereClause = whereClause.And(statusId);
+            //}
+
+            return whereClause;
+        }
+
+        public Expression<Func<RestaurantTable, bool>> BuildRestaurantTableClause(RestaurantTable table)
         {
             var whereClause = PredicateBuilder.New<RestaurantTable>(true);
-            Expression<Func<RestaurantTable,bool>> restaurantAreaId = clause.RestaurantAreaId != 0 ? 
-                t=> t.RestaurantAreaId == clause.RestaurantAreaId : null;
+            Expression<Func<RestaurantTable,bool>> restaurantAreaId = table.RestaurantAreaId != 0 ? 
+                t=> t.RestaurantAreaId == table.RestaurantAreaId : null;
 
             if(restaurantAreaId!= null)
             {

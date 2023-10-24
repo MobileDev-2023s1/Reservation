@@ -27,6 +27,7 @@ var sittingId = document.getElementById('MenuType')
 var currentPersonId = document.getElementById("PersonId")
 var currentBookingId = document.getElementById('BookingId')
 var currentRestaurantArea = document.getElementById('CurrentRestaurantArea')
+var listOfTakenTables = document.getElementById('ListOfTables')
 
 /**Function load when Dom is loaded */
 $(() => {
@@ -128,6 +129,8 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
             currentPersonId.value = data.personId 
             currentBookingId.value = data.bookingId     
             currentRestaurantArea = data.restaurantAreaId
+            listOfTakenTables = data.assignedTable
+
 
             if (newReservationStatusId.selectedIndex != 1 && newReservationStatusId.selectedIndex != 3) {
                 document.getElementById('assingTableOption').style.display = 'none';
@@ -229,8 +232,8 @@ async function UpdateDetails() {
         RestaurantAreaId: RestaurantAreaList.value,
         Comments: bookingCommnets.value,
         ReservationId: currentBookingId.value,
-        ReservationStatusId: newReservationStatusId.value
-
+        ReservationStatusId: newReservationStatusId.value,
+        listOfTakenTables: selectedTables.childNodes.values
     }
 
     try {

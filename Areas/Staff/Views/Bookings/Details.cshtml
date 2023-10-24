@@ -28,8 +28,8 @@
             <label>Restaurant:</label><br />
             <select id="restaurantLocation" asp-for="RestaurantID" asp-items="@Model.RestaurantList" default="Select One">
                 <option itemid="0">Select One</option>
-            </select>
-            <label>Booking Status:</label>
+            </select><br />
+            <label>Booking Status:</label><br />
             <select id="bookingStatus" asp-for="ReservationStatusId" asp-items="@Model.StatusesList" >
                 <option itemid="0">Select One</option>
             </select>

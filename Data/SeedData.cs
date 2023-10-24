@@ -230,9 +230,9 @@ namespace Group_BeanBooking.Data
             var start = "22/09/2023 7:00:00 AM";
             List<Sitting> list = new()
             {
-                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1},
-                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 50, TypeId = 2},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 50, TypeId = 3}
+                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 60, TypeId = 1},
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 60, TypeId = 2},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 60, TypeId = 3}
             };
             
             var listrestaurants = await _context.Restaurants

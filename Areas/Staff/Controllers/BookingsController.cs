@@ -74,7 +74,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             List<Reservation> reservations = new List<Reservation>();
 
             //Creates an object to build the else clause
-            var whereClause = new WhereClauseCalendarView
+            var whereClause = new WhereClause
             {
                 StartDate = startDate,
                 EndDate = endDate,
@@ -83,7 +83,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 StatusId = status
            };
             
-            var clause = whereClause.BuildReservationWhereClause(whereClause);
+            var clause = whereClause.BuildCalendarViewReservationClause(whereClause);
 
             //if status id = null // load all and exclude 3 and 5 
             if(whereClause.StatusId == 0)
@@ -112,11 +112,11 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReservationById(int bookingID)
         {
-            var whereClause = new WhereClauseCalendarView
+            var whereClause = new WhereClause
             {
                 BookingId = bookingID,
             };
-            var clause = whereClause.BuildReservationWhereClause(whereClause);
+            var clause = whereClause.BuildCalendarViewReservationClause(whereClause);
             var r = await _reservationServices.GetSingelReservationById(clause);
             
             

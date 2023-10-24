@@ -6,13 +6,16 @@ select * from SittingTypes;
 
 select count(*) from Sittings;
 
-delete from Sittings
+delete from RestaurantTables
 where Id >= 1;
 
 select * from People;
-select * from Reservations;
+
+select * from Reservations
+where Start >= '2023-10-24 5:00:00 PM' and Start <= '2023-10-25'
+
 select * from sittings
-where RestaurantId = 1 and Start >= '2023-10-01 7:00:00 AM' and [End] <= '2023-10-31 11:00:00 PM';
+where RestaurantId = 1 and Start <= '2023-10-24 8:28:00 AM' and [End] >= '2023-10-24 8:28:00 AM';
 
 select * from Sittings
 where Id = 4536;
@@ -22,14 +25,17 @@ where Start >= GETDATE()
 
 select * from RestaurantTables
 select * from Reservations
-where Id = 1035;
+where SittingID = 122
+
+delete from RestaurantTables
+where id >= 61
 
 
 update RestaurantTables
 set Name = 'M1', RestaurantAreaId=4;
 
 select * from Reservations
-where Start >= '2023-09-30' and Start <= '2023-10-31 11:00:00 PM';
+where Start >= '2023-10-24 07:00:00' and Start <= '2023-10-31 11:00:00 PM';
 
 update Reservations 
 set ReservationStatusID = 2
