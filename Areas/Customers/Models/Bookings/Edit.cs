@@ -16,6 +16,8 @@ namespace Group_BeanBooking.Areas.Customers.Models.Bookings
 
         [ValidateNever] public int ReservationStatusId { get; set; }
 
+        [ValidateNever] public List<RestaurantTable> RestaurantTables { get; set;}
+
 
     }
 }

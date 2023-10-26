@@ -16,6 +16,7 @@ using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Construction;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -34,12 +35,14 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         private readonly PersonServices _personServices;
         private readonly ReservationServices _reservationServices;
         private readonly StatusesServices _statusesServices;
+        private readonly TableServices _tableServices;
         public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager) : base(context, userManager, rolesManager)
         {
             _restaurantServices = new RestaurantServices(context, userManager, rolesManager);
             _personServices = new PersonServices(context, userManager, rolesManager);
             _reservationServices = new ReservationServices(context, userManager, rolesManager);
             _statusesServices = new StatusesServices(context, userManager, rolesManager);
+            _tableServices = new TableServices(context, userManager, rolesManager);
             
         }
         
@@ -150,6 +153,13 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                //find the booking
+
+                //add the tables to the booking \
+
+                //save the changes
+                
+                
                 c.Starttime = c.Starttime.AddHours(11);
                 await _reservationServices.EditReservation(c);
                 await _context.SaveChangesAsync();

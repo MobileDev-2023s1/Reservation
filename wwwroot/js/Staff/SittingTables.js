@@ -25,9 +25,10 @@ async function GetTablesByAreaId(areaId)
                 Comments: bookingCommnets.value,
                 ReservationId: currentBookingId.value,
                 ReservationStatusId: newReservationStatusId.value,
-                /*AssignedTables: listOfTakenTables*/
-
+                selectedTables: listOfTakenTables
             }
+
+            console.log(selectedTables)
 
             const url = new URL("/Staff/Tables/TablesAvailableInSitting?c=" + c, baseURL())
             const response = await fetch(url, {
@@ -67,6 +68,7 @@ function AddTablesToView(tables) {
     tables.forEach((item) => {
         const option = document.createElement('button')
         option.innerHTML = item.name
+        option.value = item.id
         option.id = `button${item.name}`
         option.className = "btn btn-light"
         
@@ -86,12 +88,27 @@ function BlockTablesForBooking(item) {
     selected.innerHTML = item.name
     selected.value = item.id
     selected.id = `selected${item.name}`
-    selectedTables.appendChild(selected)
+    selectedTables.appendChild(selected)   
     selected.addEventListener('click', () => {
         ReleaseTableForBooking(selected)
     })
 }
 
 function ReleaseTableForBooking(element) {
+   
     selectedTables.removeChild(element)
+}
+
+
+function FinalTablesList() {
+
+    let listTables = [];
+
+    selectedTables.childNodes.forEach(item => {
+        listTables.push({ id: item.value })
+    })
+    
+    listTables.splice(0, 1)
+    console.log(listTables)
+    return listTables;
 }

@@ -233,7 +233,7 @@ async function UpdateDetails() {
         Comments: bookingCommnets.value,
         ReservationId: currentBookingId.value,
         ReservationStatusId: newReservationStatusId.value,
-        listOfTakenTables: selectedTables.childNodes.values
+        RestaurantTables: FinalTablesList()
     }
 
     try {

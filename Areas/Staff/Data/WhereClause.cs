@@ -116,10 +116,15 @@ namespace Group_BeanBooking.Areas.Staff.Data
             var whereClause = PredicateBuilder.New<RestaurantTable>(true);
             Expression<Func<RestaurantTable,bool>> restaurantAreaId = table.RestaurantAreaId != 0 ? 
                 t=> t.RestaurantAreaId == table.RestaurantAreaId : null;
+            Expression<Func<RestaurantTable, bool>> tableId = table.Id != 0 ? t=> t.Id == table.Id : null;
 
             if(restaurantAreaId!= null)
             {
                 whereClause = whereClause.And(restaurantAreaId);
+            }
+            if (tableId!= null)
+            {
+                whereClause = whereClause.And(tableId);
             }
 
             return whereClause;

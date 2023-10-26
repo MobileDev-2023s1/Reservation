@@ -149,9 +149,8 @@ namespace Group_BeanBooking.Services
 
         public async Task EditReservation(Edit c)
         {
-            //var currentRes = await GetReservationsByReservationId(c.ReservationId);
-           
             await _context.Reservations
+                .Include(r=>r.RestaurantTables)
                     .Where(b => b.Id == c.ReservationId)
                     .ExecuteUpdateAsync(b => b
                         .SetProperty(b => b.Start, c.Starttime)
@@ -163,7 +162,6 @@ namespace Group_BeanBooking.Services
                         .SetProperty(b => b.Comments, c.Comments)  
                         .SetProperty(b=>b.ReservationStatusID, c.ReservationStatusId)
                         );
-                       
         }
 
         public async Task DeleteReservation(int id)

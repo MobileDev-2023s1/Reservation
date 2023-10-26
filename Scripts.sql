@@ -24,6 +24,8 @@ select * from Reservations
 where Start >= GETDATE()
 
 select * from RestaurantTables
+where Id = 31 and RestaurantAreaId = 4;
+
 select * from Reservations
 where SittingID = 122
 
