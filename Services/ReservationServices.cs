@@ -150,8 +150,7 @@ namespace Group_BeanBooking.Services
         public async Task EditReservation(Edit c)
         {
             await _context.Reservations
-                .Include(r=>r.RestaurantTables)
-                    .Where(b => b.Id == c.ReservationId)
+                .Where(b => b.Id == c.ReservationId)
                     .ExecuteUpdateAsync(b => b
                         .SetProperty(b => b.Start, c.Starttime)
                         .SetProperty(b => b.Duration, c.Duration)

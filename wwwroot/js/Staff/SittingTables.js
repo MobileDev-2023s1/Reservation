@@ -3,32 +3,37 @@ const listofTables = document.getElementById('tablesInArea');
 const selectedTables = document.getElementById('SelectedTables')
 
 $(() => {
-    listofTables.class = "btn-group";
-    listofTables.role = "group"
-    listofTables.ariaLabel = "Basic Example"
+    /*$('#tablesInArea').addClass("btn-group")*/
+    /*listofTables.class = "btn-group";*/
+
+
+    /*listofTables.role = "group"*/
+    /*listofTables.ariaLabel = "Basic Example"*/
 })
 
-async function GetTablesByAreaId(areaId)
+async function GetTablesByAreaId()
 {
-    if (areaId === undefined) {
+    
+    if ($('#CurrentRestaurantArea').val() === undefined) {
+        
         return null;
     } else {
         try {
 
             var c = {
-                StartTime: new Date(date.value),
-                Duration: bookingLength.value,
-                Guests: bookingGuests.value,
-                SittingId: sittingId.value,
-                PersonId: currentPersonId.value,
+                StartTime: new Date($('#Date').val()),
+                Duration: $('#duration').val(),
+                Guests: $('#guests').val(),
+                SittingId: $('#MenuType').val(),
+                PersonId: $('PersonId').val(),
                 RestaurantAreaId: RestaurantAreaList.value,
-                Comments: bookingCommnets.value,
-                ReservationId: currentBookingId.value,
-                ReservationStatusId: newReservationStatusId.value,
-                selectedTables: listOfTakenTables
+                Comments: $('#comments').val(),
+                ReservationId: $('#BookingId').val(),
+                ReservationStatusId: $('NewReservationStatusId').val(),
+                selectedTables: $('#ListOfTables')
             }
 
-            console.log(selectedTables)
+            console.log($('#SelectedTables'))
 
             const url = new URL("/Staff/Tables/TablesAvailableInSitting?c=" + c, baseURL())
             const response = await fetch(url, {
@@ -87,16 +92,29 @@ function BlockTablesForBooking(item) {
     const selected = document.createElement('button')
     selected.innerHTML = item.name
     selected.value = item.id
-    selected.id = `selected${item.name}`
-    selectedTables.appendChild(selected)   
+    selected.id = `selected${(item.name)}`
+
+    /*console.log($('#SelectedTables').eq(`#${item.id}`).children())*/
+    console.log($('#SelectedTables').children().prop('id', `${item.id}`))
+    $('#SelectedTables').append(selected)
+
+    
     selected.addEventListener('click', () => {
-        ReleaseTableForBooking(selected)
+        
+        console.log($('#SelectedTables').children())
+        $(`#${selected.id}`).remove();
     })
 }
 
-function ReleaseTableForBooking(element) {
+function FilterTablesDuplicates(element) {
+
    
-    selectedTables.removeChild(element)
+
+    
+    
+    //$('#SelectedTables').remove(element, e => {
+        
+    //})
 }
 
 
