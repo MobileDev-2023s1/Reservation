@@ -153,13 +153,26 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 //find the booking
+                var res = await _reservationServices.GetReservationsByReservationId(c.ReservationId);
+                var clause = new WhereClause().BuildRestaurantTableClause(new RestaurantTable() { RestaurantAreaId = c.RestaurantAreaId });
+                var tables =  await _restaurantServices.GetListofTables(clause);
+
 
                 //add the tables to the booking \
+                foreach (var table in c.RestaurantTables)
+                {
+                    var selection = tables.Find(t => t.Id == table.Id);
+                    var result = res.RestaurantTables.Contains(selection);
+                    if (!result)
+                    {
+                        res.RestaurantTables.Add(selection);
+                        _context.SaveChangesAsync();
+                    }
+                }
 
                 //save the changes
-                
-                
                 c.Starttime = c.Starttime.AddHours(11);
                 await _reservationServices.EditReservation(c);
                 await _context.SaveChangesAsync();

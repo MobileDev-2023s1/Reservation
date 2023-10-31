@@ -46,8 +46,11 @@ namespace Group_BeanBooking.Data
             await SeedReservationStatuses();
             await SeedReservationsOrigin();
             //await SeedTables();
+            //await AddBookingToTable();
 
         }
+
+
 
         public async Task SeedReservationsOrigin()
         {

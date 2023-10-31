@@ -41,6 +41,7 @@ namespace Group_BeanBooking.Services
         {
 
             return await _context.RestaurantTables
+                .Include(r=>r.Reservations)
                 .Where(clause)
                 .ToListAsync();
         }

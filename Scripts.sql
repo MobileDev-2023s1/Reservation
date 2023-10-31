@@ -14,17 +14,21 @@ select * from People;
 select * from Reservations
 where Start >= '2023-10-24 5:00:00 PM' and Start <= '2023-10-25'
 
+update Reservations
+set Start = '2023-10-24 8:28:00 PM'
+where Id >= 6;
+
 select * from sittings
 where RestaurantId = 1 and Start <= '2023-10-24 8:28:00 AM' and [End] >= '2023-10-24 8:28:00 AM';
 
 select * from Sittings
 where Id = 4536;
 
-select * from Reservations
-where Start >= GETDATE()
+select * from ReservationRestaurantTable
+
 
 select * from RestaurantTables
-where Id = 31 and RestaurantAreaId = 4;
+where RestaurantAreaId = 4;
 
 select * from Reservations
 where SittingID = 122

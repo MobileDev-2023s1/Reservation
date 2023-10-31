@@ -45,6 +45,7 @@ namespace Group_BeanBooking.Services
         public async Task<Reservation> GetSingelReservationById(Expression<Func<Reservation, bool>> clause)
         {
             var reservation = await _context.Reservations
+                .Include(r => r.RestaurantTables)
                 .Include(r => r.Person) //eager loading
                 .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
                 .Include(r => r.ReservationStatus)

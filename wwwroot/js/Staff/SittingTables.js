@@ -1,39 +1,26 @@
-﻿
-const listofTables = document.getElementById('tablesInArea');
-const selectedTables = document.getElementById('SelectedTables')
+﻿$(() => {
 
-$(() => {
-    /*$('#tablesInArea').addClass("btn-group")*/
-    /*listofTables.class = "btn-group";*/
-
-
-    /*listofTables.role = "group"*/
-    /*listofTables.ariaLabel = "Basic Example"*/
 })
 
 async function GetTablesByAreaId()
 {
-    
     if ($('#CurrentRestaurantArea').val() === undefined) {
-        
         return null;
     } else {
         try {
-
             var c = {
                 StartTime: new Date($('#Date').val()),
                 Duration: $('#duration').val(),
                 Guests: $('#guests').val(),
                 SittingId: $('#MenuType').val(),
                 PersonId: $('PersonId').val(),
-                RestaurantAreaId: RestaurantAreaList.value,
+                RestaurantAreaId: $('#RestaurantAreaList').val(),
                 Comments: $('#comments').val(),
                 ReservationId: $('#BookingId').val(),
                 ReservationStatusId: $('NewReservationStatusId').val(),
-                selectedTables: $('#ListOfTables')
             }
 
-            console.log($('#SelectedTables'))
+            console.log(c.RestaurantTables)
 
             const url = new URL("/Staff/Tables/TablesAvailableInSitting?c=" + c, baseURL())
             const response = await fetch(url, {
@@ -48,12 +35,8 @@ async function GetTablesByAreaId()
             if (!response.ok) {
                 console.log(response.status)
             }
-
             const tables = await response.json();
-            
-            AddTablesToView(tables);
-
-            console.log(tables)
+            ListOfAreaTables(tables);
 
         } catch (error) {
             console.log(error)
@@ -64,69 +47,63 @@ async function GetTablesByAreaId()
 
 }
 
-function AddTablesToView(tables) {
+function ListOfAreaTables(tables) {
 
-    while (listofTables.childElementCount > 0) {
-        listofTables.removeChild(listofTables.firstChild)
+    while ($('#tablesInArea').children().length > 0) {
+        $('#tablesInArea').children().remove()
     }
 
     tables.forEach((item) => {
-        const option = document.createElement('button')
-        option.innerHTML = item.name
-        option.value = item.id
-        option.id = `button${item.name}`
-        option.className = "btn btn-light"
+        let option = $('<button></button>')
+            .html(item.name)
+            .val(item.id)
+            .prop({ id: `button${item.name}` })
+            .addClass("btn btn-light")
         
         if (!item.status) {
-            option.disabled = true
+            option.prop('disabled', true);
+            let exist = $('#SelectedTables').contents().filter(function () { return this.nodeType === 1 && $(this).val() === option.val() }).length > 0;
+            if (!exist) {
+                BlockTablesForBooking(item)
+            }
         } 
-        listofTables.appendChild(option)
-        option.addEventListener('click', ()=> {
-            BlockTablesForBooking(item)
+
+        $('#tablesInArea').append(option);
+        option.click(function (){
+            let exist = $('#SelectedTables').contents().filter(function () { return this.nodeType === 1 && $(this).val() === option.val()}).length > 0;
+            if (!exist) {
+                    $('#UserAlert').css({ display: 'none' })
+                    BlockTablesForBooking(item)
+            } else
+            {
+                $('#UserAlert').html('Each table can only be selected once. Select another').css({ display: 'flex' }).addClass('alert alert-danger')
+            }
         })
     })
-
-}
+} 
 
 function BlockTablesForBooking(item) {
-    const selected = document.createElement('button')
-    selected.innerHTML = item.name
-    selected.value = item.id
-    selected.id = `selected${(item.name)}`
-
-    /*console.log($('#SelectedTables').eq(`#${item.id}`).children())*/
-    console.log($('#SelectedTables').children().prop('id', `${item.id}`))
+    let selected = $('<button></button>');
+    selected
+        .html(item.name)
+        .val(item.id)
+        .prop({ id: `selected${(item.name)}` })
+      
     $('#SelectedTables').append(selected)
 
-    
-    selected.addEventListener('click', () => {
-        
-        console.log($('#SelectedTables').children())
-        $(`#${selected.id}`).remove();
-    })
+    selected.click(function () {$(`#${selected.prop('id')}`).remove();})
 }
-
-function FilterTablesDuplicates(element) {
-
-   
-
-    
-    
-    //$('#SelectedTables').remove(element, e => {
-        
-    //})
-}
-
 
 function FinalTablesList() {
 
     let listTables = [];
 
+    const selectedTables = document.getElementById('SelectedTables')
+
     selectedTables.childNodes.forEach(item => {
         listTables.push({ id: item.value })
     })
-    
+
     listTables.splice(0, 1)
-    console.log(listTables)
     return listTables;
 }

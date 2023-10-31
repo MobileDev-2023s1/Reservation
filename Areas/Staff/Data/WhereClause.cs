@@ -114,9 +114,9 @@ namespace Group_BeanBooking.Areas.Staff.Data
         public Expression<Func<RestaurantTable, bool>> BuildRestaurantTableClause(RestaurantTable table)
         {
             var whereClause = PredicateBuilder.New<RestaurantTable>(true);
-            Expression<Func<RestaurantTable,bool>> restaurantAreaId = table.RestaurantAreaId != 0 ? 
+            Expression<Func<RestaurantTable,bool>> restaurantAreaId = table.RestaurantAreaId > 0 ? 
                 t=> t.RestaurantAreaId == table.RestaurantAreaId : null;
-            Expression<Func<RestaurantTable, bool>> tableId = table.Id != 0 ? t=> t.Id == table.Id : null;
+            Expression<Func<RestaurantTable, bool>> tableId = table.Id > 0 ? t=> t.Id == table.Id : null;
 
             if(restaurantAreaId!= null)
             {

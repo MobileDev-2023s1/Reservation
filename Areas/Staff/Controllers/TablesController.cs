@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics.Metrics;
 
 using Group_BeanBooking.Areas.Customers.Models.Bookings;
@@ -20,12 +21,14 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
     {
         private readonly RestaurantServices _restaurantServices;
         private readonly ReservationServices _reservationServices;
+        private readonly TableServices _tableServices;
 
         public TablesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager)
             : base(context, userManager, rolesManager)
         {
             _restaurantServices = new RestaurantServices(context, userManager, rolesManager);
             _reservationServices = new ReservationServices(context, userManager, rolesManager);
+            _tableServices = new TableServices(context, userManager, rolesManager); 
         }
 
         public WhereClause CreateClause()
@@ -35,81 +38,42 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             return clause;
         }
 
-        
-
         [HttpPost]
         public async Task<IActionResult> TablesAvailableInSitting([FromBody] Edit c)
         {
             /* 1) get the list of all tables in the same area where person is sitting*/
            
-            var listTablesInArea = await GetListOfTablesInArea(c);
+            var listTablesInArea = await _tableServices.GetListOfTablesInArea(c);
 
-            /*2) get list of bookings that are overlaping the current booking */
-
-            var listOfReservations = await GetListOfBookings(c);
+            /*2) create reservation and pass only Id */
+            var reservation = new Reservation()
+            {
+                Id = c.ReservationId
+            };
 
             //3) which tables from the table list are being assigned to the bookings?
-            return Ok(AssignAvailabilityToTable(listTablesInArea, listOfReservations));
+            return Ok(AssignAvailabilityToTable(listTablesInArea, reservation));
         }
 
-        [HttpPost]
-        public async Task<List<RestaurantTable>> GetListOfTablesInArea([FromBody] Edit c)
-        {
-            var clause = CreateClause();
-            var table = new RestaurantTable()
-            {
-                RestaurantAreaId = c.RestaurantAreaId
-            };
-
-            var newClause = clause.BuildRestaurantTableClause(table);
-
-            var list = await _restaurantServices.GetListofTables(newClause);
-
-            return list;
-
-        }
-
-        [HttpPost]
-        public async Task<List<Reservation>> GetListOfBookings(Edit c)
-        {
-            var clause = CreateClause();
-            var r = new Reservation()
-            {
-                Id = c.ReservationId,
-                Duration = c.Duration,
-                Start = c.Starttime.AddHours(11),
-                RestaurantAreaId = c.RestaurantAreaId,
-                ReservationStatusID = c.ReservationStatusId,
-            };
-
-            var newClause = clause.BuildListOfBookings(r);
-            var list = await _reservationServices.GetAllReservations(newClause);
-
-            return list;
-        }
-
-        [HttpPost]
-        public List<object> AssignAvailabilityToTable(List<RestaurantTable> listTablesInArea , List<Reservation> listOfReservations)
+        public List<object> AssignAvailabilityToTable(List<RestaurantTable> listTablesInArea, Reservation reservation)
         {
             var listTables = new List<object>();
-            
+
             foreach (var table in listTablesInArea)
             {
-                var e = listOfReservations.Any(res => res.RestaurantTables.Contains(table));
+                var result = table.Reservations.Any(item => item.Id == reservation.Id);
 
                 var status = new TableStatus()
                 {
                     Id = table.Id,
                     Name = table.Name,
-                    Status = e ? false : true,
+                    Status = result ? false : true,
                 };
                 listTables.Add(status);
             }
 
             return listTables;
         }
-    
-    
-    
+
     }
 }

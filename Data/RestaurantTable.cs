@@ -6,7 +6,7 @@
         public string Name { get; set; }
 
         public int RestaurantAreaId { get; set; }
-        public List<Reservation> reservations { get; set; } = new();
+        public List<Reservation> Reservations { get; set; } = new();
 
     }
 }
