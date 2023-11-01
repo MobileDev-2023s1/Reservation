@@ -2,6 +2,8 @@
 using System.Data.Entity;
 using System.Diagnostics.Metrics;
 
+using Google.Protobuf.WellKnownTypes;
+
 using Group_BeanBooking.Areas.Customers.Models.Bookings;
 using Group_BeanBooking.Areas.Identity.Data;
 using Group_BeanBooking.Areas.Staff.Data;
@@ -48,7 +50,9 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             /*2) create reservation and pass only Id */
             var reservation = new Reservation()
             {
-                Id = c.ReservationId
+                Id = c.ReservationId,
+                Start = c.Starttime.AddHours(11),
+                Duration = c.Duration,
             };
 
             //3) which tables from the table list are being assigned to the bookings?
@@ -61,13 +65,17 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
 
             foreach (var table in listTablesInArea)
             {
-                var result = table.Reservations.Any(item => item.Id == reservation.Id);
+                var result = table.Reservations
+                    //.Any(item => item.Id == reservation.Id);
+                    .Where(item => item.Start <= reservation.Start || item.End >= reservation.Start)
+                    .FirstOrDefault();
 
                 var status = new TableStatus()
                 {
                     Id = table.Id,
                     Name = table.Name,
-                    Status = result ? false : true,
+                    Status = result != null ? false : true,
+                    ReservationId = result != null ? result.Id : 0,
                 };
                 listTables.Add(status);
             }

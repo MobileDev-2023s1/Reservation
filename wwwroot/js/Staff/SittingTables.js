@@ -1,4 +1,9 @@
-﻿$(() => {
+﻿$(() => {   
+
+    $("#RestaurantAreaList").on('change', function () {
+        ClearSeletedTablesSection();
+        GetTablesByAreaId()
+    })
 
 })
 
@@ -59,16 +64,17 @@ function ListOfAreaTables(tables) {
             .val(item.id)
             .prop({ id: `button${item.name}` })
             .addClass("btn btn-light")
+
+        $('#tablesInArea').append(option);
         
         if (!item.status) {
             option.prop('disabled', true);
-            let exist = $('#SelectedTables').contents().filter(function () { return this.nodeType === 1 && $(this).val() === option.val() }).length > 0;
-            if (!exist) {
+
+            if (item.reservationId == $('#BookingId').val()) {
                 BlockTablesForBooking(item)
             }
         } 
 
-        $('#tablesInArea').append(option);
         option.click(function (){
             let exist = $('#SelectedTables').contents().filter(function () { return this.nodeType === 1 && $(this).val() === option.val()}).length > 0;
             if (!exist) {
@@ -81,6 +87,14 @@ function ListOfAreaTables(tables) {
         })
     })
 } 
+
+
+function ClearSeletedTablesSection() {
+    while ($('#SelectedTables').children().length > 0) {
+        $('#SelectedTables').children().remove()
+    }
+
+}
 
 function BlockTablesForBooking(item) {
     let selected = $('<button></button>');

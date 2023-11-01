@@ -12,7 +12,10 @@ where Id >= 1;
 select * from People;
 
 select * from Reservations
-where Start >= '2023-10-24 5:00:00 PM' and Start <= '2023-10-25'
+where Start >= '2023-11-01' and Start <= '2023-11-30'
+
+delete from Reservations
+where id = 6;
 
 update Reservations
 set Start = '2023-10-24 8:28:00 PM'
@@ -25,6 +28,9 @@ select * from Sittings
 where Id = 4536;
 
 select * from ReservationRestaurantTable
+
+select * from Reservations as res
+join RestaurantTables as rt on res.RestaurantAreaId = rt.RestaurantAreaId
 
 
 select * from RestaurantTables

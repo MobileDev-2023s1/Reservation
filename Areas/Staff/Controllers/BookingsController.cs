@@ -152,13 +152,11 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         public async Task<IActionResult> NewBookingDetails([FromBody]Edit c)
         {
             if (ModelState.IsValid)
-            {
-                
+            {                
                 //find the booking
                 var res = await _reservationServices.GetReservationsByReservationId(c.ReservationId);
                 var clause = new WhereClause().BuildRestaurantTableClause(new RestaurantTable() { RestaurantAreaId = c.RestaurantAreaId });
                 var tables =  await _restaurantServices.GetListofTables(clause);
-
 
                 //add the tables to the booking \
                 foreach (var table in c.RestaurantTables)

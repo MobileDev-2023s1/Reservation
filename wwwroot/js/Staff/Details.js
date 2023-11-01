@@ -13,59 +13,62 @@
 $(() => {
     LoadSearchVariables();
     LoadCalendar()
-
-    $('#searchCustomer').click(LoadCalendar)
-
-    $('#clearButton').click(e => {
-        if ($('#restaurantLocation').prop('selectedIndex') != 0
-            || $('#userEmail').val() != null || $('#bookingStatus').prop('selectedIndex') != 0) {
-            ClearSearchParameters();
-            LoadCalendar()
-        }
-    })
-
-    $('#submit').click(async e => {
-        await UpdateDetails()
-        LoadCalendar()
-        $('#exampleModalCenter').modal('hide');
-    })
-
-    $('#closeButton').click(e => {
-        $('#exampleModalCenter').modal('hide');
-    })
-
-    $('#assignTable').click(async e => {
-        $('tableSection')
-    })
-
-    $('#assignTable').click(async e => {
-        //booking needs to be confirmed before assigning a table
-        if ($('#assignTableSection').css('display') == 'block') {
-            $('#assignTableSection').css('display', 'none')
-        } else {
-            $('#assignTableSection').css('display', 'block')
-            await GetTablesByAreaId()
-        }
-    })
-
-    $('#NewReservationStatusId').on('change', async e => {
-        if ($('#NewReservationStatusId').prop('selectedIndex') != 1 && $('#NewReservationStatusId').prop('selectedIndex') != 3) {
-                $('#assingTableOption').css('display', 'none')
-                $('#assignTable')[0].checked = false;
-                $('#assignTableSection').css('display', 'none')
-        } else {
-                $('#assingTableOption').css('display', 'block')
-        }
-    })
 });
 
 /**Event Listeners*/
 
+$('#searchCustomer').click(LoadCalendar)
+
+$('#clearButton').click(e => {
+    if ($('#restaurantLocation').prop('selectedIndex') != 0
+        || $('#userEmail').val() != null || $('#bookingStatus').prop('selectedIndex') != 0) {
+        ClearSearchParameters();
+        LoadCalendar()
+    }
+})
 function ClearSearchParameters() {
     $('#restaurantLocation').prop('selectedIndex', 0)
     $('#bookingStatus').prop('selectedIndex', 0)
     $('#userEmail').val(null)
 }
+
+
+$('#submit').click(async e => {
+    await UpdateDetails()
+    LoadCalendar()
+    $('#exampleModalCenter').modal('hide');
+})
+
+$('#closeButton').click(e => {
+    $('#exampleModalCenter').modal('hide');
+})
+
+
+$('#assignTable').click(async e => {
+    $('tableSection')
+})
+
+$('#assignTable').click(async e => {
+    //booking needs to be confirmed before assigning a table
+    if ($('#assignTableSection').css('display') == 'block') {
+        $('#assignTableSection').css('display', 'none')
+        ClearSeletedTablesSection()
+    } else {
+        $('#assignTableSection').css('display', 'block')
+        ClearSeletedTablesSection()
+        await GetTablesByAreaId()
+    }
+})
+
+$('#NewReservationStatusId').on('change', async e => {
+    if ($('#NewReservationStatusId').prop('selectedIndex') != 1 && $('#NewReservationStatusId').prop('selectedIndex') != 3) {
+        $('#assingTableOption').css('display', 'none')
+        $('#assignTable')[0].checked = false;
+        $('#assignTableSection').css('display', 'none')
+    } else {
+        $('#assingTableOption').css('display', 'block')
+    }
+})
 
 /**
  * Loads the calendar
@@ -110,7 +113,10 @@ function LoadCalendar()
             if ($('#NewReservationStatusId').prop('selectedIndex') != 1 && $('#NewReservationStatusId').prop('selectedIndex') != 3) {
                 $('#assingTableOption').css('display', 'none')
             } else {
-                $('#assingTableOption').css('display', 'block') ;
+                $('#assingTableOption').css('display', 'block');
+                ClearSeletedTablesSection();
+                GetTablesByAreaId();
+
             }
             
         },
@@ -232,11 +238,7 @@ async function UpdateDetails() {
         } else {
             const result = await response.text();
             console.log(result)
-           
         }
-
-        
-        
     } catch (error) {
 
     }
