@@ -44,5 +44,63 @@ namespace Group_BeanBooking.Services
             return list;
 
         }
+
+        public async Task AddTablesToBooking(Reservation res, List<RestaurantTable> tables, Edit c)
+        {
+            foreach (var table in c.RestaurantTables)
+            {
+                var selection = tables.Find(t => t.Id == table.Id);
+                var result = res.RestaurantTables.Contains(selection);
+                if (!result)
+                {
+                    res.RestaurantTables.Add(selection);
+                    _context.SaveChangesAsync();
+                }
+            }
+
+        }
+
+        public async Task<Edit> RemoveTableFromBooking(Reservation res, List<RestaurantTable> tables, Edit c)
+        {
+            if(c.RestaurantTables.Count == 0)
+            {
+                res.RestaurantTables.Clear();
+                
+            }else if(c.ReservationStatusId != 2 && c.ReservationStatusId != 4){
+
+                res.RestaurantTables.Clear();
+                c.RestaurantTables.Clear();
+            }
+            else
+            {
+                var remove= await IdentifyTablesToRemove(res, tables, c);
+                
+                foreach (var table in remove)
+                {
+                    res.RestaurantTables.Remove(table);
+                }
+                                    
+            }
+
+            return c;
+
+        }
+
+        public async Task<List<RestaurantTable>> IdentifyTablesToRemove(Reservation res, List<RestaurantTable> tables, Edit c)
+        {
+            List<RestaurantTable> remove = new List<RestaurantTable>();
+            //form the initial list the reservation has
+            foreach (var table in res.RestaurantTables)
+            {
+                var result = c.RestaurantTables.Find(t => t.Id == table.Id);
+                if (result == null)
+                {
+                    var tableToRemove = res.RestaurantTables.Find(t => t.Id == table.Id);
+                    remove.Add(tableToRemove);
+                }
+            }
+
+            return remove;
+        }
     }
 }

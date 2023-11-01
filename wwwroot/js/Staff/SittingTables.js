@@ -5,6 +5,16 @@
         GetTablesByAreaId()
     })
 
+    $('#NewReservationStatusId').on('change', function () {
+        $('#assignTable')[0].checked = false;
+        $('#assignTableSection').css('display', 'none')
+        ClearSeletedTablesSection();
+    })
+
+    $('#closeButton').on('click', function () {
+        ClearSeletedTablesSection();
+    })
+
 })
 
 async function GetTablesByAreaId()

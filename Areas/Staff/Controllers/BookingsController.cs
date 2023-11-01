@@ -158,17 +158,12 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 var clause = new WhereClause().BuildRestaurantTableClause(new RestaurantTable() { RestaurantAreaId = c.RestaurantAreaId });
                 var tables =  await _restaurantServices.GetListofTables(clause);
 
-                //add the tables to the booking \
-                foreach (var table in c.RestaurantTables)
-                {
-                    var selection = tables.Find(t => t.Id == table.Id);
-                    var result = res.RestaurantTables.Contains(selection);
-                    if (!result)
-                    {
-                        res.RestaurantTables.Add(selection);
-                        _context.SaveChangesAsync();
-                    }
-                }
+                //remove tables from booking
+                c = await _tableServices.RemoveTableFromBooking(res, tables, c);
+
+
+                //add tables to booking
+                await _tableServices.AddTablesToBooking(res, tables, c);
 
                 //save the changes
                 c.Starttime = c.Starttime.AddHours(11);
@@ -178,6 +173,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             }
             return Ok($"Booking id {c.ReservationId} updated");
         }
+
 
         #region Includes format information for events on the calendar
         public int Days(DateTime date)

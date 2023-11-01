@@ -110,6 +110,7 @@ namespace Group_BeanBooking.Services
         public async Task<Reservation> GetReservationsByReservationId(int reservationId)
         {
             var reservations = await _context.Reservations
+                .Include(r=> r.RestaurantTables)
                 .Include(r => r.Person) //eager loading
                 .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
                     .ThenInclude(s => s.Restaurant)
