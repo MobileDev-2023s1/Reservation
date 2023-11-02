@@ -14,9 +14,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input id="sittingName"  asp-for="Name" class="form-control" />
+                <input id="SittingName"  asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+          
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Closed" /> @Html.DisplayNameFor(model => model.Closed)
@@ -33,23 +34,32 @@
                 <label asp-for="TypeId" class="control-label"></label>
                 <select id="typeid" asp-for="TypeId" class="form-control" asp-items="Model.SittingTypes"></select>
             </div>
+         
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
-                <input id="StartTime"  type="time" asp-for="StartTime" class="form-control" />
+                <input id="StartTime" type="time" value="07:00" min="6:00" max="23:59" asp-for="StartTime" class="form-control" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
+            
+            
             <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
-                <input min="1" max="5"  value="1" asp-for="Duration" class="form-control" />Hours
-                <span asp-validation-for="Duration" class="text-danger"></span>
+                
+
+                <label asp-for="DurationH" class="control-label">Duration</label>
+                <input id="DurationH" type="number" value="1" min="00" max="12" asp-for="DurationH" class="" /> :  
+                <span asp-validation-for="DurationH" class="text-danger"></span>
+                <input id="DurationM" type="number" value="30" min="00" max="59" asp-for="DurationM" class="" />
+                <span asp-validation-for="DurationM" class="text-danger"></span>
+                
+                
             </div>
-            <div class="form-group">
+          
+             <div class="form-group">
                 <label asp-for="Repeats" class="control-label"></label>
                 <input asp-for="Repeats" class="form-control" />
                 <span asp-validation-for="Repeats" class="text-danger"></span>
-            </div>
-            
-                     
+            </div>          
+                    
             <div class="form-group form-check">
                 <label class="form-check-label">
                     Sun
@@ -86,9 +96,14 @@
                 <input asp-for="Interval" class="form-control" min="1" value="1" />
                 <span asp-validation-for="Interval" class="text-danger"></span>
             </div>
+           
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <div>
+                <input id="test" type="submit" value="test" />
+            </div>
+
         </form>
     </div>
 </div>
@@ -97,8 +112,8 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-
-@{
+@*
+{
     string buttonColor = "#2c3e50";
     string buttonTextColor = "white";
 }
@@ -154,10 +169,10 @@
     </p>
 
     <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-        <div id="newSitting" class='fc-event-main'>Sitting Name</div>
+        <div id='newSitting' @*data-event='{ "title":"","capacity":"","sittingtype":"","start":"","end":"" }'*@ class='fc-event-main'>Sitting Name</div>
     </div>
   
-    
+
     <p>
         <input type='checkbox' id='drop-remove' />
         <label for='drop-remove'>remove after drop</label>
@@ -175,7 +190,7 @@
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-    <script src="/js/Administration/SittingCreate.js"></script>
-}
+    <script src="/js/Administration/Sitting.Create.js"></script>
+}*@
 
 
