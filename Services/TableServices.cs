@@ -9,6 +9,7 @@ using Group_BeanBooking.Data;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Group_BeanBooking.Services
 {
@@ -54,7 +55,7 @@ namespace Group_BeanBooking.Services
                 if (!result)
                 {
                     res.RestaurantTables.Add(selection);
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                 }
             }
 
@@ -64,26 +65,36 @@ namespace Group_BeanBooking.Services
         {
             if(c.RestaurantTables.Count == 0)
             {
-                res.RestaurantTables.Clear();
-                
-            }else if(c.ReservationStatusId != 2 && c.ReservationStatusId != 4){
-
-                res.RestaurantTables.Clear();
+                await RemoveTablesFromReservation(res);
+            }
+            else if(c.ReservationStatusId != 2 && c.ReservationStatusId != 4){
+                await RemoveTablesFromReservation(res);
                 c.RestaurantTables.Clear();
             }
             else
             {
                 var remove= await IdentifyTablesToRemove(res, tables, c);
-                
-                foreach (var table in remove)
+                if (remove != null)
                 {
-                    res.RestaurantTables.Remove(table);
+                    foreach (var table in remove)
+                    {
+                        res.RestaurantTables.Remove(table);
+                        await _context.SaveChangesAsync();
+                    }
                 }
-                                    
+            }
+            return c;
+        }
+
+        public async Task RemoveTablesFromReservation(Reservation res)
+        {
+            var tablesToRemove = res.RestaurantTables.ToList(); // Create a new list to remove tables
+            foreach (var table in tablesToRemove)
+            {
+                res.RestaurantTables.Remove(table);
             }
 
-            return c;
-
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<RestaurantTable>> IdentifyTablesToRemove(Reservation res, List<RestaurantTable> tables, Edit c)
