@@ -53,6 +53,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Customers\Scripts\" />
+    <Folder Include="wwwroot\Images\Menu\" />
   </ItemGroup>
 
 </Project>

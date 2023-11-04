@@ -163,8 +163,8 @@ namespace Group_BeanBooking.Data
         {
             List<Restaurant> list = new()
             {
-                new Restaurant { Name = "Opera Bar", Phone = "02 5020 5560" },
-                new Restaurant { Name = "Grill'd", Phone = "02 3025 6210"}
+                new Restaurant { Name = "Mopera", Phone = "02 5020 5560" },
+                new Restaurant { Name = "Opera", Phone = "02 3025 6210"}
 
             };
 

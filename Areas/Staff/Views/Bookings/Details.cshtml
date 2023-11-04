@@ -22,25 +22,34 @@
 
 @*<link href='/docs/dist/demo-to-codepen.css' rel='stylesheet' />*@
 
-<div id="searchSection" class="row">
+<div id="searchSection" class="container">
     <div id="searchSection" class="row">
-        <div class="col-5">
-            <label>Restaurant:</label><br />
-            <select id="restaurantLocation" asp-for="RestaurantID" asp-items="@Model.RestaurantList" default="Select One">
-                <option itemid="0">Select One</option>
-            </select><br />
-            <label>Booking Status:</label><br />
-            <select id="bookingStatus" asp-for="ReservationStatusId" asp-items="@Model.StatusesList" >
-                <option itemid="0">Select One</option>
-            </select>
+        <div id="col_1" class="col">
+            <div id="row 1" class="row row-cols-2">
+                <div class="col">
+                    <label>Restaurant:</label>
+                    <select id="restaurantLocation" asp-for="RestaurantID" asp-items="@Model.RestaurantList" class="form-select">
+                        <option itemid="0">**** Select One ****</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Booking Status:</label>
+                    <select id="bookingStatus" asp-for="ReservationStatusId" asp-items="@Model.StatusesList" class="form-select">
+                        <option itemid="0">**** Select One ****</option>
+                    </select> <br />
+                </div>
+            </div>
+            <div id="row_2" class="row">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="userEmail" placeholder="name@example.com">
+                    <label for="floatingInput">Email address</label>
+                </div>
+            </div>
         </div>
-        <div class="col-5">
-            <label>User Email:</label><br />
-            <input id="userEmail" type="text" />
-        </div>
-        <div class="col-2">
-            <button id="searchCustomer">Search</button> <br /><br />
-            <button id="clearButton">Reset</button>
+        <div class="col-1 aling-content-center">
+            <button id="searchCustomer" class="btn-primary">Search</button> <br /><br />
+            <button id="clearButton" class="btn-primary">Reset</button>
+
         </div>
     </div>
 </div>
