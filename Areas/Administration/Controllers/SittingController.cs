@@ -263,7 +263,7 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                 await Create(m);
                 return RedirectToAction(nameof(Index));
             }
-            m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
+         
             return View(m);
            
         }
