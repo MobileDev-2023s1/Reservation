@@ -57,7 +57,12 @@
                             <input  type="radio" name="Range" asp-for="Range" value="All"> All events<br>
                         </label>            
                     </div>
-                 
+                    <div class="form-group">
+                        <label asp-for="Interval" class="control-label"></label>
+                        <input asp-for="Interval" class="form-control" min="1" value="1" />
+                        <span asp-validation-for="Interval" class="text-danger"></span>
+                    </div>
+
                     <div class="form-group form-check">
                          <label class="form-check-label">
                             Mon
@@ -87,6 +92,12 @@
                             Sun
                             <input type="checkbox" asp-for="Sunday" />
                          </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Repeats" class="control-label"></label>
+                        <input asp-for="Repeats" class="form-control" />
+                        <span asp-validation-for="Repeats" class="text-danger"></span>
                     </div>
            
                 }
