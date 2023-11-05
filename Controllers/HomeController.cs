@@ -62,25 +62,28 @@ namespace Group_BeanBooking.Controllers
         public async Task<IActionResult> RedirectUser()
         {
             //var roles = _rolesManager.Roles.ToList();
+            var user = await _personServices.GetPersonByEmail(User.Identity.Name);
 
             if (User.IsInRole("Customer"))
             {
-                var user = await _personServices.GetPersonByEmail(User.Identity.Name);
+                //var user = await _personServices.GetPersonByEmail(User.Identity.Name);
 
                 return RedirectToAction("Details", "Bookings", new { id = user == null? 0 : user.Id , area = "Customers" });
 
             }
-            if (User.IsInRole("Administrator"))
+            else if (User.IsInRole("Administrator"))
             {
-
-
-                var user = await _personServices.GetPersonByEmail(User.Identity.Name);
+                //var user = await _personServices.GetPersonByEmail(User.Identity.Name);
 
                 return RedirectToAction("Index", "Home", new { id = user == null ? 0 : user.Id, area = "Administration" });
-            }
+            } else if (User.IsInRole("Staff"))
+            {
+                //var user = await _personServices.GetPersonByEmail(User.Identity.Name);
+
+                return RedirectToAction("Index", "Bookings", new { id = user == null ? 0 : user.Id, area = "Staff" });
 
 
-            else
+            } else
             {
                 return View();
             }

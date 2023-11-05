@@ -9,14 +9,12 @@
 
 }
 
-<head>
-    <script src="~/js/customers/customer.js"></script>
-    <input id="RestaurantId" type="hidden" asp-for="RestaurantId" value="@Model.RestaurantId"/> 
+@*<script src="~/js/customers/customercreate.js"></script>*@
+<input id="RestaurantId" type="hidden" asp-for="RestaurantId" value="@Model.RestaurantId"/> 
     
-</head>
 
-<body>
-    <form method="post">
+
+<form method="post">
         <div>
 
             <h1>Welcome to @Model.RestaurantName</h1>
@@ -53,41 +51,55 @@
             <!--This is the section for the booking details-->
             <br />
             <h3>Booking Information</h3> <br />
-            <label asp-for="Starttime"></label>
-            <input id="Date" type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")"
-                  /><br /><br />
+
+            <div id="BookingVariables">
+
+                <label asp-for="Starttime">Booking time</label>
+                <input id="Date" type="datetime-local" asp-for="Starttime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddDays(90).ToString("yyyy-MM-ddTHH:mm")" /><br /><br />
+                
+                <label asp-for="Duration">Booking length</label>
+                <input id="duration" type="number" asp-for="Duration" min="30" max="180" value="30" /><br /><br />
+
+                <label asp-for="Guests">Guests</label>
+                <input id="guests" type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
+                <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
+                
             
-            <label asp-for="Duration">Booking length</label>
-            <input type="number" asp-for="Duration" min="30" max="180" value="30" /><br /><br />
+            </div>
 
-
-            <label asp-for="Guests">Guests</label>
-            <input type="number" asp-for="Guests" min="1" max="100" value="1" /> <br /><br />
-            <!--Max property should include the sum of all the customers for all bookings at the same time in a restaurant and dinning area-->
-
-            <label asp-for="SittingId">What menu?</label><br />
-            <select asp-for="SittingId" id="MenuType">
-                <option value="">Select One</option>
-            </select>
-
-            <br /><br />
+                  <div id="UserAlert" class="" role="alert" style="display: none"></div>
             
-            <label asp-for="RestaurantAreaId">Where to sit?</label><br />
-            <select asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
 
-            <label asp-for="Comments">Comments</label><br />
-            <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
+            <div id="BookingDetails" style="display: none">
+
+
+                <label asp-for="SittingId">What menu?</label><br />
+                <select asp-for="SittingId" id="MenuType">
+                    <option value="">Select One</option>
+                </select>
+
+                <br /><br />
+            
+                <label asp-for="RestaurantAreaId">Where to sit?</label><br />
+                <select id="RestaurantAreaList" asp-for="RestaurantAreaId" asp-items="@Model.SittingAreaList">Select One</select><br /> <br />
+
+                <label asp-for="Comments">Comments</label><br />
+                <input asp-for="Comments" type="text" width="150" height="300" maxlength="200" />
+
+            </div>
+            
 
 
         </div>
 
-        <br /><br /><input type="submit" value="Create" class="btn btn-primary" />
-
-    </form>
-
-</body>
+        <br /><br /><input id="submit" type="submit" value="Create" class="btn btn-primary" disabled="disabled"/>
 
 
+</form>
 
+@section Scripts{
+    <script src="~/js/site.js"></script>
+    <script src="/js/customers/customercreate.js"></script>
+}
 
 

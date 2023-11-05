@@ -226,46 +226,46 @@ namespace Group_BeanBooking.Data
 
            // taka disabled sitting seeding. 
         {
-            //var start = "22/09/2023 7:00:00 AM";
-            //List<Sitting> list = new()
-            //{
-            //    new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Now , End = DateTime.Now.AddHours(4) , Capacity= 40, TypeId = 1 },
-            //    new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Now.AddHours(6) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 2 },
-            //    new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Now.AddHours(12) , End = DateTime.Now.AddHours(4) , Capacity= 50, TypeId = 3}
-            //};
+            var start = "22/09/2023 7:00:00 AM";
+            List<Sitting> list = new()
+            {
+                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1},
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 50, TypeId = 2},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 50, TypeId = 3}
+            };
+            
+            var listrestaurants = await _context.Restaurants
+                .Include(r => r.Sittings).ToListAsync();
 
+            foreach(var restaurant in listrestaurants)
+            {
+                foreach (var item in list)
+                {
+                    for (int i = 0; i < 90; i++)
+                    {
+                        var rest = restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == item.Start.AddDays(i) &&
+                        r.End == item.End.AddDays(i) && r.RestaurantId == restaurant.Id);
+                        if (rest == null)
+                        { 
+                            await _context.Sittings.AddAsync(new Sitting
+                            {
+                                Name = item.Name,
+                                Closed = false,
+                                Start = item.Start.AddDays(i),
+                                End = item.End.AddDays(i),
+                                Capacity = item.Capacity,
+                                TypeId = item.TypeId,
+                                RestaurantId = restaurant.Id,
+                                
+                                
+                            });
+                            await _context.SaveChangesAsync();
 
+                        }
 
-            //var listrestaurants = await _context.Restaurants
-            //    .Include(r => r.Sittings).ToListAsync();
-
-            //foreach (var restaurant in listrestaurants)
-            //{
-            //    foreach (var item in list)
-            //    {
-            //        for (int i = 0; i < 90; i++)
-            //        {
-            //            var rest = restaurant.Sittings.SingleOrDefault(r => r.Name == item.Name && r.Start == item.Start.AddDays(i) &&
-            //            r.End == item.End.AddDays(i) && r.RestaurantId == restaurant.Id);
-            //            if (rest == null)
-            //            {
-            //                await _context.Sittings.AddAsync(new Sitting
-            //                {
-            //                    Name = item.Name,
-            //                    Closed = false,
-            //                    Start = item.Start.AddDays(i),
-            //                    End = item.End.AddDays(i),
-            //                    Capacity = item.Capacity,
-            //                    TypeId = item.TypeId,
-            //                    RestaurantId = restaurant.Id
-            //                });
-            //                await _context.SaveChangesAsync();
-
-            //            }
-
-            //        }
-            //    }
-            //}
+                    }
+                }
+            }
         }
 
         public void SeedTables()
