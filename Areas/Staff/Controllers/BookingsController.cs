@@ -206,6 +206,12 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 case 2: return "#d1e7dd"; break;
                 //seated
                 case 4: return "#cfe2ff"; break;
+                //cancelled
+                case 3: return "#ffd000"; break;
+                //Completed
+                case 5: return "#52b788"; break;
+                //Cancellation requested
+                case 6: return "#ff4d6d"; break;
                 default: return null;
             }
         }
@@ -220,6 +226,12 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 case 2: return "#badbcc"; break;
                 //seated
                 case 4: return "#b6d4fe"; break;
+                //cancelled
+                case 3: return "#ffd000"; break;
+                //Completed
+                case 5: return "#52b788"; break;
+                //Cancellation requested
+                case 6: return "#ff4d6d"; break;
                 default: return null;
 
             }
@@ -233,8 +245,14 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 case 1: return "#842029"; break;
                 //confirmed
                 case 2: return "#0f5132"; break;
+                //cancelled
+                case 3: return "#ff7b00"; break;
                 //seated
                 case 4: return "#084298"; break;
+                //Completed
+                case 5: return "#081c15"; break;
+                //Cancellation requested
+                case 6: return "#590d22"; break;
                 default: return null;
 
             }

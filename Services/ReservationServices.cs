@@ -169,7 +169,7 @@ namespace Group_BeanBooking.Services
             await _context.Reservations
                 .Where(r => r.Id == id)
                 .ExecuteUpdateAsync(r => r
-                    .SetProperty(r => r.ReservationStatusID, 3)
+                    .SetProperty(r => r.ReservationStatusID, 6)
                 );
         }
 

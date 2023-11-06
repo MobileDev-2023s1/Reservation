@@ -2,22 +2,35 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var imageWidth = "40px";
 }
+
 
 <h1>Welcome to Staff area</h1>
 
 <form>
     <div class="container">
-        <div class="row bg-primary">
-            <button class="col" asp-area="Staff" asp-controller="Bookings" asp-action="Details">Booking details</button>
+        <div class="row row-cols-sm-4 ">
+            <button class="col" asp-area="Staff" asp-controller="Bookings" asp-action="Details">
+                Bookings <img src="~/images/icons/schedule.png" style="width: @imageWidth" />
+            </button>
 
-            <button class="col">Person details</button>
+            <button>
+                Person details
+                <img src="~/images/icons/profile.png" style="width: @imageWidth" />
+            </button>
 
-            <button class="col">Sitting Details</button>
+            <button>Sitting Details
+                <img src="~/images/icons/menu.png" style="width: @imageWidth" />
+            </button>
 
-            <button class="col">Sitting areas Details</button>
-        
+            <button>
+                Sitting areas Details
+                <img src="~/images/icons/blueprint.png" style="width: @imageWidth" />
+            </button>
+        </div>
+        <div class="row">
+
         </div>
     </div>
-
 </form>

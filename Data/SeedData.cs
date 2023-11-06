@@ -146,7 +146,8 @@ namespace Group_BeanBooking.Data
                 new ReservationStatus {Name = "Confirmed"},
                 new ReservationStatus {Name = "Cancelled"},
                 new ReservationStatus {Name = "Seated"},
-                new ReservationStatus {Name = "Completed"}
+                new ReservationStatus {Name = "Completed"},
+                new ReservationStatus {Name = "Cancellation Requested"}
             };
 
             foreach(var item in list) 

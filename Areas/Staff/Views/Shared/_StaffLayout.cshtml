@@ -11,11 +11,13 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+            <div class="container-fluid jus-content-center">
                 @*<img src="~/images/logo/logo-primary.png" asp-area="Staff" asp-controller="Bookings" asp-action="Index"/>*@
                 <a class="navbar-brand" asp-area="Staff" asp-controller="Bookings" asp-action="Index">
                     <img src="~/images/logo/logo-primary.png" style="width: 160px" />
-                    Staff Portal</a>
+                    Staff Portal
+                    <img src="~/images/icons/staff.png" style="width: 50px" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,6 +31,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
