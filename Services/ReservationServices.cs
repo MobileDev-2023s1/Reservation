@@ -99,8 +99,7 @@ namespace Group_BeanBooking.Services
                     .ThenInclude(s => s.Restaurant)
                 .Include(r => r.ResevationOrigin)
                 .Include(r => r.ReservationStatus)
-                .Where(r => r.PersonId == personId && r.Start >= DateTime.Now 
-                        && r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .Where(r => r.PersonId == personId && r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
                 .OrderBy(r => r.Start)
                 .ToListAsync();
 

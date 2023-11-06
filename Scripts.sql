@@ -4,6 +4,17 @@ select * from ResturantAreas;
 select * from Restaurants;
 select * from SittingTypes;
 
+delete from Restaurants
+where Id >= 3
+
+update Restaurants
+set Name = 'Opera'
+where Id = 1
+
+update Restaurants
+set Name = 'Mopera'
+where Id = 2
+
 select count(*) from Sittings;
 
 delete from RestaurantTables
