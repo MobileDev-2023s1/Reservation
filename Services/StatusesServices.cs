@@ -15,7 +15,9 @@ namespace Group_BeanBooking.Services
 
         public async Task<List<ReservationStatus>> GetListReservationStatus()
         {
-            return await _context.ReservationStatuses.ToListAsync();
+            return await _context.ReservationStatuses
+                //.Where(r=> )
+                .ToListAsync();
         }
     }
 }

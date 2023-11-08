@@ -78,6 +78,7 @@
 
             <div>
                 <table border="1">
+                    <th>Id</th>
                     <th>Sitting Type</th>
                     <th>Customer Name</th>
                     <th>Date & time</th>
@@ -89,6 +90,7 @@
                         @foreach (var p in Model.Reservations)
                         {
                             <tr>
+                                <td>@p.Id</td>
                                 <td>@p.Sitting.Name</td>
                                 <td>@p.Person.FirtName @p.Person.LastName</td>
                                 <td>@p.Start</td>
@@ -96,14 +98,17 @@
                                 <td>@p.Sitting.Restaurant.Name</td>
                                 <td>
                                     <div class="btn-group-vertical" aria-label="Basic mixed styles example">
-                                        <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-outline-primary"> Edit</a>
-                                        <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-outline-danger"> Delete</a>
-
+                                        @if(p.ReservationStatusID == 6)
+                                        {
+                                            <a class="btn btn-outline-dark"> Pending Cancellation</a>
+                                        }else
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-outline-primary"> Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-outline-danger"> Request Cancellation</a>
+                                        }
                                     </div>
                                 </td>
-
                             </tr>
-
                         }
                     </tbody>
                 </table>
@@ -129,6 +134,9 @@
 
     <br />
     <br />
-    <a class="btn btn-info" asp-area="" asp-controller="Home" asp-action="Index">Make booking</a>
+    <a class="btn btn-info" asp-area="" asp-controller="Home" asp-action="Index">
+        Make booking
+        <img src="~/images/icons/add-file.png" style="width: 50px" />
+    </a>
 
 </body>

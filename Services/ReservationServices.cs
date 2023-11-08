@@ -45,6 +45,7 @@ namespace Group_BeanBooking.Services
         public async Task<Reservation> GetSingelReservationById(Expression<Func<Reservation, bool>> clause)
         {
             var reservation = await _context.Reservations
+                .Include(r => r.RestaurantTables)
                 .Include(r => r.Person) //eager loading
                 .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
                 .Include(r => r.ReservationStatus)
@@ -53,6 +54,19 @@ namespace Group_BeanBooking.Services
                 
 
             return reservation ;
+        }
+
+        public async Task<List<Reservation>> GetReservationByStatusID(Expression<Func<Reservation, bool>> clause)
+        {
+            var reservations = await _context.Reservations
+                .Include(r => r.Person) //eager loading
+                .Include(a => a.RestaurantArea)
+                .Where(clause)
+                .OrderBy(r => r.Start)
+                .ToListAsync();
+
+            return reservations;
+
         }
 
 
@@ -67,7 +81,7 @@ namespace Group_BeanBooking.Services
                 .Include(r => r.Person) //eager loading
                 .Include(a => a.RestaurantArea)
                 /*.Include(r => r.ReservationStatus)*/ //185 read without - 437 with this
-                .Where(r=>r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .Where(r => r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
                 .Where(clause)
                 .OrderBy(r => r.Start)
                 .ToListAsync();
@@ -85,8 +99,7 @@ namespace Group_BeanBooking.Services
                     .ThenInclude(s => s.Restaurant)
                 .Include(r => r.ResevationOrigin)
                 .Include(r => r.ReservationStatus)
-                .Where(r => r.PersonId == personId && r.Start >= DateTime.Now 
-                        && r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
+                .Where(r => r.PersonId == personId && r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
                 .OrderBy(r => r.Start)
                 .ToListAsync();
 
@@ -96,6 +109,7 @@ namespace Group_BeanBooking.Services
         public async Task<Reservation> GetReservationsByReservationId(int reservationId)
         {
             var reservations = await _context.Reservations
+                .Include(r=> r.RestaurantTables)
                 .Include(r => r.Person) //eager loading
                 .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
                     .ThenInclude(s => s.Restaurant)
@@ -136,20 +150,18 @@ namespace Group_BeanBooking.Services
 
         public async Task EditReservation(Edit c)
         {
-            var currentRes = await GetReservationsByReservationId(c.ReservationId);
-           
             await _context.Reservations
-                    .Where(b => b.Id == c.ReservationId)
+                .Where(b => b.Id == c.ReservationId)
                     .ExecuteUpdateAsync(b => b
                         .SetProperty(b => b.Start, c.Starttime)
                         .SetProperty(b => b.Duration, c.Duration)
                         .SetProperty(b => b.Guests, c.Guests)
                         .SetProperty(b => b.SittingID, c.SittingId)
-                        .SetProperty(b => b.PersonId, currentRes.PersonId)
+                        .SetProperty(b => b.PersonId, c.PersonId)
                         .SetProperty(b => b.RestaurantAreaId, c.RestaurantAreaId)
-                        .SetProperty(b => b.Comments, c.Comments)                        
+                        .SetProperty(b => b.Comments, c.Comments)  
+                        .SetProperty(b=>b.ReservationStatusID, c.ReservationStatusId)
                         );
-                       
         }
 
         public async Task DeleteReservation(int id)
@@ -157,10 +169,11 @@ namespace Group_BeanBooking.Services
             await _context.Reservations
                 .Where(r => r.Id == id)
                 .ExecuteUpdateAsync(r => r
-                    .SetProperty(r => r.ReservationStatusID, 3)
+                    .SetProperty(r => r.ReservationStatusID, 6)
                 );
         }
 
+        
         #endregion
 
     }

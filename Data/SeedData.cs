@@ -45,8 +45,12 @@ namespace Group_BeanBooking.Data
             //await SeedUsersinRoles();
             await SeedReservationStatuses();
             await SeedReservationsOrigin();
+            //await SeedTables();
+            //await AddBookingToTable();
 
         }
+
+
 
         public async Task SeedReservationsOrigin()
         {
@@ -142,7 +146,8 @@ namespace Group_BeanBooking.Data
                 new ReservationStatus {Name = "Confirmed"},
                 new ReservationStatus {Name = "Cancelled"},
                 new ReservationStatus {Name = "Seated"},
-                new ReservationStatus {Name = "Completed"}
+                new ReservationStatus {Name = "Completed"},
+                new ReservationStatus {Name = "Cancellation Requested"}
             };
 
             foreach(var item in list) 
@@ -159,8 +164,8 @@ namespace Group_BeanBooking.Data
         {
             List<Restaurant> list = new()
             {
-                new Restaurant { Name = "Opera Bar", Phone = "02 5020 5560" },
-                new Restaurant { Name = "Grill'd", Phone = "02 3025 6210"}
+                new Restaurant { Name = "Mopera", Phone = "02 5020 5560" },
+                new Restaurant { Name = "Opera", Phone = "02 3025 6210"}
 
             };
 
@@ -229,9 +234,9 @@ namespace Group_BeanBooking.Data
             var start = "22/09/2023 7:00:00 AM";
             List<Sitting> list = new()
             {
-                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 40, TypeId = 1},
-                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 50, TypeId = 2},
-                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 50, TypeId = 3}
+                new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 60, TypeId = 1},
+                new Sitting { Name = "Continental Lunch" , Closed = false , Start = DateTime.Parse(start).AddHours(4).AddSeconds(1) , End = DateTime.Parse(start).AddHours(10), Capacity= 60, TypeId = 2},
+                new Sitting { Name = "Continental Dinner" , Closed = false , Start = DateTime.Parse(start).AddHours(10).AddSeconds(1 ), End = DateTime.Parse(start).AddHours(16), Capacity= 60, TypeId = 3}
             };
             
             var listrestaurants = await _context.Restaurants
@@ -268,25 +273,28 @@ namespace Group_BeanBooking.Data
             }
         }
 
-        public void SeedTables()
+        public async Task SeedTables()
         {
-            //see which areas are included in the restaurant
-            var list = new List<RestaurantTable>()
-            {
-                new RestaurantTable {Name = "M1" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M2" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M3" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M4" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "M5" , RestaurantAreaId = 1 },
-                new RestaurantTable {Name = "O1" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O2" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O3" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O4" , RestaurantAreaId = 2 },
-                new RestaurantTable {Name = "O5" , RestaurantAreaId = 2 },
+            var restaurants = await _context.Restaurants.ToListAsync();
 
-                
-            };
-            
+            foreach(var restaurant in restaurants)
+            {
+                foreach(var area in restaurant.RestaurantAreas)
+                {
+                    for (int i = 1; i < 11; i++)
+                    {
+                        area.restaurantTables.Add(
+                        new RestaurantTable { Name = area.Name.Substring(0, 1) + i, RestaurantAreaId = area.Id }
+                        );
+                    };
+                }
+            }
+
+            var resutl = restaurants;
+
+
+            await _context.SaveChangesAsync();
+
 
         }
     }

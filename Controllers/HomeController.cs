@@ -42,10 +42,11 @@ namespace Group_BeanBooking.Controllers
             return View(c);
         }
 
+
         [HttpPost]
-        public IActionResult Index(RestaurantList c)
+        public IActionResult Index([FromForm]RestaurantList c)
         {
-            return RedirectToAction("Create", "Bookings", new { id = c.RestaurantId , area = "Customers"});
+            return RedirectToAction("Create", "Bookings", new { id = c.RestaurantId, area = "Customers" });
         }
 
         public IActionResult Privacy()

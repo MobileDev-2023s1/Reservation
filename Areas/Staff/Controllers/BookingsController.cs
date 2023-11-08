@@ -16,6 +16,7 @@ using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Construction;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -34,15 +35,16 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         private readonly PersonServices _personServices;
         private readonly ReservationServices _reservationServices;
         private readonly StatusesServices _statusesServices;
+        private readonly TableServices _tableServices;
         public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolesManager) : base(context, userManager, rolesManager)
         {
             _restaurantServices = new RestaurantServices(context, userManager, rolesManager);
             _personServices = new PersonServices(context, userManager, rolesManager);
             _reservationServices = new ReservationServices(context, userManager, rolesManager);
             _statusesServices = new StatusesServices(context, userManager, rolesManager);
+            _tableServices = new TableServices(context, userManager, rolesManager);
             
         }
-
         
         public IActionResult Index()
         {
@@ -75,7 +77,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             List<Reservation> reservations = new List<Reservation>();
 
             //Creates an object to build the else clause
-           var whereClause = new WhereClauseCalendarView
+            var whereClause = new WhereClause
             {
                 StartDate = startDate,
                 EndDate = endDate,
@@ -83,10 +85,18 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 RestaurantId = location,
                 StatusId = status
            };
+            
+            var clause = whereClause.BuildCalendarViewReservationClause(whereClause);
 
-            var clause = whereClause.BuildWhereClause(whereClause);
-
-            reservations = await _reservationServices.GetActiveReservationsByMonth(clause);
+            //if status id = null // load all and exclude 3 and 5 
+            if(whereClause.StatusId == 0)
+            {
+                reservations = await _reservationServices.GetActiveReservationsByMonth(clause);
+            }
+            else
+            {
+                reservations = await _reservationServices.GetReservationByStatusID(clause);
+            }
 
             var result = reservations.Select(r => new
             {
@@ -105,11 +115,11 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReservationById(int bookingID)
         {
-            var whereClause = new WhereClauseCalendarView
+            var whereClause = new WhereClause
             {
                 BookingId = bookingID,
             };
-            var clause = whereClause.BuildWhereClause(whereClause);
+            var clause = whereClause.BuildCalendarViewReservationClause(whereClause);
             var r = await _reservationServices.GetSingelReservationById(clause);
             
             
@@ -137,6 +147,32 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             return Ok(model);
         }
 
+        //[HttpPost("UpdateBookingDetails", Name = "UpdateBooking")]
+        [HttpPost]
+        public async Task<IActionResult> NewBookingDetails([FromBody]Edit c)
+        {
+            if (ModelState.IsValid)
+            {                
+                //find the booking
+                var res = await _reservationServices.GetReservationsByReservationId(c.ReservationId);
+                var clause = new WhereClause().BuildRestaurantTableClause(new RestaurantTable() { RestaurantAreaId = c.RestaurantAreaId });
+                var tables =  await _restaurantServices.GetListofTables(clause);
+
+                //remove tables from booking
+                c = await _tableServices.RemoveTableFromBooking(res, tables, c);
+
+
+                //add tables to booking
+                await _tableServices.AddTablesToBooking(res, tables, c);
+
+                //save the changes
+                c.Starttime = c.Starttime.AddHours(11);
+                await _reservationServices.EditReservation(c);
+                await _context.SaveChangesAsync();
+                TempData["AlertMessage"] = "Booking modified successfully";
+            }
+            return Ok($"Booking id {c.ReservationId} updated");
+        }
 
 
         #region Includes format information for events on the calendar
@@ -170,9 +206,13 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 case 2: return "#d1e7dd"; break;
                 //seated
                 case 4: return "#cfe2ff"; break;
+                //cancelled
+                case 3: return "#ffd000"; break;
+                //Completed
+                case 5: return "#52b788"; break;
+                //Cancellation requested
+                case 6: return "#ff4d6d"; break;
                 default: return null;
-
-
             }
         }
 
@@ -186,6 +226,12 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 case 2: return "#badbcc"; break;
                 //seated
                 case 4: return "#b6d4fe"; break;
+                //cancelled
+                case 3: return "#ffd000"; break;
+                //Completed
+                case 5: return "#52b788"; break;
+                //Cancellation requested
+                case 6: return "#ff4d6d"; break;
                 default: return null;
 
             }
@@ -199,8 +245,14 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 case 1: return "#842029"; break;
                 //confirmed
                 case 2: return "#0f5132"; break;
+                //cancelled
+                case 3: return "#ff7b00"; break;
                 //seated
                 case 4: return "#084298"; break;
+                //Completed
+                case 5: return "#081c15"; break;
+                //Cancellation requested
+                case 6: return "#590d22"; break;
                 default: return null;
 
             }

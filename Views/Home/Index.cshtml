@@ -5,22 +5,16 @@
 }
 
 <div class="text-center">
-    @*<h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
-    
-    
 
-    <form method="post"> 
-        <div>
-           <label asp-for="RestaurantId">Restaturant</label><br />
-            <select asp-for="RestaurantId" asp-items="@Model.RestList"
-                class="form-select form-select-sm" aria-label="Small select example"></select> <br /><br />
-
-
-            <input type="submit" value="Go" class="btn btn-primary" /> 
+    @foreach (var item in Model.RestList)
+    {
+        <div class="row mb-3">
+            <a asp-area="Customers" asp-controller="Bookings" asp-action="Create" asp-route-id="@item.Value">
+                <img src="~/images/restaurants/@(item.Text).jpg" style="width: 500px"/>
+                <h2>@item.Text Restaurant</h2>
+            </a>
         </div>
-    </form>
-
+    }
 </div>
 
 

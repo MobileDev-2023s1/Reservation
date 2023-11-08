@@ -7,53 +7,68 @@
  * https://www.w3schools.com/colors/colors_picker.asp
  * https://fullcalendar.io/docs/v4/events-json-feed
  */
-
-/**Variables that are loaded in the HTML */
-var restaurantLocation = document.getElementById('restaurantLocation');
-var bookingEmail = document.getElementById('userEmail')
-var bookingStatus = document.getElementById('bookingStatus')
-
-/**Variables that are related to the pop up window for updating details of the booking*/
-var restaurantId = document.getElementById('RestaurantId')
-var bookingTitle = document.getElementById('bookingTitle')
-var date = document.getElementById('Date')
-var bookingLength = document.getElementById('duration')
-var bookingGuests = document.getElementById('guests')
-var bookingCommnets = document.getElementById('comments')
-var newReservationStatusId = document.getElementById('NewReservationStatusId')
-var currentSittingSelection = document.getElementById('currentSittingSelection')
-var sittingId = document.getElementById('MenuType')
-var currentPersonId = document.getElementById("PersonId")
-
+//look into Jquery to not have getElementbyId
 
 /**Function load when Dom is loaded */
 $(() => {
-
     LoadSearchVariables();
-
-    LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
-
-    document.getElementById('searchCustomer').addEventListener('click', () => {
-            LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
-    })
-
-    document.getElementById('clearButton').addEventListener('click', () => {
-        if (restaurantLocation.selectedIndex != 0 || bookingEmail.value != null || bookingStatus.selectedIndex != 0) {
-            restaurantLocation.selectedIndex = 0
-            bookingStatus.selectedIndex = 0
-            bookingEmail.value = null;
-
-            LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
-        }
-    })
-
-    document.getElementById('submit').addEventListener('click', (data) => {
-        UpdateDetails(data)
-    })    
-
-    document.querySelector(".btn-primary");
-
+    LoadCalendar()
 });
+
+/**Event Listeners*/
+
+$('#searchCustomer').click(LoadCalendar)
+
+$('#clearButton').click(e => {
+    if ($('#restaurantLocation').prop('selectedIndex') != 0
+        || $('#userEmail').val() != null || $('#bookingStatus').prop('selectedIndex') != 0) {
+        ClearSearchParameters();
+        LoadCalendar()
+    }
+})
+function ClearSearchParameters() {
+    $('#restaurantLocation').prop('selectedIndex', 0)
+    $('#bookingStatus').prop('selectedIndex', 0)
+    $('#userEmail').val(null)
+}
+
+
+$('#submit').click(async e => {
+    await UpdateDetails()
+    LoadCalendar()
+    $('#exampleModalCenter').modal('hide');
+})
+
+$('#closeButton').click(e => {
+    $('#exampleModalCenter').modal('hide');
+})
+
+
+$('#assignTable').click(async e => {
+    $('tableSection')
+})
+
+$('#assignTable').click(async e => {
+    //booking needs to be confirmed before assigning a table
+    if ($('#assignTableSection').css('display') == 'block') {
+        $('#assignTableSection').css('display', 'none')
+        ClearSeletedTablesSection()
+    } else {
+        $('#assignTableSection').css('display', 'block')
+        ClearSeletedTablesSection()
+        await GetTablesByAreaId()
+    }
+})
+
+$('#NewReservationStatusId').on('change', async e => {
+    if ($('#NewReservationStatusId').prop('selectedIndex') != 1 && $('#NewReservationStatusId').prop('selectedIndex') != 3) {
+        $('#assingTableOption').css('display', 'none')
+        $('#assignTable')[0].checked = false;
+        $('#assignTableSection').css('display', 'none')
+    } else {
+        $('#assingTableOption').css('display', 'block')
+    }
+})
 
 /**
  * Loads the calendar
@@ -61,18 +76,19 @@ $(() => {
  * @param {any} bookingEmail email used when booking was made. If member, must be email of member. On page load is null
  * @param {any} bookingStatus status Id of the booking. On page load is 0
  */
-function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
+function LoadCalendar()
 {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    var calendar = new FullCalendar.Calendar($('#calendar')[0], {
         initialView: 'dayGridMonth',
         showNonCurrentDates: false,
         events: {
             url: '/Staff/Bookings/GetReservations',
+            display: {
+            },
             extraParams: {
-                location: restaurantLocation.options[restaurantLocation.selectedIndex].value,
-                email: bookingEmail.value,
-                status: bookingStatus.options[bookingStatus.selectedIndex].value
+                location: $('#restaurantLocation').val(),
+                email: $('#userEmail').val(), 
+                status: $('#bookingStatus').val()
             }
         },  
         eventClick: async (info) => {
@@ -80,16 +96,29 @@ function LoadCalendar(restaurantLocation, bookingEmail, bookingStatus)
             var data = await LoadSearchVariables(info.event.id)
             PopulateList(await GetAvailableAreas(data.restaurantID), data);
 
-            restaurantId.value = data.restaurantID;
-            bookingTitle.innerHTML = "Booking: "+ data.bookingId;
-            date.value = data.startTime; 
-            bookingLength.value = data.duration
-            bookingGuests.value = data.guest
-            bookingCommnets.value = data.comments
-            newReservationStatusId.selectedIndex = data.reservationStatusId - 1
-            currentSittingSelection.innerHTML = data.sittingName
-            currentSittingSelection.value = data.sittingId
-            currentPersonId.value = data.personId 
+            $('#RestaurantId').val(data.restaurantID);
+            $('#bookingTitle').html('booking ' + data.bookingId)
+            $('#Date').val(data.startTime)
+            $('#duration').val(data.duration)
+            $('#guests').val(data.guest)
+            $('#comments').val(data.comments)
+            $('#NewReservationStatusId').prop('selectedIndex', data.reservationStatusId - 1)
+            $('#currentSittingSelection').html(data.sittingName)
+            $('#currentSittingSelection').val(data.sittingId)
+            $('#PersonId').val(data.personId)
+            $('#BookingId').val(data.bookingId)
+            $('#CurrentRestaurantArea').val(data.restaurantAreaId)
+            $('#ListOfTables').val(data.assignedTable)
+
+            if ($('#NewReservationStatusId').prop('selectedIndex') != 1 && $('#NewReservationStatusId').prop('selectedIndex') != 3) {
+                $('#assingTableOption').css('display', 'none')
+            } else {
+                $('#assingTableOption').css('display', 'block');
+                ClearSeletedTablesSection();
+                GetTablesByAreaId();
+
+            }
+            
         },
         headerToolbar: {
             left: 'prev,next today',
@@ -173,44 +202,45 @@ async function LoadSearchVariables(bookingID) {
     }
 }
 
-async function UpdateDetails(data) {
+async function UpdateDetails() {
+
+    console.log($('.SelectedTables'))
+
 
     var c = {
-        Start: date.value,
-        Duration: bookingLength.value,
-        Guests: bookingGuests.value,
-        SittingId: sittingId.value,
-        PersonId: currentPersonId.value,
-        RestaurantAreaId: RestaurantAreaList.value,
-        Comments: bookingCommnets.value
-
+        StartTime: new Date($('#Date').val()),
+        Duration: $('#duration').val(),
+        Guests: $('#guests').val(),
+        SittingId: $('#MenuType').val(),
+        PersonId: $('#PersonId').val(),
+        RestaurantAreaId: $('#RestaurantAreaList').val(),
+        Comments: $('#comments').val(),
+        ReservationId: $('#BookingId').val(),
+        ReservationStatusId: $('#NewReservationStatusId').val(),
+        RestaurantTables: FinalTablesList()
     }
 
     try {
         const baseUrl = baseURL()
-        const url = new URL("/Customer/Bookings/Index"
-
-
-            , baseUrl);
+        const url = new URL("/Staff/Bookings/NewBookingDetails?c="+ c, baseUrl);
         const response = await fetch(url, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(c), // Send the 'c' object as a JSON payload
+            body: JSON.stringify(c)
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            return data;
+        if (!response.ok) {
+            console.log(response.error)
+            
         } else {
-            console.error("Failed to update booking:", response.status, response.statusText);
-        }     
-
-        return await data;
-        
+            const result = await response.text();
+            console.log(result)
+        }
     } catch (error) {
 
-    }/*console.log(c)*/
+    }
 }
+        
