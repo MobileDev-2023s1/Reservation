@@ -22,6 +22,9 @@ where Id >= 1;
 
 select * from People;
 
+delete from People
+where Id = 3;
+
 select * from Reservations
 where Start >= '2023-11-01' and Start <= '2023-11-30'
 
@@ -61,8 +64,8 @@ select * from Reservations
 where Start >= '2023-10-24 07:00:00' and Start <= '2023-10-31 11:00:00 PM';
 
 update Reservations 
-set ReservationStatusID = 2
-where Id = 1035;
+set Start = '2023-11-05 15:00:00'
+where Id = 3;
 
 select COUNT(*) from Reservations
 where Start >= '2023-10-01 7:00:00 AM' and Start <= '2023-10-31 11:00:00 PM'

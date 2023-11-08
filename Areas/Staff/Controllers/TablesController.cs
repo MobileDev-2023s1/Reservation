@@ -67,7 +67,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             {
                 var result = table.Reservations
                     //.Any(item => item.Id == reservation.Id);
-                    .Where(item => item.Start <= reservation.Start || item.End >= reservation.Start)
+                    .Where(item => item.Start <= reservation.Start && item.End >= reservation.Start)
                     .FirstOrDefault();
 
                 var status = new TableStatus()

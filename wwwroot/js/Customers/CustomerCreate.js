@@ -1,19 +1,20 @@
-﻿const selectedDate = document.getElementById("Date");
-/**Gets the number of people reservation is intended for*/
-const guests = document.getElementById("guests");
-/**Gets the amount of time reservation is intender for*/
-const duration = document.getElementById("duration")
-/**Gets the id of the restuarant being selected for the booking*/
-const id = document.getElementById("RestaurantId");
-/**Gets the type of menu selected for the booking*/
-const menu = document.getElementById("MenuType");
+﻿    const selectedDate = document.getElementById("Date");
+    /**Gets the number of people reservation is intended for*/
+    const guests = document.getElementById("guests");
+    /**Gets the amount of time reservation is intender for*/
+    const duration = document.getElementById("duration")
+    /**Gets the id of the restuarant being selected for the booking*/
+    const id = document.getElementById("RestaurantId");
+    /**Gets the type of menu selected for the booking*/
+    const menu = document.getElementById("MenuType");
 
-/**Gets the area of the restuartant where this menu is being offered*/
-const restaurantAreas = document.getElementById('RestaurantAreaList');
-/**It is the user alert element that can be updated as required. Receives text and displays it on the screen*/
-const userMessage = document.getElementById("UserAlert");
-/**It is the id of a section of the page. Depending of the stage, this is displayed on the screen */
-const bookingDetails = document.getElementById("BookingDetails");
+    /**Gets the area of the restuartant where this menu is being offered*/
+    const restaurantAreas = document.getElementById('RestaurantAreaList');
+    /**It is the user alert element that can be updated as required. Receives text and displays it on the screen*/
+    const userMessage = document.getElementById("UserAlert");
+    /**It is the id of a section of the page. Depending of the stage, this is displayed on the screen */
+    const bookingDetails = document.getElementById("BookingDetails");
+
 
 $(() => {
 
