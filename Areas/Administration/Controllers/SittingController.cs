@@ -9,9 +9,11 @@ using Group_BeanBooking.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto;
 using ZstdSharp.Unsafe;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Group_BeanBooking.Areas.Administration.Controllers
 {
@@ -147,16 +149,11 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                             }
                         }
                     }
-
                     _context.Sittings.AddRange(sittings);
                     await _context.SaveChangesAsync();
-
-
-
                 }
                 return RedirectToAction("Index");
             }
-
             m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
             return View(m);
         }
@@ -178,8 +175,6 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                 return NotFound();
             }
 
-
-
             var m = new Models.Sitting.Edit
             {
                 Name = sitting.Name,
@@ -189,6 +184,7 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
                 Closed = sitting.Closed,
                 TypeId = sitting.TypeId,
             };
+
             m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
             ViewData["guid"] = sitting.Guid;
             return View(m);
@@ -208,67 +204,66 @@ namespace Group_BeanBooking.Areas.Administration.Controllers
             {
                 try
                 {
-                    var NewSitting = new Sitting 
-                {   Id= m.Id,
-                    Start = m.Start,
-                    End = m.End,
-                    Capacity = m.Capacity,
-                    Closed = m.Closed,
-                    Name = m.Name,
-                    Guid=sitting.Guid                 
-                };
-                if (sitting.Guid == null)
-                {
-                    sitting = NewSitting;                  
-                }
-                else
-                {
-                    var sittings = _context.Sittings.Where(s => s.Guid == sitting.Guid).OrderBy(s => s.Start).ToList();
-                    if (m.Range=="This")
+              
+                    if (sitting.Guid == null)
                     {
-                        //_context.Sittings.Remove(sitting);
-                        sittings.Remove(sitting);
-                        if (m.End < sittings.First().End || sittings.Last().End < m.Start)
-                        {
-                            sitting = NewSitting;
-                        }
-                        else
-                        {
-                            for (int i = 0; i < sittings.Count - 1; i++)
-                            {
-                                if (sittings[i].End < m.Start && m.End < sittings[i + 1].Start)
-                                {
-                                    sitting = NewSitting;
-                                }
-                            }
-                        }
-                        //sittings.Add(sitting);
+                      
+                        sitting.Start = m.Start;
+                        sitting.End = m.End;
+                        sitting.Capacity = m.Capacity;
+                        sitting.Closed = m.Closed;
+                        sitting.Name = m.Name;
+                  
                     }
                     else
                     {
-                        var sittingsToRemove = sittings;
-                        if (m.Range=="ThisAndAfter")
-                            foreach (Sitting s in sittingsToRemove)
+                        var sittings = _context.Sittings.Where(s => s.Guid == sitting.Guid).OrderBy(s => s.Start).ToList();
+                        var sittingIndex = 0;
+                        var overLap = false;
+                        for (int i = 0; i < sittings.Count-1; i++)
+                        {
+                            if (sitting.Id == sittings[i].Id){sittingIndex = i;}
+                        } 
+                        if (m.Range == "This")
+                        {                           
+                            for (int i = 0; i < sittings.Count-1; i++)
                             {
-                                if (s.Start < m.Start)
+                                if (sitting.Id != sittings[i].Id)
                                 {
-                                    sittingsToRemove.Remove(s);
+                                    if (sittings[i].Start < m.End && m.Start < sittings[i].End)
+                                    { overLap = true; }
                                 }
                             }
-                        _context.Sittings.RemoveRange(sittingsToRemove);
-                        await Create(m);                    
-                     }                          
-                } 
-                
+                            if (!overLap)
+                            {
+                                sitting.Start = m.Start;
+                                sitting.End = m.End;
+                                sitting.Capacity = m.Capacity;
+                                sitting.Closed = m.Closed;
+                                sitting.Name = m.Name;
+                            }
+                        }
+
+                        else
+                        {
+                            var sittingsToRemove = sittings;
+                            if (m.Range == "ThisAndAfter")
+                            {
+                                sittingsToRemove.RemoveRange(0, sittingIndex);
+                            }                             
+                            _context.Sittings.RemoveRange(sittingsToRemove);                         
+                        }                   
+                    }                   
                 await _context.SaveChangesAsync();}
                 catch (DbUpdateConcurrencyException)
                     {
                     if (!SittingExists(sitting.Id)){return NotFound();}
                     else{throw;}
                     }
+                await Create(m);
                 return RedirectToAction(nameof(Index));
             }
-            m.SittingTypes = new SelectList(_context.SittingTypes, "Id", "Name", m.TypeId);
+         
             return View(m);
            
         }
