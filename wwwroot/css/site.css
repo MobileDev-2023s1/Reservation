@@ -15,14 +15,54 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #4AA1B5;
-    
+    color: white;
+    /*background-color: #495057;*/
 }
 
-footer {
-    background-color: #CC9E09;
+body::before {
+    content: "";
+    background-image: url('../images/restaurants/background Image.jpg');
+    background-size: cover; /* Adjust as needed */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Send the image to the background */
+}
+
+.form-label {
+    color: black;
+}
+
+.modal-header {
+    color: black;
+}
+
+button {
+    border-radius: 0.25rem;
+    margin-right: 15px;
+    background-color: transparent;
+    color: white
+}
+
+button:hover {
+    color: white;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-link {
+    color: white
+}
+
+header {
+    color: white
 }
 
 #calendar {
+    max-width: 1100px;
+    margin: 40px auto;
     background-color: #eaf4f4;
+    color: #0d6efd
 }

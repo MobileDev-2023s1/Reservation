@@ -53,6 +53,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 Id = c.ReservationId,
                 Start = c.Starttime.AddHours(11),
                 Duration = c.Duration,
+                SittingID = c.SittingId
             };
 
             //3) which tables from the table list are being assigned to the bookings?
@@ -67,7 +68,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             {
                 var result = table.Reservations
                     //.Any(item => item.Id == reservation.Id);
-                    .Where(item => item.Start <= reservation.Start && item.End >= reservation.Start)
+                    .Where(item => item.End >= reservation.Start && item.SittingID == reservation.SittingID)
                     .FirstOrDefault();
 
                 var status = new TableStatus()

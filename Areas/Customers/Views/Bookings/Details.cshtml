@@ -77,7 +77,7 @@
         {
 
             <div>
-                <table border="1">
+                <table id="customerBookingTableDetails" border="1">
                     <th>Id</th>
                     <th>Sitting Type</th>
                     <th>Customer Name</th>
@@ -134,9 +134,12 @@
 
     <br />
     <br />
-    <a class="btn btn-info" asp-area="" asp-controller="Home" asp-action="Index">
-        Make booking
-        <img src="~/images/icons/add-file.png" style="width: 50px" />
-    </a>
+    <form>
+        <button class="btn btn-info" asp-area="" asp-controller="Home" asp-action="Index">
+            Make booking
+            <img src="~/images/icons/add-file.png" style="width: 50px" />
+        </button>
+
+    </form>
 
 </body>

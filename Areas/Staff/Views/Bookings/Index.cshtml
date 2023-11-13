@@ -10,7 +10,7 @@
 
 <form>
     <div class="container">
-        <div class="row row-cols-sm-4 ">
+        <div class="row row-cols-auto">
             <button class="col" asp-area="Staff" asp-controller="Bookings" asp-action="Details">
                 Bookings <img src="~/images/icons/schedule.png" style="width: @imageWidth" />
             </button>
@@ -24,10 +24,10 @@
                 <img src="~/images/icons/menu.png" style="width: @imageWidth" />
             </button>
 
-            <button>
+           @* <button>
                 Sitting areas Details
                 <img src="~/images/icons/blueprint.png" style="width: @imageWidth" />
-            </button>
+            </button>*@
         </div>
         <div class="row">
 

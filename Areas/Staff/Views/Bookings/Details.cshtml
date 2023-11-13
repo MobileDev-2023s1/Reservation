@@ -13,10 +13,7 @@
         margin: 40px auto;
     }
 
-    #calendar {
-        max-width: 1100px;
-        margin: 40px auto;
-    }
+
 
 </style>
 
@@ -31,6 +28,11 @@
                     <select id="restaurantLocation" asp-for="RestaurantID" asp-items="@Model.RestaurantList" class="form-select">
                         <option itemid="0">**** Select One ****</option>
                     </select>
+                    <br />
+                    <div class="form-floating">
+                        <input type="email" class="form-control" id="userEmail" placeholder="name@example.com">
+                        <label id="emailIdSearch" for="floatingInput">Email address</label>
+                    </div>
                 </div>
                 <div class="col">
                     <label>Booking Status:</label>
@@ -40,10 +42,6 @@
                 </div>
             </div>
             <div id="row_2" class="row">
-                <div class="form-floating">
-                    <input type="email" class="form-control" id="userEmail" placeholder="name@example.com">
-                    <label for="floatingInput">Email address</label>
-                </div>
             </div>
         </div>
         <div class="col-1 aling-content-around">

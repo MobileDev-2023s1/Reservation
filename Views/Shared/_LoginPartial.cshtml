@@ -6,13 +6,14 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" @*asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"*@>Hello @User.Identity?.Name!</a>
+    <li class="nav-item ">
+            <a class="nav-link text-white" @*asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"*@>Hello @User.Identity?.Name!</a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <form class="form-inline text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout
+                <button type="submit" class="nav-link btn btn-link text-white">
+                    Logout
                     <img src="~/images/Icons/log-out.png" style="width: 40px" />
             </button>
             
@@ -23,7 +24,7 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">
             <div class="col">
                 Register
             </div>
@@ -32,7 +33,7 @@ else
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
+            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">
             <div class="col">
                 Login
             </div>    
