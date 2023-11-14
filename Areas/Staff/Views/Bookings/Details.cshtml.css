@@ -28,6 +28,28 @@
     color: black
 }
 
+#SelectedTables.image-button {
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    border: none;
+    color: red;
+    font-size: 15px;
+}
+
+
+#tablesInArea.image-button {
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    border: none;
+    color: red;
+    font-size: 15px;
+}
+
+
+
+
 
 
 

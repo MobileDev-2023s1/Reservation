@@ -97,7 +97,7 @@ function LoadCalendar()
             PopulateList(await GetAvailableAreas(data.restaurantID), data);
 
             $('#RestaurantId').val(data.restaurantID);
-            $('#bookingTitle').html('booking ' + data.bookingId)
+            $('#bookingTitle').html('Booking #: ' + data.bookingId)
             $('#Date').val(data.startTime)
             $('#duration').val(data.duration)
             $('#guests').val(data.guest)

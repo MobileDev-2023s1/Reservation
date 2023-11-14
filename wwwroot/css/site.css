@@ -22,6 +22,7 @@ body {
 body::before {
     content: "";
     background-image: url('../images/restaurants/background Image.jpg');
+    opacity: 0.85;
     background-size: cover; /* Adjust as needed */
     position: fixed;
     top: 0;
@@ -36,7 +37,16 @@ body::before {
 }
 
 .modal-header {
-    color: black;
+    color: #CC9E09;
+    background-color: #083944
+}
+
+.modal-body {
+    background-color: #4AA1B5
+}
+
+.modal-footer {
+    background-color: #4AA1B5
 }
 
 button {
@@ -52,9 +62,9 @@ button:hover {
     border-color: #1861ac;
 }
 
-.nav-link {
+/*.nav-link {
     color: white
-}
+}*/
 
 header {
     color: white
@@ -66,3 +76,17 @@ header {
     background-color: #eaf4f4;
     color: #0d6efd
 }
+
+.navbar {
+    background-color: #212529
+}
+
+footer {
+    background-color: #212529
+}
+
+.a.nav-link text-white:hover {
+    color: white;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+} 

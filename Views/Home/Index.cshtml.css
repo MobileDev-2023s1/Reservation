@@ -1,0 +1,10 @@
+﻿.img-circular {
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    object-fit: cover; /* This ensures the image covers the entire container, maintaining its aspect ratio */
+}
+
+body{
+    
+}

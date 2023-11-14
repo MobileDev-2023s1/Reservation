@@ -61,6 +61,12 @@ img.background {
     z-index: -1; /* Send the image to the background */
 }
 
+header {
+   background-color: black;
+}
+
+
+
 
 
 

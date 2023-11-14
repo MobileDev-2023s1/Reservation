@@ -53,7 +53,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
                 Id = c.ReservationId,
                 Start = c.Starttime.AddHours(11),
                 Duration = c.Duration,
-                SittingID = c.SittingId
+                SittingID = c.SittingId                
             };
 
             //3) which tables from the table list are being assigned to the bookings?

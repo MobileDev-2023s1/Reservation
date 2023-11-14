@@ -69,16 +69,29 @@ function ListOfAreaTables(tables) {
     }
 
     tables.forEach((item) => {
-        let option = $('<button></button>')
-            .html(item.name)
+        let option = $('<button>')
             .val(item.id)
-            .prop({ id: `button${item.name}` })
-            .addClass("btn btn-light")
+            .prop({ id: `selected${(item.name)}` })
+            .addClass('image-button')
+            .css({
+                'width': '30px',
+                'height': '30px',
+                'background-image': `url("/images/icons/main-table.png")`,
+                'background-size': 'cover',
+                'border': 'none',
+                'color': 'red',
+                'font-height': '15'
+            })
+            .html(item.name);
 
         $('#tablesInArea').append(option);
         
         if (!item.status) {
-            option.prop('disabled', true);
+            option.prop('disabled', true)
+                .addClass('image-button')
+                .css({
+                    'background-image': `url("/images/icons/table-reserved.png")`,
+                })
 
             if (item.reservationId == $('#BookingId').val()) {
                 BlockTablesForBooking(item)
@@ -107,11 +120,22 @@ function ClearSeletedTablesSection() {
 }
 
 function BlockTablesForBooking(item) {
-    let selected = $('<button></button>');
+    let selected = $('<button>');
     selected
-        .html(item.name)
         .val(item.id)
         .prop({ id: `selected${(item.name)}` })
+        .addClass('image-button')
+        .css({
+            'width': '30px',
+            'height': '30px',
+            'background-image': `url("/images/icons/main-table.png")`,
+            'background-size': 'cover', 
+            'border': 'none', 
+            'color': 'red',
+            'font-height': '15'
+        })
+        .html(item.name);
+      
       
     $('#SelectedTables').append(selected)
 

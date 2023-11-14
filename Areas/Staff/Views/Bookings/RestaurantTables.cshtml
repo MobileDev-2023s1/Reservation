@@ -12,15 +12,24 @@
     @*remainder tables view*@
     <div class="col-4">
         @*floor view*@
-        <h4>Available</h4>
+        <h4>Tables</h4>
         <div id="tablesInArea" class="alert alert-primary">
         </div>
 
+        <div class="row row-cols-2">
+            <div class="col">
+                <img src="~/images/icons/table-reserved.png" style="width: 40px" /> Reserved
+            </div>
+            <div class="col">
+                <img src="~/images/icons/main-table.png" style="width: 40px" /> Available
+            </div>
+        </div>
 
     </div>
 
         <div id="UserAlert" class="" role="alert" style="display: none"></div>
 </div>
+
 
 @section Script{
     <script src="~\js\staff\sittingtables.js"></script>

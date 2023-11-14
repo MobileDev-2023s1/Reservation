@@ -10,7 +10,7 @@
     {
         <div class="row mb-3">
             <a asp-area="Customers" asp-controller="Bookings" asp-action="Create" asp-route-id="@item.Value">
-                <img src="~/images/restaurants/@(item.Text).jpg" style="width: 500px"/>
+                <img class="bg-primary" src="~/images/restaurants/@(item.Text).jpg" style="width: 350px; height: 350px; border-radius: 50%;" />
                 <h2>@item.Text Restaurant</h2>
             </a>
         </div>
