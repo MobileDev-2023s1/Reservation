@@ -97,7 +97,10 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
                 if(id == null)
                 {   var u = await _personServices.GetPersonByEmail(email);
 
-                    if(u != null) {bookings = await _reservationServices.GetReservationsByPersonId(u.Id);}
+                    if(u != null) 
+                    {
+                        bookings = await _reservationServices.GetReservationsByPersonId(u.Id);
+                    }
                 }
                 else
                 {
@@ -164,6 +167,8 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             var reservation = await _reservationServices.GetReservationsByReservationId(id);
             var areas = await _restaurantServices.GetRestaurantAreaByRestaurantId(reservation.Sitting.RestaurantId);
             var sittings = await _restaurantServices.GetSittingsByRestaurantId(reservation.Sitting.RestaurantId);
+
+            
 
             var model = new Edit
             {

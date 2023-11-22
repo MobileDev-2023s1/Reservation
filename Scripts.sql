@@ -25,7 +25,9 @@ select * from People;
 delete from People
 where Id = 3;
 
-select * from Reservations
+https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
+
+select count(*) from Reservations
 where Start >= '2023-11-01' and Start <= '2023-11-30'
 
 delete from Reservations

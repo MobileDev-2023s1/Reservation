@@ -67,7 +67,7 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetReservations(string start, string email, int location, int status)
+        public async Task<IActionResult> GetReservations(string start, string? email, int location, int status)
         {
             //transform date from calendar to DateTime format
             var current = DateTime.Parse(start);

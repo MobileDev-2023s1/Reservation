@@ -27,20 +27,6 @@ namespace Group_BeanBooking.Services
             return await _context.ResevationOrigins.FirstOrDefaultAsync(r => r.Name == reservationOriginName);
         }
 
-        public async Task<List<Reservation>> GetAllReservations(Expression<Func<Reservation, bool>> clause)
-        {
-            var reservations = await _context.Reservations
-                .Include(r => r.Person) //eager loading
-                .Include(r => r.Sitting) //keyless entities mapping them to the result set of store procedure
-                    .ThenInclude(s => s.Restaurant)
-                .Include(r => r.ResevationOrigin)
-                .Include(r => r.ReservationStatus)
-                .Where(clause)
-                .OrderBy(r => r.Start)
-                .ToListAsync();
-
-            return reservations;
-        }
 
         public async Task<Reservation> GetSingelReservationById(Expression<Func<Reservation, bool>> clause)
         {
@@ -80,7 +66,6 @@ namespace Group_BeanBooking.Services
             var reservations = await _context.Reservations
                 .Include(r => r.Person) //eager loading
                 .Include(a => a.RestaurantArea)
-                /*.Include(r => r.ReservationStatus)*/ //185 read without - 437 with this
                 .Where(r => r.ReservationStatusID != 3 && r.ReservationStatusID != 5)
                 .Where(clause)
                 .OrderBy(r => r.Start)

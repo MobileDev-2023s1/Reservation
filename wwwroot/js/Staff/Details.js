@@ -110,14 +110,7 @@ function LoadCalendar()
             $('#CurrentRestaurantArea').val(data.restaurantAreaId)
             $('#ListOfTables').val(data.assignedTable)
 
-            if ($('#NewReservationStatusId').prop('selectedIndex') != 1 && $('#NewReservationStatusId').prop('selectedIndex') != 3) {
-                $('#assingTableOption').css('display', 'none')
-            } else {
-                $('#assingTableOption').css('display', 'block');
-                ClearSeletedTablesSection();
-                GetTablesByAreaId();
-
-            }
+            LoadTableStatus();
             
         },
         headerToolbar: {
@@ -130,6 +123,20 @@ function LoadCalendar()
     });
     calendar.render();
 
+}
+
+function LoadTableStatus() {
+    if ($('#NewReservationStatusId').prop('selectedIndex') != 1 && $('#NewReservationStatusId').prop('selectedIndex') != 3) {
+        $('#assingTableOption').css('display', 'none')
+    } else {
+        $('#assingTableOption').css('display', 'block');
+        $('#assignTableSection').css('display', 'block');
+        $('#assignTable')[0].checked = true;
+
+        ClearSeletedTablesSection();
+        GetTablesByAreaId();
+
+    }
 }
 
 /**
@@ -168,6 +175,8 @@ async function GetAvailableAreas(restaurantId) {
             throw new Error("HTTP error " + areasResponse.status);
         }
         const areasFinal = await areasResponse.json();
+
+        console.log(areasFinal)
         return await areasFinal;
 
     } catch (error) {
@@ -203,9 +212,6 @@ async function LoadSearchVariables(bookingID) {
 }
 
 async function UpdateDetails() {
-
-    console.log($('.SelectedTables'))
-
 
     var c = {
         StartTime: new Date($('#Date').val()),

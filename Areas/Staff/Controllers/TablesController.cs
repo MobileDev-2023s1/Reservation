@@ -67,7 +67,6 @@ namespace Group_BeanBooking.Areas.Staff.Controllers
             foreach (var table in listTablesInArea)
             {
                 var result = table.Reservations
-                    //.Any(item => item.Id == reservation.Id);
                     .Where(item => item.End >= reservation.Start && item.SittingID == reservation.SittingID)
                     .FirstOrDefault();
 

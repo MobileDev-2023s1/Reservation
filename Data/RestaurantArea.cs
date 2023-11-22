@@ -5,7 +5,7 @@ namespace Group_BeanBooking.Data
     public class RestaurantArea
     {
         public int Id { get; set; }
-        public String  Name { get; set; }
+        public string  Name { get; set; }
 
         public int RestaurantId { get; set; }
         

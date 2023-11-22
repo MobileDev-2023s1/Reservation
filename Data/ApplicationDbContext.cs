@@ -7,6 +7,7 @@ namespace Group_BeanBooking.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -53,11 +54,7 @@ namespace Group_BeanBooking.Data
                 .Entity<Person>()
                 .Property(p=> p.UserId).HasMaxLength(450);
              
-            //modelBuilder
-            //    .Entity<Person>()
-            //    .HasOne<IdentityUser>()
-            //    .WithOne().IsRequired(false).HasForeignKey("IdentityUser", new[] { "UserId" });
-
+ 
             modelBuilder
                .Entity<Person>()
                .HasOne(p => p.User)
