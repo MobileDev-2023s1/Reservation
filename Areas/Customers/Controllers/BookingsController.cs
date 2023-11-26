@@ -200,7 +200,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
             if (ModelState.IsValid)
             {
                 await _reservationServices.DeleteReservation(id);
-                TempData["AlertMessage"] = "Booking deleted successfully";
+                TempData["AlertMessage"] = "Booking cancellation requested successfully";
             }
 
             return RedirectToAction("Details", "Bookings", new { area = "Customers" });
