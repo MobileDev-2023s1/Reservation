@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Group_BeanBooking.Services;
 using Microsoft.EntityFrameworkCore;
-using Humanizer;
+
 using Microsoft.VisualBasic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -72,6 +72,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             var model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
+
             if(id != null)
             {
                 model.Reservations = await _reservationServices.GetReservationsByPersonId(id);
@@ -87,7 +88,7 @@ namespace Group_BeanBooking.Areas.Customers.Controllers
         [HttpPost]
         public async Task<IActionResult> Details(string? email , int? id) 
         {
-            var model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
+            Details? model = new Group_BeanBooking.Areas.Customers.Models.Bookings.Details();
             Person user = new();
             List<Reservation> bookings = new();           
 

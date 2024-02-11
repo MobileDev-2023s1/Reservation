@@ -42,9 +42,10 @@ namespace Group_BeanBooking.Data
             await SeedUsers();
             await AddUserToRoles();
 
-            //await SeedUsersinRoles();
             await SeedReservationStatuses();
             await SeedReservationsOrigin();
+            
+            //await SeedUsersinRoles();
             //await SeedTables();
             //await AddBookingToTable();
 
@@ -231,7 +232,7 @@ namespace Group_BeanBooking.Data
 
            // taka disabled sitting seeding. 
         {
-            var start = "22/09/2023 7:00:00 AM";
+            var start = "12/02/2024 7:00:00 AM";
             List<Sitting> list = new()
             {
                 new Sitting { Name = "Continental Breakfast" , Closed = false , Start = DateTime.Parse(start) , End = DateTime.Parse(start).AddHours(4) , Capacity= 60, TypeId = 1},
