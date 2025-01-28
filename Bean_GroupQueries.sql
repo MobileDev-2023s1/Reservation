@@ -1,17 +1,20 @@
 use beanbookings;
 
-select * from users;
-
 select *  from aspnetusers;
 select *  from aspnetroles;
 select *  from aspnetuserroles;
 select *  from aspnetusertokens;
 
+select * from reservationstatuses;
+select * from resevationorigins;
 select *  from restaurants;
 select * from resturantareas;
 select *  from sittingtypes;
 select *  from sittings;
 select * from restauranttables;
 
-delete from aspnetusers
-where id >= "f99775dc-522e-4599-90b4-40a7da426329";
+delete from resevationorigins
+where id >= 4;
+
+delete from aspnetroles
+where id >= "2993c8c6-9ee7-4c2f-9a8c-2848129445b2";

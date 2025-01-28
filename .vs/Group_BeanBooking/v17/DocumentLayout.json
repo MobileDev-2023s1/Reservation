@@ -1,0 +1,365 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\administration\\views\\sitting\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\administration\\views\\sitting\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\administration\\controllers\\administrationareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\administration\\controllers\\administrationareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\customers\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\customers\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\administration\\controllers\\sittingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\administration\\controllers\\sittingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\administration\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\administration\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\areascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\areascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\staff\\controllers\\staffareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\staff\\controllers\\staffareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\customers\\controllers\\customersareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\customers\\controllers\\customersareacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\wwwroot\\js\\staff\\details.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:wwwroot\\js\\staff\\details.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\wwwroot\\js\\customers\\customercreate.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:wwwroot\\js\\customers\\customercreate.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\staff\\views\\bookings\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\staff\\views\\bookings\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\staff\\views\\bookings\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\staff\\views\\bookings\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|d:\\programing\\bean project\\project\\group_beanbooking\\areas\\staff\\views\\bookings\\modalcomponent.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{83C51D03-AD6A-46A1-A0A3-397140EBFC4F}|Group_BeanBooking.csproj|solutionrelative:areas\\staff\\views\\bookings\\modalcomponent.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 211,
+          "SelectedChildIndex": 11,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:138:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:3:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:134:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Views\\Sitting\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Administration\\Views\\Sitting\\Create.cshtml",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Views\\Sitting\\Create.cshtml",
+              "RelativeToolTip": "Areas\\Administration\\Views\\Sitting\\Create.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-28T06:23:52.741Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BookingsController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Customers\\Controllers\\BookingsController.cs",
+              "RelativeDocumentMoniker": "Areas\\Customers\\Controllers\\BookingsController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Customers\\Controllers\\BookingsController.cs",
+              "RelativeToolTip": "Areas\\Customers\\Controllers\\BookingsController.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAqwDEAAABbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-02T01:36:53.987Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SittingController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Controllers\\SittingController.cs",
+              "RelativeDocumentMoniker": "Areas\\Administration\\Controllers\\SittingController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Controllers\\SittingController.cs",
+              "RelativeToolTip": "Areas\\Administration\\Controllers\\SittingController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-19T08:19:39.779Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Areas\\Administration\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Areas\\Administration\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-19T08:19:19.861Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdministrationAreaController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Controllers\\AdministrationAreaController.cs",
+              "RelativeDocumentMoniker": "Areas\\Administration\\Controllers\\AdministrationAreaController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Administration\\Controllers\\AdministrationAreaController.cs",
+              "RelativeToolTip": "Areas\\Administration\\Controllers\\AdministrationAreaController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-19T08:19:04.328Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AreasController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\AreasController.cs",
+              "RelativeDocumentMoniker": "Areas\\AreasController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\AreasController.cs",
+              "RelativeToolTip": "Areas\\AreasController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-19T08:18:59.051Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Login.cshtml.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "ViewState": "AQIAAB0AAAAAAAAAAAAjwGkAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-02T03:21:19.679Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "ViewState": "AQIAACMAAAAAAAAAAAAUwEcAAABgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-02T03:48:52.587Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CustomersAreaController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Customers\\Controllers\\CustomersAreaController.cs",
+              "RelativeDocumentMoniker": "Areas\\Customers\\Controllers\\CustomersAreaController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Customers\\Controllers\\CustomersAreaController.cs",
+              "RelativeToolTip": "Areas\\Customers\\Controllers\\CustomersAreaController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAA6AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-02T01:37:03.323Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-07T09:30:18.743Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAA8AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-19T05:38:21.868Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "StaffAreaController.cs",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Controllers\\StaffAreaController.cs",
+              "RelativeDocumentMoniker": "Areas\\Staff\\Controllers\\StaffAreaController.cs",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Controllers\\StaffAreaController.cs",
+              "RelativeToolTip": "Areas\\Staff\\Controllers\\StaffAreaController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-11T06:31:43.53Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "CustomerCreate.js",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\wwwroot\\js\\Customers\\CustomerCreate.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\Customers\\CustomerCreate.js",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\wwwroot\\js\\Customers\\CustomerCreate.js",
+              "RelativeToolTip": "wwwroot\\js\\Customers\\CustomerCreate.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-07T09:41:36.177Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Details.js",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\wwwroot\\js\\Staff\\Details.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\Staff\\Details.js",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\wwwroot\\js\\Staff\\Details.js",
+              "RelativeToolTip": "wwwroot\\js\\Staff\\Details.js",
+              "ViewState": "AQIAALMAAAAAAAAAAAAAAK8AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-02-28T06:49:00.382Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Views\\Bookings\\Details.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Staff\\Views\\Bookings\\Details.cshtml",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Views\\Bookings\\Details.cshtml",
+              "RelativeToolTip": "Areas\\Staff\\Views\\Bookings\\Details.cshtml",
+              "ViewState": "AQIAADYAAAAAAAAAAAAAAFQAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-07T09:28:34.3Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ModalComponent.cshtml",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Views\\Bookings\\ModalComponent.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Staff\\Views\\Bookings\\ModalComponent.cshtml",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Views\\Bookings\\ModalComponent.cshtml",
+              "RelativeToolTip": "Areas\\Staff\\Views\\Bookings\\ModalComponent.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-11T09:12:43.147Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Views\\Bookings\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Staff\\Views\\Bookings\\Index.cshtml",
+              "ToolTip": "D:\\Programing\\Bean Project\\Project\\Group_BeanBooking\\Areas\\Staff\\Views\\Bookings\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Staff\\Views\\Bookings\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-11T09:13:26.454Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:137:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:135:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:136:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
